@@ -13,6 +13,16 @@
 
 <a class="saut" href="#contenu">Skip to content</a>
 
+<div class="bandeau-haut">
+  <div class="zone">
+    <span>Twenty years in Vernier</span>
+    <i></i>
+    <span>Mon–Fri 8am–6.30pm · Sat 8am–12pm</span>
+    <i></i>
+    <a href="tel:+41223416818">022 341 68 18</a>
+  </div>
+</div>
+
 <header class="entete">
   <div class="zone">
     <a class="marque" href="index.html">
@@ -68,33 +78,20 @@
       <h1>The garment<br><span class="accent">finds its shape.</span></h1>
       <p class="chapo">A hem, a lining, a zip that gives way: most garments you think are finished need only an hour in the workshop. Pick a garment below to see what we do, and what it costs.</p>
     </div>
-    <div class="planche revele" data-delai="2">
-      <svg viewBox="0 0 340 420" role="img" aria-label="The garment finds its shape.">
-        <path class="piece trace" style="--len:1500;--dur:3.4s;--del:.4s"
-              d="M146,46 L98,60 L54,178 L92,198 L124,138 L118,346 L222,346 L216,138 L248,198 L286,178 L242,60 L194,46"/>
-        <path class="piece trace" style="--len:230;--del:1.5s" d="M146,46 C158,36 182,36 194,46"/>
-        <path class="piece trace" style="--len:230;--del:1.7s" d="M146,46 L170,84 L194,46"/>
-        <path class="detail trace" style="--len:210;--del:1.9s" d="M98,60 C128,92 212,92 242,60"/>
-        <path class="detail trace" style="--len:560;--del:2.0s" d="M160,84 V346 M180,84 V346"/>
-        <circle class="detail trace" style="--len:22;--del:2.2s" cx="170" cy="132" r="3.4"/>
-        <circle class="detail trace" style="--len:22;--del:2.28s" cx="170" cy="180" r="3.4"/>
-        <circle class="detail trace" style="--len:22;--del:2.36s" cx="170" cy="228" r="3.4"/>
-        <circle class="detail trace" style="--len:22;--del:2.44s" cx="170" cy="276" r="3.4"/>
-        <circle class="detail trace" style="--len:22;--del:2.52s" cx="170" cy="324" r="3.4"/>
-        <path class="detail trace" style="--len:220;--del:2.3s" d="M104,150 L142,150 L142,196 L132,206 L114,206 L104,196 Z"/>
-        <path class="piqure trace" style="--len:44;--del:2.7s" d="M104,162 H142"/>
-        <path class="detail trace" style="--len:100;--del:2.4s" d="M62,160 L100,180"/>
-        <path class="detail trace" style="--len:100;--del:2.4s" d="M278,160 L240,180"/>
-        <path class="piqure trace" style="--len:110;--del:2.8s" d="M118,334 H222"/>
-        <path class="piqure trace" style="--len:46;--del:2.9s" d="M56,176 L90,194"/>
-        <path class="piqure trace" style="--len:46;--del:2.95s" d="M284,176 L250,194"/>
-        <path class="cote trace" style="--len:200;--del:3.1s" d="M170,110 V300"/>
-        <path class="cote trace" style="--len:30;--del:3.2s" d="M164,118 L170,108 L176,118"/>
-        <path class="cote trace" style="--len:30;--del:3.2s" d="M164,292 L170,302 L176,292"/>
-        <path class="cote trace" style="--len:320;--del:3.3s" d="M312,84 V346 M306,84 H318 M306,346 H318"/>
-        <path class="cote trace" style="--len:180;--del:3.4s" d="M118,368 H222 M118,362 V374 M222,362 V374"/>
-        <text x="326" y="220" transform="rotate(90 326 220)">Length</text>
-        <text x="170" y="388" text-anchor="middle">Width</text>
+    <div class="revele" data-delai="2" style="max-width:280px;justify-self:center;color:var(--or)">
+      <svg viewBox="0 0 140 140" fill="none" aria-hidden="true">
+        <path id="arcbas-couture" d="M8 70A62 62 0 0 0 132 70"/>
+        <circle cx="70" cy="70" r="66" stroke="currentColor" stroke-width="3.2"/>
+        <path d="M16.8 60.6A54 54 0 0 1 123.2 60.6" stroke="currentColor" stroke-width="1.2" opacity=".6"/>
+        <path d="M123.2 79.4A54 54 0 0 1 16.8 79.4" stroke="currentColor" stroke-width="1.2" opacity=".6"/>
+        <path d="M11 70l5-5 5 5-5 5z" fill="currentColor"/><path d="M119 70l5-5 5 5-5 5z" fill="currentColor"/>
+        <text x="70" y="64" font-family="Cormorant Garamond, Georgia, serif" font-size="14" font-weight="600"
+              letter-spacing="1.2" fill="currentColor" text-anchor="middle">PRESSING</text>
+        <text x="70" y="84" font-family="Cormorant Garamond, Georgia, serif" font-size="14" font-weight="600"
+              letter-spacing="1.2" fill="currentColor" text-anchor="middle">DE VERNIER</text>
+        <text font-family="Inter, sans-serif" font-size="8.4" font-weight="500" letter-spacing="2.8" fill="currentColor">
+          <textPath href="#arcbas-couture" startOffset="50%" text-anchor="middle">DEPUIS 2006</textPath>
+        </text>
       </svg>
     </div>
   </div>
@@ -127,7 +124,10 @@
         <button type="button" class="onglet-vetement" data-section="retouches-pulls" aria-pressed="false">Jumpers</button>
         <button type="button" class="onglet-vetement" data-section="retouches-rideaux" aria-pressed="false">Curtains</button>
     </div>
-    <div id="tarifs-vetement" class="tarifs-vetement"></div>
+    <div class="duo large-gauche" style="align-items:start">
+      <div id="tarifs-vetement" class="tarifs-vetement"></div>
+      <div class="planche revele" id="dessin-vetement" data-delai="1"></div>
+    </div>
   </div>
 </section>
 
@@ -230,6 +230,7 @@
 
 
 <script src="../data/tarifs.js"></script>
+<script src="../assets/vetements.js"></script>
 <script src="../assets/site.js"></script>
 </body>
 </html>

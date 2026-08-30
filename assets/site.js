@@ -228,6 +228,9 @@ const zoneVetement = document.getElementById('tarifs-vetement');
 
 if (onglets.length && zoneVetement && typeof TARIFS !== 'undefined') {
 
+  const zoneDessin = document.getElementById('dessin-vetement');
+  const MOT_LONGUEUR = LANGUE === 'en' ? 'Length' : 'Longueur';
+
   function afficherVetement(idSection) {
     const sec = TARIFS.find(s => s.id === idSection);
     zoneVetement.innerHTML = '';
@@ -235,6 +238,14 @@ if (onglets.length && zoneVetement && typeof TARIFS !== 'undefined') {
     const bloc = tableauSection(sec);
     bloc.classList.add('vu');          // pas d'attente : le choix doit être instantané
     zoneVetement.append(bloc);
+
+    // Le dessin technique suit le vêtement choisi, et se retrace à chaque fois
+    if (zoneDessin && typeof dessinVetement === 'function') {
+      zoneDessin.classList.remove('vu');
+      zoneDessin.innerHTML = dessinVetement(idSection, MOT_LONGUEUR);
+      void zoneDessin.offsetWidth;     // force le navigateur à repartir de zéro
+      zoneDessin.classList.add('vu');
+    }
   }
 
   onglets.forEach(o => {
