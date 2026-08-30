@@ -266,6 +266,239 @@ h4{ font-size:var(--t-l); }
 }
 
 /* ============================================================================
+   MENU SUR TÉLÉPHONE
+   ============================================================================ */
+.menu-mobile{
+  position:fixed; inset:76px 0 0; z-index:55;
+  background:var(--ivoire); padding:var(--s4) var(--marge-page); overflow-y:auto;
+}
+.menu-mobile ul{ list-style:none; margin:0; padding:0; }
+.menu-mobile li{ border-bottom:1px solid var(--papier); }
+.menu-mobile a{
+  display:block; padding:20px 0;
+  font-family:var(--serif); font-size:26px; font-weight:500; color:var(--vert);
+}
+.menu-mobile .langues-mobile{ display:flex; gap:var(--s3); margin-top:var(--s4); }
+.menu-mobile .langues-mobile a{
+  font-family:var(--sans); font-size:12px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--acier); padding:12px 0;
+}
+.menu-mobile .langues-mobile a[aria-current="true"]{ color:var(--or); }
+@media (min-width:861px){ .menu-mobile{ display:none; } }
+
+/* ============================================================================
+   BANDEAU D INFORMATIONS PRATIQUES
+   ============================================================================ */
+.bandeau-infos{ border-block:1px solid var(--papier); background:var(--blanc); }
+.bandeau-infos ul{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,1fr); }
+.bandeau-infos li{ padding:var(--s3); border-left:1px solid var(--papier); }
+.bandeau-infos li:first-child{ border-left:0; padding-left:0; }
+.bandeau-infos li:last-child{ padding-right:0; }
+.bandeau-infos dt{ font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--or); margin-bottom:7px; }
+.bandeau-infos dd{ margin:0; font-size:15px; }
+.bandeau-infos a:hover{ color:var(--or); }
+
+/* La pastille qui bat quand la boutique est ouverte */
+.pastille{ display:inline-flex; align-items:center; gap:8px; }
+.pastille::before{
+  content:""; width:7px; height:7px; border-radius:50%; flex:none;
+  background:#1E8A52; box-shadow:0 0 0 0 rgba(30,138,82,.55);
+  animation:battement 2.4s infinite;
+}
+.pastille.ferme::before{ background:#B0564A; animation:none; box-shadow:none; }
+@keyframes battement{
+  70%{ box-shadow:0 0 0 9px rgba(30,138,82,0); }
+  100%{ box-shadow:0 0 0 0 rgba(30,138,82,0); }
+}
+
+/* ============================================================================
+   PAPIER MILLIMÉTRÉ — la signature de l atelier
+   ============================================================================ */
+.millimetre{ position:relative; isolation:isolate; }
+.millimetre::before{
+  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; opacity:.5;
+  background:
+    repeating-linear-gradient(0deg,transparent 0 31px,rgba(35,40,37,.05) 31px 32px),
+    repeating-linear-gradient(90deg,transparent 0 31px,rgba(35,40,37,.05) 31px 32px);
+}
+
+/* ============================================================================
+   LA PLANCHE TECHNIQUE
+   ============================================================================ */
+.planche svg{ width:100%; height:auto; overflow:visible; }
+.planche .piece{ fill:none; stroke:var(--vert); stroke-width:1.7; stroke-linejoin:round; stroke-linecap:round; }
+.planche .detail{ fill:none; stroke:var(--vert); stroke-width:1; opacity:.5; }
+.planche .piqure{ fill:none; stroke:var(--or); stroke-width:1.4; stroke-dasharray:5 4.5; stroke-linecap:round; }
+.planche .cote{ fill:none; stroke:var(--acier); stroke-width:.85; }
+.planche text{ font-family:var(--sans); font-size:7.5px; letter-spacing:.16em; text-transform:uppercase; fill:var(--acier); }
+
+/* Le tracé qui se dessine */
+.trace{ stroke-dasharray:var(--len,900); stroke-dashoffset:var(--len,900); }
+.vu .trace{ animation:tracer var(--dur,2.4s) cubic-bezier(.35,0,.15,1) var(--del,0s) forwards; }
+@keyframes tracer{ to{ stroke-dashoffset:0; } }
+
+/* ============================================================================
+   LA GAMME NUMÉROTÉE DES MÉTIERS
+   ============================================================================ */
+.gamme{ list-style:none; margin:var(--s4) 0 0; padding:0; max-width:440px; }
+.gamme li{ display:flex; align-items:baseline; gap:16px; padding:12px 0; border-bottom:1px solid var(--papier); }
+.gamme b{ font-size:9.5px; letter-spacing:.18em; color:var(--acier); font-weight:500; min-width:24px; }
+.gamme span{ font-family:var(--serif); font-size:22px; font-weight:500; flex:1; color:var(--vert); }
+.gamme em{ font-style:normal; font-size:12px; color:var(--acier); letter-spacing:.04em; white-space:nowrap; }
+
+/* ============================================================================
+   CARTES DE MÉTIER
+   ============================================================================ */
+.grille-metiers{
+  display:grid; grid-template-columns:1.12fr 1fr; gap:1px;
+  background:var(--papier); border:1px solid var(--papier); margin-top:var(--s5);
+}
+.metier{ background:var(--blanc); padding:var(--s4) var(--s3); display:flex; flex-direction:column; position:relative; transition:background var(--transition); }
+.metier:hover{ background:#FCFBF8; }
+.metier h3{ margin-bottom:10px; }
+.metier p{ font-size:15px; color:rgba(35,40,37,.68); margin:0 0 var(--s3); flex:1; }
+.metier .lien{ font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--or); display:inline-flex; align-items:center; gap:8px; }
+.metier .lien svg{ width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:1.6; transition:transform var(--transition); }
+.metier:hover .lien svg{ transform:translateX(5px); }
+.metier.vedette{ grid-row:span 3; justify-content:flex-end; padding:var(--s5) var(--s4); background:linear-gradient(168deg,#F1F5F0,var(--blanc) 62%); }
+.metier.vedette h3{ font-size:var(--t-2xl); }
+.metier.vedette p{ font-size:var(--t-m); max-width:34ch; flex:none; }
+.metier.vedette .sceau-carte{ width:88px; margin-bottom:var(--s3); color:var(--or); }
+.metier.ligne{ flex-direction:row; align-items:flex-start; gap:var(--s3); }
+.metier.ligne .picto{ width:34px; height:34px; stroke:var(--or); fill:none; stroke-width:1.15; flex:none; }
+.metier.ligne h3{ font-size:var(--t-l); }
+.etiquette{
+  position:absolute; top:var(--s4); right:var(--s4);
+  font-size:9px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--blanc); background:var(--or); padding:5px 10px; border-radius:2px;
+}
+
+/* ============================================================================
+   TABLEAUX DE PRIX
+   ============================================================================ */
+.tarif-bloc{ margin-bottom:var(--s5); break-inside:avoid; }
+.tarif-bloc h3{ font-size:var(--t-xl); padding-bottom:12px; margin-bottom:6px; border-bottom:1px solid var(--or); }
+.tarif-table{ width:100%; border-collapse:collapse; }
+.tarif-table th{ font-weight:400; text-align:left; }
+.tarif-table thead th{
+  font-family:var(--sans); font-size:9.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--acier); padding:12px 0 8px; text-align:right;
+}
+.tarif-table tbody th{ padding:11px 16px 11px 0; font-size:15px; color:var(--graphite); border-bottom:1px dotted var(--papier); }
+.tarif-table td{ padding:11px 0; text-align:right; white-space:nowrap; border-bottom:1px dotted var(--papier); vertical-align:baseline; }
+.tarif-table tr:last-child th,.tarif-table tr:last-child td{ border-bottom:0; }
+.tarif-table b{ font-family:var(--serif); font-size:var(--t-l); font-weight:600; color:var(--vert); font-variant-numeric:tabular-nums; }
+.tarif-table em{ font-style:normal; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--acier); }
+.tarif-table .unite{ font-size:12px; color:var(--acier); }
+.tarif-table.deux-colonnes td{ min-width:120px; }
+.mentions-tarifs{ margin-top:var(--s4); padding-top:var(--s3); border-top:1px solid var(--papier); }
+.mentions-tarifs p{ font-size:13px; color:var(--acier); margin:0 0 5px; }
+
+.sommaire{ list-style:none; margin:var(--s4) 0 var(--s6); padding:0; display:flex; flex-wrap:wrap; gap:8px; }
+.sommaire a{
+  display:inline-flex; align-items:center; min-height:40px; padding:0 15px;
+  font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+  border:1px solid var(--papier); border-radius:100px; color:var(--acier);
+  transition:border-color var(--transition), color var(--transition);
+}
+.sommaire a:hover{ border-color:var(--or); color:var(--or); }
+
+/* ============================================================================
+   HORAIRES ET PLAN
+   ============================================================================ */
+.horaires{ list-style:none; margin:var(--s4) 0 0; padding:0; }
+.horaires li{ display:flex; justify-content:space-between; gap:var(--s3); padding:13px 0; border-bottom:1px solid var(--papier); font-size:15px; }
+.horaires dt{ margin:0; }
+.horaires dd{ margin:0; color:var(--acier); text-align:right; font-variant-numeric:tabular-nums; }
+.horaires li.aujourdhui,.horaires li.aujourdhui dd{ color:var(--or); }
+.sombre .horaires li{ border-bottom-color:rgba(246,243,236,.14); }
+.sombre .horaires dd{ color:var(--sur-nuit-doux); }
+.sombre .horaires li.aujourdhui,.sombre .horaires li.aujourdhui dd{ color:var(--or-clair); }
+
+.plan{
+  aspect-ratio:4/3; border:1px solid var(--papier); border-radius:3px;
+  background:var(--blanc); display:grid; place-items:center; position:relative; overflow:hidden;
+}
+.plan .epingle{ text-align:center; padding:var(--s3); }
+.plan .epingle svg{ width:34px; height:34px; stroke:var(--or); fill:none; stroke-width:1.2; margin:0 auto 12px; }
+.plan .epingle b{ font-family:var(--serif); font-size:var(--t-l); font-weight:600; display:block; color:var(--vert); }
+.plan .epingle span{ font-size:12.5px; color:var(--acier); }
+.plan .a-fournir{
+  position:absolute; bottom:12px; left:0; right:0; text-align:center;
+  font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--papier);
+}
+.coordonnees{ display:grid; gap:var(--s2); margin-top:var(--s4); }
+.coordonnees a{ display:flex; align-items:center; gap:14px; font-size:16px; min-height:44px; transition:color var(--transition); }
+.coordonnees a:hover{ color:var(--or); }
+.coordonnees svg{ width:19px; height:19px; stroke:var(--or); fill:none; stroke-width:1.3; flex:none; }
+.sombre .coordonnees a:hover{ color:var(--or-clair); }
+.sombre .coordonnees svg{ stroke:var(--or-clair); }
+
+/* ============================================================================
+   MISES EN PAGE
+   ============================================================================ */
+.duo{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(30px,5vw,72px); align-items:center; }
+.duo.large-gauche{ grid-template-columns:1.15fr .85fr; }
+.section{ padding:var(--s7) 0; }
+.section.serree{ padding:var(--s6) 0; }
+.sceau-grand{ width:clamp(130px,16vw,180px); margin:0 auto var(--s4); color:var(--or-clair); }
+.centre{ text-align:center; }
+.centre .chapo{ margin-inline:auto; }
+.centre .filet{ max-width:330px; margin-inline:auto; }
+
+/* Les trois chiffres */
+.chiffres{ list-style:none; margin:var(--s5) auto 0; padding:0; display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s3); max-width:660px; }
+.chiffres b{ display:block; font-family:var(--serif); font-weight:600; font-size:var(--t-3xl); line-height:1; color:var(--or-clair); }
+.chiffres span{ display:block; margin-top:10px; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase; color:var(--sur-nuit-doux); }
+
+@media (max-width:860px){
+  .grille-metiers{ grid-template-columns:1fr; }
+  .metier.vedette{ grid-row:auto; padding:var(--s4) var(--s3); }
+  .duo,.duo.large-gauche{ grid-template-columns:1fr; }
+  .bandeau-infos ul{ grid-template-columns:1fr; }
+  .bandeau-infos li{ border-left:0; border-top:1px solid var(--papier); padding-left:0; padding-right:0; }
+  .bandeau-infos li:first-child{ border-top:0; }
+}
+@media (max-width:620px){
+  .tarif-table tbody th{ font-size:14px; padding-right:10px; }
+  .tarif-table b{ font-size:18px; }
+  .chiffres{ gap:var(--s2); }
+  .chiffres b{ font-size:var(--t-2xl); }
+}
+
+/* ============================================================================
+   CHOIX DU VÊTEMENT — page Couture
+   ============================================================================ */
+.onglets-vetements{
+  display:flex; flex-wrap:wrap; gap:8px; margin:var(--s3) 0 var(--s5);
+}
+.onglet-vetement{
+  min-height:46px; padding:0 20px; border-radius:100px;
+  font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:500;
+  background:none; border:1px solid var(--papier); color:var(--acier);
+  transition:background var(--transition), border-color var(--transition), color var(--transition);
+}
+.onglet-vetement:hover{ border-color:var(--or); color:var(--or); }
+.onglet-vetement[aria-pressed="true"]{
+  background:var(--vert); border-color:var(--vert); color:var(--ivoire);
+}
+.tarifs-vetement{ max-width:720px; }
+.tarifs-vetement .tarif-bloc{ margin-bottom:0; }
+
+/* ============================================================================
+   CIBLES TACTILES
+   Tout lien doit offrir au moins 44 px de hauteur au doigt. Sans ça,
+   on rate le lien une fois sur trois sur un téléphone.
+   ============================================================================ */
+.marque{ min-height:44px; }
+.metier .lien{ min-height:44px; align-items:center; margin-top:auto; }
+.pied a{ display:inline-flex; align-items:center; min-height:44px; }
+.pied .mentions a{ min-height:0; }
+.sommaire a,.onglet-vetement,.coordonnees a{ min-height:44px; }
+/* Le telephone du bandeau : c est le lien le plus clique sur mobile */
+.bandeau-infos a{ display:inline-flex; align-items:center; min-height:44px; }
+
+/* ============================================================================
    MOUVEMENT RÉDUIT — respecté partout, ce n'est pas une option
    ============================================================================ */
 @media (prefers-reduced-motion:reduce){
