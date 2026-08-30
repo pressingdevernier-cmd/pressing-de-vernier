@@ -1,0 +1,289 @@
+/* ============================================================================
+   PRESSING DE VERNIER — feuille de style principale
+   ----------------------------------------------------------------------------
+   Ce fichier définit les couleurs, les tailles de texte et les espacements
+   du site entier. Tout est réglé au même endroit, en haut, dans le bloc
+   « :root ». Changer une valeur là met à jour tout le site d'un coup.
+   ============================================================================ */
+
+:root{
+
+  /* ---- COULEURS ------------------------------------------------------
+     Relevées sur le logo et sur l'affiche des 20 ans.                    */
+  --ivoire:        #F6F3EC;   /* fond principal des pages          */
+  --papier:        #EAE5D9;   /* filets, bordures, fonds secondaires */
+  --graphite:      #232825;   /* texte courant                     */
+  --vert:          #04321E;   /* vert du logo — titres, boutons    */
+  --vert-nuit:     #04180F;   /* fond des bandeaux sombres         */
+  --or:            #A8842F;   /* or sur fond clair                 */
+  --or-clair:      #C9A24D;   /* or sur fond sombre                */
+  --acier:         #8A979B;   /* gris froid — légendes, cotes      */
+  --blanc:         #FFFFFF;
+
+  /* ---- TEXTES SUR FOND SOMBRE ---------------------------------------- */
+  --sur-nuit:      #F6F3EC;
+  --sur-nuit-doux: rgba(246,243,236,.74);
+
+  /* ---- POLICES -------------------------------------------------------
+     Hébergées dans assets/polices/ : aucun appel à un service extérieur. */
+  --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --sans:  "Inter", -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
+
+  /* ---- TAILLES DE TEXTE ----------------------------------------------
+     Gamme de rapport 1,25 : chaque taille découle de la précédente.      */
+  --t-xs:  12px;                        /* étiquettes espacées   */
+  --t-s:   14px;                        /* légendes              */
+  --t-m:   17px;                        /* texte courant         */
+  --t-l:   21px;                        /* chapô, prix           */
+  --t-xl:  27px;                        /* titres de carte       */
+  --t-2xl: clamp(30px, 3.4vw, 42px);    /* titres secondaires    */
+  --t-3xl: clamp(38px, 5.6vw, 66px);    /* titres de section     */
+  --t-4xl: clamp(42px, 6.6vw, 84px);    /* titre de page         */
+
+  /* ---- ESPACEMENTS --------------------------------------------------- */
+  --s1: 8px;   --s2: 16px;  --s3: 24px;  --s4: 40px;
+  --s5: 64px;  --s6: 96px;  --s7: 140px;
+
+  /* ---- MISE EN PAGE -------------------------------------------------- */
+  --largeur-max: 1180px;
+  --marge-page:  clamp(18px, 4vw, 54px);
+
+  /* ---- MOUVEMENT ----------------------------------------------------- */
+  --transition: 260ms cubic-bezier(.22,.61,.36,1);
+}
+
+/* ============================================================================
+   BASE
+   ============================================================================ */
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+
+body{
+  margin:0;
+  background:var(--ivoire);
+  color:var(--graphite);
+  font-family:var(--sans);
+  font-size:var(--t-m);
+  line-height:1.62;
+  font-weight:300;
+  overflow-x:hidden;
+}
+
+img,svg{ max-width:100%; height:auto; display:block; }
+a{ color:inherit; text-decoration:none; }
+button{ font:inherit; cursor:pointer; }
+
+/* Anneau de focus visible partout : obligatoire pour la navigation clavier */
+:focus-visible{
+  outline:2px solid var(--or);
+  outline-offset:4px;
+  border-radius:2px;
+}
+
+/* Lien d'évitement, pour les lecteurs d'écran et le clavier */
+.saut{
+  position:absolute; left:-9999px; top:0; z-index:200;
+  background:var(--vert); color:var(--ivoire); padding:14px 20px;
+  font-size:var(--t-s); letter-spacing:.1em; text-transform:uppercase;
+}
+.saut:focus{ left:0; }
+
+.zone{
+  max-width:var(--largeur-max);
+  margin-inline:auto;
+  padding-inline:var(--marge-page);
+}
+
+/* ============================================================================
+   TITRES ET TEXTES
+   ============================================================================ */
+h1,h2,h3,h4{ font-family:var(--serif); font-weight:600; line-height:1.06; margin:0; color:var(--vert); }
+h1{ font-size:var(--t-4xl); font-weight:400; letter-spacing:-.02em; }
+h2{ font-size:var(--t-3xl); font-weight:500; letter-spacing:-.01em; }
+h3{ font-size:var(--t-xl); }
+h4{ font-size:var(--t-l); }
+
+/* L'italique doré, motif récurrent des titres */
+.accent{ font-style:italic; font-weight:600; color:var(--or); }
+
+.sur-titre{
+  font-family:var(--sans); font-size:10px; font-weight:500;
+  letter-spacing:.3em; text-transform:uppercase; color:var(--acier);
+  margin:0 0 var(--s3);
+}
+
+.chapo{
+  font-size:var(--t-l); line-height:1.6;
+  color:rgba(35,40,37,.74); max-width:54ch; margin:var(--s3) 0 0;
+}
+
+/* Le filet à losange du logo — séparateur de la marque */
+.filet{ display:flex; align-items:center; gap:14px; }
+.filet::before,.filet::after{
+  content:""; height:1px; flex:1;
+  background:linear-gradient(90deg,transparent,var(--or),transparent);
+}
+.filet i{ width:7px; height:7px; background:var(--or); transform:rotate(45deg); flex:none; }
+.filet.court{ max-width:210px; }
+
+/* ============================================================================
+   BOUTONS
+   ============================================================================ */
+.bouton{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  min-height:54px; padding:0 30px; border-radius:2px;
+  font-size:11px; letter-spacing:.17em; text-transform:uppercase; font-weight:500;
+  transition:background var(--transition), color var(--transition), border-color var(--transition);
+}
+.bouton.plein{ background:var(--vert); color:var(--ivoire); border:1px solid var(--vert); }
+.bouton.plein:hover{ background:transparent; color:var(--vert); }
+.bouton.vide{ border:1px solid var(--acier); color:var(--graphite); }
+.bouton.vide:hover{ background:var(--papier); }
+
+/* Sur fond sombre */
+.sombre .bouton.plein{ background:var(--or-clair); color:var(--vert-nuit); border-color:var(--or-clair); }
+.sombre .bouton.plein:hover{ background:transparent; color:var(--or-clair); }
+.sombre .bouton.vide{ border-color:rgba(201,162,77,.55); color:var(--or-clair); }
+.sombre .bouton.vide:hover{ background:rgba(201,162,77,.14); }
+
+/* ============================================================================
+   EN-TÊTE
+   ============================================================================ */
+.entete{
+  position:sticky; top:0; z-index:60;
+  background:var(--ivoire);
+  border-bottom:1px solid var(--papier);
+}
+.entete .zone{ display:flex; align-items:center; gap:var(--s3); min-height:76px; }
+
+.marque{ display:flex; align-items:center; gap:13px; margin-right:auto; min-width:0; }
+.marque svg{ width:34px; flex:none; color:var(--vert); }
+.marque .mots{ display:flex; flex-direction:column; line-height:1; }
+.marque .mots b{
+  font-family:var(--serif); font-size:18px; font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--vert); white-space:nowrap;
+}
+.marque .mots span{
+  font-size:8px; letter-spacing:.24em; text-transform:uppercase;
+  color:var(--or); margin-top:5px; white-space:nowrap;
+}
+
+.navigation{ display:flex; gap:var(--s4); }
+.navigation a{
+  font-size:11px; letter-spacing:.17em; text-transform:uppercase;
+  color:rgba(35,40,37,.7); position:relative; padding:6px 0;
+  transition:color var(--transition);
+}
+/* Le fil qui se coud sous le lien */
+.navigation a::after{
+  content:""; position:absolute; left:0; bottom:0; height:1px; width:100%;
+  background:var(--or); transform:scaleX(0); transform-origin:left;
+  transition:transform var(--transition);
+}
+.navigation a:hover{ color:var(--vert); }
+.navigation a:hover::after,
+.navigation a[aria-current="page"]::after{ transform:scaleX(1); }
+.navigation a[aria-current="page"]{ color:var(--vert); }
+
+.langues{ display:flex; align-items:center; gap:7px; font-size:11px; letter-spacing:.1em; }
+.langues a{ color:var(--acier); padding:6px 2px; transition:color var(--transition); }
+.langues a[aria-current="true"]{ color:var(--or); }
+.langues a:hover{ color:var(--vert); }
+.langues s{ color:var(--papier); text-decoration:none; }
+
+.burger{ display:none; background:none; border:0; padding:11px; margin-right:-11px; }
+.burger span{ display:block; width:22px; height:1.5px; background:var(--vert); margin:5px 0; }
+
+/* ============================================================================
+   BANDEAUX SOMBRES
+   ============================================================================ */
+.sombre{
+  background:var(--vert-nuit); color:var(--sur-nuit);
+  position:relative; isolation:isolate;
+}
+.sombre::before{
+  content:""; position:absolute; inset:0; z-index:-2;
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(15,90,50,.34), transparent 62%),
+    radial-gradient(90% 60% at 88% 108%, rgba(201,162,77,.12), transparent 60%);
+}
+.sombre h1,.sombre h2,.sombre h3,.sombre h4{ color:var(--sur-nuit); }
+.sombre .chapo{ color:var(--sur-nuit-doux); }
+.sombre .sur-titre{ color:var(--or-clair); }
+.sombre .accent{ color:var(--or-clair); }
+
+/* ============================================================================
+   RÉVÉLATION AU DÉFILEMENT
+   ============================================================================ */
+.revele{
+  opacity:0; transform:translateY(22px);
+  transition:opacity .85s ease, transform .85s cubic-bezier(.19,1,.22,1);
+}
+.revele.vu{ opacity:1; transform:none; }
+.revele[data-delai="1"]{ transition-delay:.1s; }
+.revele[data-delai="2"]{ transition-delay:.2s; }
+.revele[data-delai="3"]{ transition-delay:.3s; }
+.revele[data-delai="4"]{ transition-delay:.4s; }
+
+/* ============================================================================
+   PIED DE PAGE
+   ============================================================================ */
+.pied{ background:var(--vert-nuit); color:var(--sur-nuit); padding:var(--s6) 0 var(--s4); }
+.pied .sceau{ width:120px; margin:0 auto var(--s4); color:var(--or-clair); }
+.pied .colonnes{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s4); }
+.pied h4{ font-size:var(--t-s); font-family:var(--sans); font-weight:500;
+          letter-spacing:.2em; text-transform:uppercase; color:var(--or-clair); margin-bottom:var(--s2); }
+.pied p,.pied li{ font-size:var(--t-s); color:var(--sur-nuit-doux); margin:0 0 7px; }
+.pied ul{ list-style:none; margin:0; padding:0; }
+.pied a:hover{ color:var(--or-clair); }
+.pied .mentions{
+  margin-top:var(--s5); padding-top:var(--s3);
+  border-top:1px solid rgba(246,243,236,.14);
+  font-size:var(--t-xs); color:rgba(246,243,236,.5);
+  display:flex; flex-wrap:wrap; gap:var(--s3); justify-content:space-between;
+}
+
+/* ============================================================================
+   PETITS ÉCRANS
+   ============================================================================ */
+@media (max-width:1120px){
+  .marque .mots span{ display:none; }
+}
+@media (max-width:860px){
+  :root{ --s6:64px; --s7:88px; }
+  .navigation{ display:none; }
+  .burger{ display:block; }
+  .langues{ display:none; }
+  .marque svg{ width:28px; }
+  .marque .mots b{ font-size:15px; letter-spacing:.09em; }
+  .pied .colonnes{ grid-template-columns:1fr; gap:var(--s3); }
+}
+@media (max-width:620px){
+  body{ font-size:16px; }
+  :root{ --t-m:16px; --t-l:18px; }
+  .bouton{ width:100%; }
+}
+
+/* ============================================================================
+   MOUVEMENT RÉDUIT — respecté partout, ce n'est pas une option
+   ============================================================================ */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+  html{ scroll-behavior:auto; }
+  .revele{ opacity:1; transform:none; }
+}
+
+/* ============================================================================
+   IMPRESSION — la liste de prix doit sortir proprement sur papier
+   ============================================================================ */
+@media print{
+  .entete,.pied,.burger,.langues{ display:none; }
+  body{ background:#fff; color:#000; font-size:11pt; }
+  .sombre{ background:#fff; color:#000; }
+  a::after{ content:""; }
+}
