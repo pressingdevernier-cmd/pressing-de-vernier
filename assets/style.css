@@ -736,14 +736,16 @@ h4{ font-size:var(--t-l); }
 .depliant .liens{ display:flex; flex-wrap:wrap; gap:10px; margin-top:var(--s3); }
 
 /* ============================================================================
-   L'APPEL — la bande sombre de fin de page
+   LA BANDE D'APPEL — pleine largeur, en fin de page d'accueil
+   Nom distinct de « .appel », qui est la carte blanche des autres pages :
+   deux composants differents ne doivent jamais partager une classe.
    ============================================================================ */
-.appel{
+.bande-appel{
   background:var(--vert-nuit); color:var(--sur-nuit); text-align:center;
   padding:clamp(44px,6vw,74px) var(--marge-page);
 }
-.appel h2{ color:var(--sur-nuit); font-size:clamp(23px,3.1vw,33px); font-weight:500; margin:0 0 14px; }
-.appel p{ max-width:56ch; margin:0 auto var(--s4); color:var(--sur-nuit-doux); }
+.bande-appel h2{ color:var(--sur-nuit); font-size:clamp(23px,3.1vw,33px); font-weight:500; margin:0 0 14px; }
+.bande-appel p{ max-width:56ch; margin:0 auto var(--s4); color:var(--sur-nuit-doux); }
 
 @media (min-width:861px){ .depliant .tete .resume{ display:block; } }
 @media (max-width:860px){
