@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pressing de Vernier &#8212; Nettoyage, blanchisserie et atelier de couture</title>
-<meta name="description" content="Pressing et atelier de couture au 201 route de Vernier, Gen&#232;ve. Nettoyage, blanchisserie, repassage, retouches, transformations et cr&#233;ations. Depuis 2006.">
+<title>Tarifs &#8212; Pressing de Vernier</title>
+<meta name="description" content="Liste de prix compl&#232;te&#160;: nettoyage, blanchisserie, literie, linge de maison, retouches et couture. Prix TTC en francs suisses.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/polices/polices.css">
 <link rel="stylesheet" href="assets/style.css">
@@ -12,6 +12,16 @@
 <body>
 
 <a class="saut" href="#contenu">Aller au contenu</a>
+
+<div class="bandeau-haut">
+  <div class="zone">
+    <span data-depuis>Depuis 2006 a Vernier</span>
+    <i></i>
+    <span class="pastille" data-etat-ouverture>&#8212;</span>
+    <i></i>
+    <a href="tel:+41223416818" data-tel>022 341 68 18</a>
+  </div>
+</div>
 
 <header class="entete">
   <div class="zone">
@@ -32,7 +42,7 @@
         <a href="nettoyage.html">Nettoyage</a>
         <a href="couture.html">Couture</a>
         <a href="professionnels.html">Professionnels</a>
-        <a href="tarifs.html">Tarifs</a>
+        <a href="tarifs.html" aria-current="page">Tarifs</a>
         <a href="trouver.html">Nous trouver</a>
     </nav>
     <button class="burger" type="button" aria-expanded="false" aria-controls="menu-mobile" aria-label="Menu">
@@ -44,85 +54,69 @@
 <div class="menu-mobile" id="menu-mobile" hidden>
   <nav aria-label="Menu">
     <ul>
-      <li><a href="index.html" aria-current="page">Accueil</a></li>
+      <li><a href="index.html">Accueil</a></li>
       <li><a href="nettoyage.html">Nettoyage</a></li>
       <li><a href="couture.html">Couture</a></li>
       <li><a href="professionnels.html">Professionnels</a></li>
-      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a href="tarifs.html" aria-current="page">Tarifs</a></li>
       <li><a href="trouver.html">Nous trouver</a></li>
     </ul>
   </nav>
 </div>
 
 <main id="contenu">
-
-<!-- L'or du nom, défini une fois -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-  <linearGradient id="orfevre" x1="0" y1="0" x2="1" y2="0.35">
-    <stop offset="0%"   stop-color="#9C7638"/>
-    <stop offset="24%"  stop-color="#CBA965"/>
-    <stop offset="48%"  stop-color="#F6E4B4"/>
-    <stop offset="72%"  stop-color="#CBA965"/>
-    <stop offset="100%" stop-color="#9C7638"/>
-  </linearGradient>
-</defs></svg>
-
-<!-- ═══════════════ L'ENSEIGNE ═══════════════ -->
-<header class="enseigne">
-  <div class="dedans">
-    <div class="filet"><i></i></div>
-    <h1 class="nom-enseigne">
-      <span class="plaque une-ligne" aria-hidden="true">
-        <svg><text font-size="100" font-weight="500" letter-spacing="22">PRESSING DE VERNIER</text></svg>
-      </span>
-    <!-- Sur petit ecran, la ligne unique tomberait a 30 px de haut :
-         le nom passe alors sur deux lignes, de meme hauteur de lettre. -->
-    <span class="plaque deux-lignes" aria-hidden="true">
-      <svg data-groupe="nom"><text font-size="100" font-weight="500" letter-spacing="26">PRESSING</text></svg>
-      <svg data-groupe="nom"><text font-size="100" font-weight="500" letter-spacing="26">DE VERNIER</text></svg>
-      </span>
-      <span class="lecture-seule">Pressing de Vernier &#8212; nettoyage textile et atelier de couture &#224; Vernier</span>
-    </h1>
-    <p class="metiers">Nettoyage &#183; Blanchisserie &#183; Couture</p>
-    <p class="lieu" data-adresse></p>
+<section class="section serree millimetre">
+  <div class="zone revele" style="max-width:700px">
+    <p class="sur-titre">Prix en francs suisses</p>
+    <h1>Nos tarifs,<br><span class="accent">clairement affich&#233;s.</span></h1>
+    <p class="chapo">La liste compl&#232;te, article par article. Un prix ferme est indiqu&#233; tel quel. &#171;&#160;D&#232;s&#160;&#187; indique un prix minimum. &#171;&#160;Sur devis&#160;&#187; concerne les pi&#232;ces dont le prix d&#233;pend du travail &#224; faire. Nous tenons &#224; des tarifs justes, annonc&#233;s avant de commencer.</p>
   </div>
+</section>
 
-  <div class="pratique">
-    <ul>
-      <li>
-        <dt>Aujourd&#8217;hui</dt>
-        <dd><span class="pastille" data-etat-ouverture>&#8212;</span>
-            <small data-horaires-resume></small></dd>
-      </li>
-      <li>
-        <dt>Adresse</dt>
-        <dd><a data-itineraire target="_blank" rel="noopener">201 route de Vernier</a>
-            <small>1214 Vernier, Gen&#232;ve</small></dd>
-      </li>
-      <li>
-        <dt>T&#233;l&#233;phone</dt>
-        <dd><a data-tel></a><small>Sans rendez-vous</small></dd>
-      </li>
-    </ul>
+<div class="bandeau-infos">
+  <div class="zone">
+    <dl>
+      <div><dt>Aujourd&#8217;hui</dt><dd class="pastille" data-etat-ouverture>&#8212;</dd></div>
+      <div><dt>Adresse</dt><dd data-adresse></dd></div>
+      <div><dt>T&#233;l&#233;phone</dt><dd><a href="tel:+41223416818" data-tel></a></dd></div>
+    </dl>
   </div>
-</header>
-
-<!-- La phrase de positionnement, ramen&#233;e &#224; une ligne -->
-<div class="positionnement">
-  <p>Chaque textile m&#233;rite le traitement juste &#8212; nous vous conseillons avant d&#8217;agir.</p>
 </div>
 
-<!-- ═══════════════ LES SERVICES ═══════════════
-     Les volets et les prix sont construits par assets/site.js
-     &#224; partir de data/tarifs.js. -->
-<div class="zone depliant" id="depliant"></div>
+<section class="section serree">
+  <div class="zone">
+    <nav class="sommaire" id="sommaire-tarifs" aria-label="Aller &#224; une famille de tarifs"></nav>
+    <div data-tarifs="tout"></div>
+    <div class="mentions-tarifs" data-mentions></div>
+  </div>
+</section>
 
-<!-- ═══════════════ L'APPEL ═══════════════ -->
-<section class="appel">
-  <h2>Une urgence, un volume, une pi&#232;ce particuli&#232;re&#160;?</h2>
-  <p>Appelez-nous&#160;: nous vous dirons imm&#233;diatement ce qui est possible,
-     selon la pi&#232;ce et la charge de l&#8217;atelier.</p>
-  <a class="bouton plein" data-tel></a>
+<section class="section">
+  <div class="zone duo">
+    <div class="revele">
+      <div class="filet court"><i></i></div>
+      <p class="sur-titre">Nous trouver</p>
+      <h2>201 route <span class="accent">de Vernier</span></h2>
+      <dl class="horaires" data-horaires></dl>
+      <div class="coordonnees">
+        <a href="tel:+41223416818" data-tel><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg></a>
+        <a href="mailto:pressingdevernier@gmail.com" data-email><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg></a>
+      </div>
+    </div>
+    <div class="revele" data-delai="2">
+      <div class="plan">
+        <div class="epingle">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          <b>Pressing de Vernier</b>
+          <span data-adresse></span>
+        </div>
+        <p class="a-fournir">Image du plan &#224; fournir</p>
+      </div>
+      <p style="margin-top:var(--s3)">
+        <a class="bouton plein" data-itineraire href="https://www.openstreetmap.org/directions" target="_blank" rel="noopener">Itin&#233;raire</a>
+      </p>
+    </div>
+  </div>
 </section>
 
 </main>

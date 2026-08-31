@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nous trouver — Pressing de Vernier</title>
-<meta name="description" content="201 route de Vernier, 1214 Vernier, Genève. Horaires d’ouverture, téléphone et itinéraire.">
+<title>Nous trouver &#8212; Pressing de Vernier</title>
+<meta name="description" content="201 route de Vernier, 1214 Vernier, Gen&#232;ve. Horaires d&#8217;ouverture, t&#233;l&#233;phone et itin&#233;raire. Sans rendez-vous, du lundi au samedi.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/polices/polices.css">
 <link rel="stylesheet" href="assets/style.css">
@@ -15,11 +15,11 @@
 
 <div class="bandeau-haut">
   <div class="zone">
-    <span>Vingt ans à Vernier</span>
+    <span data-depuis>Depuis 2006 a Vernier</span>
     <i></i>
-    <span>Lu–Ve 8h–18h30 · Sa 8h–12h</span>
+    <span class="pastille" data-etat-ouverture>&#8212;</span>
     <i></i>
-    <a href="tel:+41223416818">022 341 68 18</a>
+    <a href="tel:+41223416818" data-tel>022 341 68 18</a>
   </div>
 </div>
 
@@ -35,19 +35,16 @@
       </svg>
       <span class="mots">
         <b>Pressing de Vernier</b>
-        <span>Blanchisserie · Retouches · Couture</span>
+        <span>Nettoyage &#183; Blanchisserie &#183; Couture</span>
       </span>
     </a>
     <nav class="navigation" aria-label="Menu">
-        <a href="index.html">Accueil</a>
-        <a href="couture.html">Couture</a>
         <a href="nettoyage.html">Nettoyage</a>
-        <a href="maison.html">La maison</a>
+        <a href="couture.html">Couture</a>
+        <a href="professionnels.html">Professionnels</a>
+        <a href="tarifs.html">Tarifs</a>
         <a href="trouver.html" aria-current="page">Nous trouver</a>
     </nav>
-    <div class="langues">
-      <a href="#" aria-current="true">FR</a><s>/</s><a href="en/find-us.html">EN</a>
-    </div>
     <button class="burger" type="button" aria-expanded="false" aria-controls="menu-mobile" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -57,17 +54,14 @@
 <div class="menu-mobile" id="menu-mobile" hidden>
   <nav aria-label="Menu">
     <ul>
-          <li><a href="index.html">Accueil</a></li>
-          <li><a href="couture.html">Couture</a></li>
-          <li><a href="nettoyage.html">Nettoyage</a></li>
-          <li><a href="maison.html">La maison</a></li>
-          <li><a href="trouver.html">Nous trouver</a></li>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="nettoyage.html">Nettoyage</a></li>
+      <li><a href="couture.html">Couture</a></li>
+      <li><a href="professionnels.html">Professionnels</a></li>
+      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a href="trouver.html" aria-current="page">Nous trouver</a></li>
     </ul>
   </nav>
-  <div class="langues-mobile">
-    <a href="#" aria-current="true">FR</a>
-    <a href="en/find-us.html">EN</a>
-  </div>
 </div>
 
 <main id="contenu">
@@ -75,17 +69,17 @@
   <div class="zone revele" style="max-width:660px">
     <p class="sur-titre">Nous trouver</p>
     <h1>201 route<br><span class="accent">de Vernier</span></h1>
-    <p class="chapo">À deux pas de chez vous, du lundi au samedi. Pas besoin de rendez-vous : passez, on regarde la pièce ensemble.</p>
+    <p class="chapo">Du lundi au samedi, sans rendez-vous. Passez avec votre pi&#232;ce&#160;: nous la regardons avec vous et vous conseillons.</p>
   </div>
 </section>
 
 <div class="bandeau-infos">
   <div class="zone">
-    <ul>
-      <li><dt>Aujourd’hui</dt><dd class="pastille" data-etat-ouverture>—</dd></li>
-      <li><dt>Adresse</dt><dd>201 route de Vernier, 1214 Vernier</dd></li>
-      <li><dt>Téléphone</dt><dd><a href="tel:+41223416818">022 341 68 18</a></dd></li>
-    </ul>
+    <dl>
+      <div><dt>Aujourd&#8217;hui</dt><dd class="pastille" data-etat-ouverture>&#8212;</dd></div>
+      <div><dt>Adresse</dt><dd data-adresse></dd></div>
+      <div><dt>T&#233;l&#233;phone</dt><dd><a href="tel:+41223416818" data-tel></a></dd></div>
+    </dl>
   </div>
 </div>
 
@@ -95,18 +89,10 @@
       <div class="filet court"><i></i></div>
       <p class="sur-titre">Nous trouver</p>
       <h2>201 route <span class="accent">de Vernier</span></h2>
-      <dl class="horaires">
-        <li data-jour="1"><dt>Lundi</dt><dd>8h00 – 12h30 · 13h30 – 18h30</dd></li>
-        <li data-jour="2"><dt>Mardi</dt><dd>8h00 – 12h30 · 13h30 – 18h30</dd></li>
-        <li data-jour="3"><dt>Mercredi</dt><dd>8h00 – 12h30 · 13h30 – 18h30</dd></li>
-        <li data-jour="4"><dt>Jeudi</dt><dd>8h00 – 12h30 · 13h30 – 18h30</dd></li>
-        <li data-jour="5"><dt>Vendredi</dt><dd>8h00 – 12h30 · 13h30 – 18h30</dd></li>
-        <li data-jour="6"><dt>Samedi</dt><dd>8h00 – 12h00</dd></li>
-        <li data-jour="0"><dt>Dimanche</dt><dd>Fermé</dd></li>
-      </dl>
+      <dl class="horaires" data-horaires></dl>
       <div class="coordonnees">
-        <a href="tel:+41223416818"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg>022 341 68 18</a>
-        <a href="mailto:pressingdevernier@gmail.com"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg>pressingdevernier@gmail.com</a>
+        <a href="tel:+41223416818" data-tel><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg></a>
+        <a href="mailto:pressingdevernier@gmail.com" data-email><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg></a>
       </div>
     </div>
     <div class="revele" data-delai="2">
@@ -114,13 +100,26 @@
         <div class="epingle">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
           <b>Pressing de Vernier</b>
-          <span>201 route de Vernier · 1214 Vernier</span>
+          <span data-adresse></span>
         </div>
-        <p class="a-fournir">Image du plan à fournir</p>
+        <p class="a-fournir">Image du plan &#224; fournir</p>
       </div>
       <p style="margin-top:var(--s3)">
-        <a class="bouton plein" href="https://www.openstreetmap.org/directions?to=46.2118%2C6.0855" target="_blank" rel="noopener">Itinéraire</a>
+        <a class="bouton plein" data-itineraire href="https://www.openstreetmap.org/directions" target="_blank" rel="noopener">Itin&#233;raire</a>
       </p>
+    </div>
+  </div>
+</section>
+
+<section class="section serree">
+  <div class="zone">
+
+    <div class="appel revele">
+      <div>
+        <h3>Une urgence&#160;?</h3>
+        <p>Appelez-nous&#160;: nous vous dirons imm&#233;diatement ce qui est possible, selon la pi&#232;ce et la charge de l&#8217;atelier.</p>
+      </div>
+      <a class="bouton plein" href="tel:+41223416818" data-tel></a>
     </div>
   </div>
 </section>
@@ -146,34 +145,26 @@
     <div class="colonnes">
       <div>
         <h4>Horaires</h4>
-        <ul>
-      <li><span>Lundi</span> <span>8h00 – 12h30 · 13h30 – 18h30</span></li>
-      <li><span>Mardi</span> <span>8h00 – 12h30 · 13h30 – 18h30</span></li>
-      <li><span>Mercredi</span> <span>8h00 – 12h30 · 13h30 – 18h30</span></li>
-      <li><span>Jeudi</span> <span>8h00 – 12h30 · 13h30 – 18h30</span></li>
-      <li><span>Vendredi</span> <span>8h00 – 12h30 · 13h30 – 18h30</span></li>
-      <li><span>Samedi</span> <span>8h00 – 12h00</span></li>
-      <li><span>Dimanche</span> <span>Fermé</span></li>
-        </ul>
+        <ul data-horaires-pied></ul>
       </div>
       <div>
         <h4>Adresse</h4>
-        <p>201 route de Vernier<br>1214 Vernier<br>Genève, Suisse</p>
+        <p data-adresse-lignes></p>
       </div>
       <div>
         <h4>Contact</h4>
-        <p><a href="tel:+41223416818">022 341 68 18</a></p>
-        <p><a href="mailto:pressingdevernier@gmail.com">pressingdevernier@gmail.com</a></p>
+        <p><a href="tel:+41223416818" data-tel></a></p>
+        <p><a href="mailto:pressingdevernier@gmail.com" data-email></a></p>
       </div>
     </div>
     <div class="mentions">
-      <span>MDCA Sàrl · Pressing de Vernier · 201 route de Vernier, 1214 Vernier</span>
-      <span>© 2006–2026</span>
+      <span data-mentions-legales></span>
+      <span>&#169; Pressing de Vernier &#8212; MDCA S&#224;rl</span>
     </div>
   </div>
 </footer>
 
-
+<script src="data/etablissement.js"></script>
 <script src="assets/site.js"></script>
 </body>
 </html>

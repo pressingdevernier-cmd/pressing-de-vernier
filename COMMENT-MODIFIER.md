@@ -24,10 +24,22 @@ rester vide. C'est réparable, mais autant l'éviter.
 | Ce que vous voulez changer | Le fichier à ouvrir |
 |---|---|
 | Un prix | `data/tarifs.js` |
-| Un horaire d'ouverture | `assets/site.js` |
+| Un horaire d'ouverture | `data/etablissement.js` |
+| Le téléphone, l'adresse, le courriel | `data/etablissement.js` |
+| La date des tarifs | `data/etablissement.js` |
 | Un texte d'une page | la page elle-même : `index.html`, `couture.html`… |
 | Une photo | dossier `assets/` puis la page concernée |
-| Le numéro de téléphone, l'adresse | toutes les pages (voir plus bas) |
+
+Les six pages du site sont, dans l'ordre du menu :
+
+| Page | Fichier |
+|---|---|
+| Accueil | `index.html` |
+| Nettoyage & entretien | `nettoyage.html` |
+| Couture & retouches | `couture.html` |
+| Professionnels | `professionnels.html` |
+| Tarifs | `tarifs.html` |
+| Nous trouver | `trouver.html` |
 
 **Avec quoi ouvrir ces fichiers ?** Le Bloc-notes de Windows suffit.
 Faites un clic droit sur le fichier → *Ouvrir avec* → *Bloc-notes*.
@@ -75,6 +87,16 @@ Si le prix devient ferme, supprimez `, des: true` — en gardant la virgule qui 
 **Les rideaux** ont deux colonnes de prix : `prix` pour les rideaux simples,
 `prix2` pour les doubles.
 
+**Une prestation sans prix fixe** s'écrit `devis: true`, *à la place* du prix.
+Elle s'affiche « Sur devis » :
+
+```js
+{ fr: "Transformation d'un vêtement", en: "Reworking a garment", devis: true },
+```
+
+Notez bien : il n'y a **pas** de `prix:` sur cette ligne. Si vous décidez plus
+tard d'afficher un montant, remplacez `devis: true` par `prix: 45`.
+
 ### Ajouter une prestation
 
 Copiez une ligne existante, collez-la juste en dessous, et modifiez les trois valeurs.
@@ -88,7 +110,7 @@ Effacez la ligne entière, de l'accolade `{` jusqu'à la virgule finale incluse.
 
 ## 2. Changer un horaire
 
-**Ouvrez `assets/site.js`.** Tout en haut, vous verrez :
+**Ouvrez `data/etablissement.js`.** Vous y verrez :
 
 ```js
 const HORAIRES = {
@@ -113,15 +135,31 @@ Chaque `[début, fin]` est une plage d'ouverture. Deux plages = une pause à mid
 **Exemple : ouvrir le samedi jusqu'à 16h.** 16h = 16 × 60 = 960.
 Écrivez `6: [[480, 960]],`
 
-### Attention : il y a un deuxième endroit
+### C'est le seul endroit à changer
 
-Le texte affiché dans le tableau des horaires et dans le pied de page est écrit
-**en toutes lettres dans chaque page**. Cherchez `8h00 – 12h30` avec la fonction
-*Rechercher* (Ctrl+F) et corrigez-le dans les **dix pages** :
-les cinq à la racine, et les cinq dans le dossier `en/` (en anglais).
+Le bandeau vert en haut des pages, le tableau des horaires et le pied de page
+se remplissent tout seuls à partir de ce fichier. Vous corrigez une fois, les
+six pages suivent.
 
-C'est le point le plus pénible de ce site, et je préfère vous le dire franchement.
-Si vous changez souvent d'horaires, demandez qu'on centralise ça.
+Le bandeau vert n'affiche d'ailleurs pas les horaires : il affiche
+« Ouvert · jusqu'à 18h30 » ou « Fermé · ouvre à 13h30 », calculé à l'heure
+qu'il est. La pause de midi est prise en compte automatiquement.
+
+---
+
+## 2 bis. Changer le téléphone, l'adresse ou le courriel
+
+Même fichier, `data/etablissement.js`, tout en haut :
+
+```js
+telephone:      "022 341 68 18",
+telephoneLien:  "+41223416818",
+email:          "pressingdevernier@gmail.com",
+```
+
+Si vous changez le numéro, changez **les deux lignes** : la première est le
+numéro affiché, la seconde celui que le téléphone compose quand on clique.
+Elle s'écrit sans espace ni zéro initial, précédée de `+41`.
 
 ---
 
@@ -141,16 +179,12 @@ Vous verrez le texte entouré de balises, par exemple :
 <p class="chapo">Votre nouveau texte ici.</p>
 ```
 
-⚠️ Si vous changez un texte en français, changez aussi la version anglaise
-dans le fichier correspondant du dossier `en/`.
+Le site est en français uniquement : un texte ne se change qu'à un seul endroit.
 
-| Page française | Page anglaise |
-|---|---|
-| `index.html` | `en/index.html` |
-| `couture.html` | `en/sewing.html` |
-| `nettoyage.html` | `en/cleaning.html` |
-| `maison.html` | `en/house.html` |
-| `trouver.html` | `en/find-us.html` |
+⚠️ Deux exceptions, tout en haut de chaque page, qu'il faut penser à corriger
+si vous modifiez un titre : la balise `<title>` (le nom de l'onglet, qui
+s'affiche aussi dans Google) et la ligne `<meta name="description">` (le
+résumé sous le lien dans Google).
 
 ---
 
@@ -185,8 +219,18 @@ Remplacez tout le bloc par :
 Le texte après `alt=` décrit l'image pour les personnes malvoyantes et pour Google.
 Décrivez ce qu'on voit, en une phrase.
 
-⚠️ Dans les pages du dossier `en/`, le chemin devient `../assets/atelier-couture.jpg`
-— avec les deux points au début.
+### La galerie des réalisations
+
+La page Couture contient une galerie avant/après déjà préparée, mais **mise en
+commentaire** : elle ne s'affiche pas tant que vous n'avez pas de photos.
+
+Quand vous en aurez, ouvrez `couture.html`, cherchez `GALERIE DES RÉALISATIONS`,
+et supprimez les deux lignes qui encadrent le bloc : celle qui commence par
+`<!--` juste avant, et celle qui finit par `-->` juste après. Préparez les
+images comme expliqué ci-dessus.
+
+N'affichez jamais une galerie vide ou des emplacements en attente : mieux vaut
+pas de galerie du tout.
 
 ---
 
@@ -211,10 +255,12 @@ Le bouton « Itinéraire » fonctionne déjà et n'a pas besoin d'image.
 ## 6. Vérifier avant de publier
 
 **Toujours.** Double-cliquez sur `index.html` : la page s'ouvre dans votre navigateur.
-Cliquez dans les menus, ouvrez la page des tarifs, vérifiez que vos prix apparaissent.
+Cliquez dans les menus, ouvrez la page des tarifs, vérifiez que vos prix
+apparaissent — et que les horaires s'affichent bien en bas de page.
 
-**Si la page des tarifs est vide**, vous avez fait une faute de frappe dans
-`data/tarifs.js`. Neuf fois sur dix : une virgule manquante, un guillemet en trop,
+**Si la page des tarifs est vide**, ou si les horaires ne s'affichent pas,
+vous avez fait une faute de frappe dans `data/tarifs.js` ou dans
+`data/etablissement.js`. Neuf fois sur dix : une virgule manquante, un guillemet en trop,
 ou une virgule à la place d'un point dans un prix.
 
 Pour trouver l'erreur : appuyez sur **F12** dans le navigateur, onglet **Console**.
@@ -277,8 +323,9 @@ Puis publiez comme au point 7.
 | Fichier | Pourquoi |
 |---|---|
 | `assets/style.css` | l'apparence de tout le site. Une erreur ici casse toutes les pages |
-| `assets/lib/three.module.min.js` | la bibliothèque d'animation. Illisible et normal |
 | `assets/polices/` | les polices de caractères |
+| `assets/vetements.js` | les neuf dessins techniques de la page Couture |
+| `assets/site.js` | ce qui fait fonctionner le site |
 | `favicon.svg` | l'icône de l'onglet |
 
 Si vous avez besoin de changer quelque chose dans ces fichiers, demandez.

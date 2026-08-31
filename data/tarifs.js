@@ -10,16 +10,23 @@
        { fr: "Ourlet simple piqué machine", en: "Machine-stitched hem", prix: 18 },
 
        fr    le libellé en français
-       en    le libellé en anglais
+       en    le libellé en anglais (pas affiché pour l'instant — le site est
+             en français seulement. Conservé pour ne pas refaire ce travail
+             le jour où une version anglaise sera demandée.)
        prix  le montant en francs, TTC
        des   à ajouter (des: true) quand le prix est un minimum → affiche « dès 18.– »
        unite à ajouter pour préciser une unité → { unite: "le m²" }
+       devis à ajouter (devis: true) À LA PLACE du prix, quand le montant
+             dépend de la pièce → affiche « Sur devis ». Pas de « prix: » alors.
+
+   Un groupe peut aussi porter une « note » : une phrase affichée sous son
+   titre, pour expliquer une particularité au client.
 
    POUR CHANGER UN PRIX : modifiez le nombre après « prix: », rien d'autre.
    Ne touchez pas aux virgules, aux accolades ni aux guillemets.
 
    Tous les prix sont TTC, TVA 8,1 % comprise.
-   Dernière mise à jour : 30 août 2026
+   La date de mise à jour se change dans data/etablissement.js.
    ============================================================================ */
 
 const TARIFS = [
@@ -88,6 +95,43 @@ const TARIFS = [
     ]
   },
 
+  /* ------------------------------------------------------------------
+     ENTRETIEN SPÉCIALISÉ
+     Ces pièces sont prises en charge au magasin puis confiées à des
+     spécialistes. Le prix dépend toujours de la pièce : jamais de
+     montant affiché ici.
+     ------------------------------------------------------------------ */
+  {
+    id: "entretien-specialise",
+    fr: "Entretien spécialisé",
+    en: "Specialist care",
+    note: {
+      fr: "Nous prenons la pièce en charge et vous remettons un prix après examen.",
+      en: "We take the item in and give you a price once we have examined it."
+    },
+    lignes: [
+      { fr: "Tapis",                              en: "Rugs",                          devis: true },
+      { fr: "Vêtements et articles en cuir",      en: "Leather clothing and goods",    devis: true },
+      { fr: "Daim",                               en: "Suede",                         devis: true },
+      { fr: "Sacs — nettoyage et restauration",   en: "Bags — cleaning and restoring",  devis: true }
+    ]
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: "blanchisserie-kilo",
+    fr: "Blanchisserie — Linge au kilo",
+    en: "Laundry — By the kilo",
+    note: {
+      fr: "Le prix dépend de la formule choisie — lavage seul, lavage et pliage, ou lavage, repassage et pliage. Nous en convenons avec vous au dépôt.",
+      en: "The price depends on the option you choose — washing only, washing and folding, or washing, ironing and folding. We agree it with you when you drop the laundry off."
+    },
+    lignes: [
+      { fr: "Linge courant — selon la formule choisie", en: "Everyday laundry — depending on the option chosen", prix: 4, des: true, unite: { fr: "le kg", en: "per kg" } },
+      { fr: "Repassage seul — linge apporté déjà lavé",    en: "Ironing only — laundry brought in already washed", devis: true }
+    ]
+  },
+
   /* ------------------------------------------------------------------ */
   {
     id: "blanchisserie-literie",
@@ -133,7 +177,9 @@ const TARIFS = [
       { fr: "Rideaux en coton simple",    en: "Single cotton curtains",   prix: 11, des: true, unite: { fr: "le m²", en: "per m²" } },
       { fr: "Rideaux en coton double",    en: "Lined cotton curtains",    prix: 13, des: true, unite: { fr: "le m²", en: "per m²" } },
       { fr: "Rideaux en velours",         en: "Velvet curtains",          prix: 13, des: true, unite: { fr: "le m²", en: "per m²" } },
-      { fr: "Rideaux en velours double",  en: "Lined velvet curtains",    prix: 15, des: true, unite: { fr: "le m²", en: "per m²" } }
+      { fr: "Rideaux en velours double",  en: "Lined velvet curtains",    prix: 15, des: true, unite: { fr: "le m²", en: "per m²" } },
+      { fr: "Plaid",                          en: "Throw",                          devis: true },
+      { fr: "Housse amovible (fauteuil, canapé)", en: "Removable cover (armchair, sofa)", devis: true }
     ]
   },
 
@@ -279,21 +325,40 @@ const TARIFS = [
       { fr: "Raccourcir",                  en: "Shorten",              prix: 18, des: true, prix2: 34, des2: true },
       { fr: "Poser un crochet ou un galet", en: "Fit a hook or glider", prix: 3,             prix2: 3 }
     ]
+  },
+
+  /* ------------------------------------------------------------------
+     TRANSFORMATIONS ET CRÉATIONS
+     Le prix dépend entièrement de la pièce, du tissu et du travail
+     demandé. Rien n'est chiffré à l'avance.
+     ------------------------------------------------------------------ */
+  {
+    id: "couture-creations",
+    fr: "Couture — Transformations et créations",
+    en: "Sewing — Alterations and made-to-measure",
+    note: {
+      fr: "Apportez la pièce ou le tissu : nous regardons ensemble et vous remettons un prix.",
+      en: "Bring the item or the fabric: we look at it together and give you a price."
+    },
+    lignes: [
+      { fr: "Transformation d'un vêtement",             en: "Reworking a garment",                    devis: true },
+      { fr: "Chemise sur mesure, dans votre tissu",     en: "Made-to-measure shirt, in your fabric",  devis: true },
+      { fr: "Robe ou autre pièce sur mesure",           en: "Made-to-measure dress or other piece",   devis: true },
+      { fr: "Broderie",                                 en: "Embroidery",                             devis: true },
+      { fr: "Pose de patch, y compris en relief",       en: "Patches, including raised",              devis: true },
+      { fr: "Travaux en série pour les professionnels", en: "Batch work for businesses",              devis: true }
+    ]
   }
 ];
 
 /* ============================================================================
    MENTIONS AFFICHÉES SOUS LES TABLEAUX — modifiables ici aussi
+
+   La date de mise à jour n'est pas écrite ici : elle vient de
+   data/etablissement.js, pour n'exister qu'à un seul endroit.
    ============================================================================ */
 const TARIFS_MENTIONS = {
-  fr: {
-    tva: "Prix en francs suisses, TTC, TVA 8,1 % comprise.",
-    des: "« Dès » signifie prix minimum : nous regardons la pièce avec vous.",
-    maj: "Tarifs au 30 août 2026."
-  },
-  en: {
-    tva: "Prices in Swiss francs, VAT 8.1% included.",
-    des: "“From” means minimum price: we look at the item with you.",
-    maj: "Prices as of 30 August 2026."
-  }
+  tva:   "Prix en francs suisses, TTC, TVA 8,1 % comprise.",
+  des:   "« Dès » indique un prix minimum : la matière, la complexité ou les dimensions font varier le tarif.",
+  devis: "« Sur devis » : nous examinons la pièce avec vous et vous remettons un prix avant de commencer."
 };
