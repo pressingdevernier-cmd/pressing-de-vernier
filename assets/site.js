@@ -485,23 +485,24 @@ const SERVICES_ACCUEIL = [
     prix: [] }
 ];
 
-const zoneDepliant = document.getElementById('depliant');
+const zoneCartes = document.getElementById('cartes-services');
 
-if (zoneDepliant && typeof TARIFS !== 'undefined') {
+if (zoneCartes && typeof TARIFS !== 'undefined') {
 
+  /* Retrouve une ligne dans la liste officielle */
   const ligneTarif = (idSection, libelle) => {
     const sec = TARIFS.find(s => s.id === idSection);
     return sec ? sec.lignes.find(l => l.fr === libelle) : null;
   };
 
   const montant = l => {
-    if (!l) return '<b>—</b>';
+    if (!l) return '<b>&mdash;</b>';
     if (l.devis) return '<b>Sur devis</b>';
     return (l.des ? '<em>dès</em> ' : '') + '<b>' + formatPrix(l.prix) + '</b>'
          + (l.unite ? ' <em>' + l.unite.fr + '</em>' : '');
   };
 
-  SERVICES_ACCUEIL.forEach((s, i) => {
+  SERVICES_ACCUEIL.forEach(s => {
     const extrait = s.prix.length
       ? s.prix.map(([sec, lib]) => {
           const l = ligneTarif(sec, lib);
@@ -509,35 +510,25 @@ if (zoneDepliant && typeof TARIFS !== 'undefined') {
         }).join('')
       : '<li><span>Selon le volume et la fréquence</span><b>Sur devis</b></li>';
 
-    const bloc = document.createElement('div');
-    bloc.className = 'service';
-    bloc.innerHTML =
-      '<button class="tete" type="button" aria-expanded="' + (i === 0) + '">' +
+    const carte = document.createElement('article');
+    carte.className = 'carte-service revele';
+    carte.innerHTML =
+      '<div>' +
         '<span class="num">' + s.num + '</span>' +
         '<h2>' + s.titre + '</h2>' +
-        '<span class="resume">' + s.resume + '</span>' +
-        '<span class="plus" aria-hidden="true"></span>' +
-      '</button>' +
-      '<div class="corps"><div><div class="dedans-volet">' +
-        '<div><p>' + s.texte + '</p>' +
-          '<div class="liens">' +
-            '<a class="bouton plein" href="' + s.page + '">En savoir plus</a>' +
-            (s.prix.length ? '<a class="bouton vide" href="tarifs.html">Tous les tarifs</a>' : '') +
-          '</div>' +
+        '<p class="texte">' + s.texte + '</p>' +
+        '<div class="liens">' +
+          '<a class="bouton plein" href="' + s.page + '">En savoir plus</a>' +
+          (s.prix.length ? '<a class="bouton vide" href="tarifs.html">Tous les tarifs</a>' : '') +
         '</div>' +
-        '<ul class="extrait">' + extrait + '</ul>' +
-      '</div></div></div>';
-    zoneDepliant.append(bloc);
+      '</div>' +
+      '<ul class="extrait">' + extrait + '</ul>';
+    zoneCartes.append(carte);
   });
 
-  /* Un seul volet ouvert à la fois : la page reste courte */
-  zoneDepliant.addEventListener('click', e => {
-    const tete = e.target.closest('.tete');
-    if (!tete) return;
-    const dejaOuvert = tete.getAttribute('aria-expanded') === 'true';
-    zoneDepliant.querySelectorAll('.tete').forEach(t => t.setAttribute('aria-expanded', 'false'));
-    tete.setAttribute('aria-expanded', String(!dejaOuvert));
-  });
+  /* Les cartes viennent d'être créées : elles doivent elles aussi
+     apparaître au défilement. */
+  revelerDans(zoneCartes);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
