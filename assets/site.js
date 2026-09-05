@@ -30,7 +30,11 @@ if (burger && menu) {
      l'état annoncé du bouton, la visibilité du panneau et le verrou de
      défilement de la page — et les faire bouger à trois endroits différents,
      c'est se garantir qu'un jour l'une des trois restera en arrière. */
-  function basculerMenu(ouvrir) {
+  /* `rendreLeFocus` : vrai quand c'est le visiteur qui ferme, faux quand
+     c'est la fenêtre qui s'élargit. Dans ce second cas le bouton vient de
+     passer en `display:none` avec la navigation qui reparaît — lui rendre le
+     focus le perdrait dans le vide. */
+  function basculerMenu(ouvrir, rendreLeFocus = true) {
     if (ouvrir === (burger.getAttribute('aria-expanded') === 'true')) return;
     burger.setAttribute('aria-expanded', String(ouvrir));
     menu.hidden = !ouvrir;
@@ -44,7 +48,7 @@ if (burger && menu) {
     });
 
     if (ouvrir) menu.querySelector('a').focus();
-    else burger.focus();          /* le focus revient d'où il vient */
+    else if (rendreLeFocus) burger.focus();   /* le focus revient d'où il vient */
   }
 
   burger.addEventListener('click', () => {
@@ -63,7 +67,7 @@ if (burger && menu) {
      téléphone ou élargir la fenêtre menu ouvert laisserait la page
      définitivement verrouillée, sans plus rien pour la déverrouiller. */
   const etroit = matchMedia('(max-width:860px)');
-  const surveiller = () => { if (!etroit.matches) basculerMenu(false); };
+  const surveiller = () => { if (!etroit.matches) basculerMenu(false, false); };
   etroit.addEventListener ? etroit.addEventListener('change', surveiller)
                           : etroit.addListener(surveiller);
 }

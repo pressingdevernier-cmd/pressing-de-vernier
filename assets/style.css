@@ -59,7 +59,6 @@
   --t-m:   17px;                        /* texte courant         */
   --t-l:   21px;                        /* chapô, prix           */
   --t-xl:  24px;                        /* titres de carte       */
-  --t-2xl: clamp(26px, 2.9vw, 36px);    /* titres secondaires    */
   --t-3xl: clamp(33px, 4.8vw, 56px);    /* titres de section     */
   --t-4xl: clamp(36px, 5.6vw, 72px);    /* titre de page         */
 
@@ -80,7 +79,13 @@
    ============================================================================ */
 *,*::before,*::after{ box-sizing:border-box; }
 
-html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+/* `scroll-padding-top` : la hauteur de ce qui reste collé en haut. Sans lui,
+   un lien d'ancre — le sommaire de la page Tarifs, le lien d'évitement —
+   amène sa cible EXACTEMENT au bord haut de la fenêtre, c'est-à-dire
+   derrière la navigation collante. Le titre visé disparaît sous elle.
+   52 px de navigation plus seize d'air ; la valeur mobile est plus bas, avec
+   le reste du régime étroit. */
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; scroll-padding-top:68px; }
 
 /* Newsreader porte un axe de taille optique : son dessin s'épaissit de
    lui-même dans les petits corps et s'affine dans les grands. C'est le
@@ -398,6 +403,10 @@ h4{ font-size:var(--t-l); }
 }
 @media (max-width:860px){
   :root{ --s6:64px; --s7:88px; }
+
+  /* Ce qui reste collé n'est plus la navigation mais la plaque du nom, plus
+     haute : l'écart d'une ancre à son titre suit. */
+  html{ scroll-padding-top:116px; }
 
   /* La navigation se replie derrière le bouton du menu. C'est donc la plaque
      qui doit rester à l'écran, sinon le menu devient inatteignable une fois
