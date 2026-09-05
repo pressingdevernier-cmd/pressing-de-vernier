@@ -15,7 +15,7 @@
              le jour où une version anglaise sera demandée.)
        prix  le montant en francs, TTC
        des   à ajouter (des: true) quand le prix est un minimum → affiche « dès 18.– »
-       unite à ajouter pour préciser une unité → { unite: "le m²" }
+       unite à ajouter pour préciser une unité → { unite: { fr: "le m²", en: "per m²" } }
        devis à ajouter (devis: true) À LA PLACE du prix, quand le montant
              dépend de la pièce → affiche « Sur devis ». Pas de « prix: » alors.
 

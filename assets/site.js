@@ -1,16 +1,17 @@
 /* ============================================================================
    PRESSING DE VERNIER — comportements communs à toutes les pages
    ----------------------------------------------------------------------------
-   Ce fichier fait neuf choses :
+   Ce fichier fait dix choses :
      1. ouvrir et fermer le menu sur téléphone
      2. faire apparaître les blocs quand on descend dans la page
      3. écrire partout les coordonnées et les horaires
      4. afficher « Ouvert » ou « Fermé » selon l'heure qu'il est
      5. construire les tableaux de prix
-     6. faire fonctionner le choix du vêtement, sur la page Couture
+     6. afficher les planches a la craie, sur la page Couture
      7. calculer la pesée du linge, sur la page Blanchisserie
      8. poser un prix isolé là où on le cite, hors d'un tableau
-     9. donner à Google l'adresse et les horaires du magasin
+     9. ranger, chercher et situer, sur la page Tarifs
+    10. donner à Google l'adresse et les horaires du magasin
 
    Vous n'avez normalement jamais besoin d'y toucher.
      Pour changer un prix    : data/tarifs.js
@@ -85,13 +86,19 @@ if (burger && menu) {
    la bande, et le décalage figé laisserait une tranche visible au-dessus de
    la plaque. On mesure donc, et la feuille de style lit la mesure.
    ═══════════════════════════════════════════════════════════════════════════ */
-const bandeLogo = document.querySelector('.ent-logo');
-if (bandeLogo && window.ResizeObserver) {
+function mesurerEnHauteur(selecteur, jeton) {
+  const el = document.querySelector(selecteur);
+  if (!el || !window.ResizeObserver) return;
   new ResizeObserver(([e]) => {
     document.documentElement.style.setProperty(
-      '--h-bande-logo', Math.round(e.target.getBoundingClientRect().height) + 'px');
-  }).observe(bandeLogo);
+      jeton, Math.round(e.target.getBoundingClientRect().height) + 'px');
+  }).observe(el);
 }
+mesurerEnHauteur('.ent-logo',   '--h-bande-logo');
+/* La plaque du nom : sur téléphone c'est elle qui reste collée en haut, et
+   la barre des tarifs doit se poser juste dessous. Sa hauteur change avec le
+   nom, sur une ou deux lignes. */
+mesurerEnHauteur('.ent-plaque', '--h-plaque');
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -246,6 +253,10 @@ document.querySelectorAll('[data-etat-ouverture]').forEach(el => {
    ═══════════════════════════════════════════════════════════════════════════ */
 function formatPrix(n) {
   // 24 → « 24.– »   5.5 → « 5.50 »
+  // Un montant absent rend un tiret. Sans ce garde-fou, `undefined.toFixed()`
+  // lève une exception qui interrompt le script ENTIER : une seule ligne mal
+  // saisie dans data/tarifs.js viderait la moitié de la page.
+  if (!Number.isFinite(n)) return '—';
   return Number.isInteger(n) ? n + '.–' : n.toFixed(2);
 }
 
@@ -417,16 +428,247 @@ if (grillePlanches && typeof VETEMENTS !== 'undefined'
   }
 }
 
-/* Le sommaire de la page Tarifs, construit sur les sections réellement là */
-const sommaire = document.getElementById('sommaire-tarifs');
-if (sommaire) {
-  document.querySelectorAll('.tarif-bloc').forEach(bloc => {
-    const a = document.createElement('a');
-    a.href = '#' + bloc.id;
-    a.textContent = bloc.querySelector('h2,h3,h4').textContent;
-    sommaire.append(a);
-  });
+/* ═════════════════════════════════════════════════════════════════════════════
+   7 · LA PAGE TARIFS — quatre familles, une recherche, un repère
+   ----------------------------------------------------------------------------
+   La page faisait plus de douze mille pixels d'un seul tenant, précédés d'un
+   sommaire de dix-sept ancres. Elle n'est plus la porte d'entrée du site : on
+   l'ouvre en sachant ce qu'on cherche. Trois choses la rendent praticable.
+
+   LES QUATRE FAMILLES. Les dix-sept sections se rangent sous quatre titres,
+   ceux des métiers. Le regroupement se déduit du PRÉFIXE de l'identifiant,
+   pas d'une liste écrite ici : ajouter une section à data/tarifs.js la range
+   toute seule. Et une section dont le préfixe n'est prévu nulle part n'est
+   jamais perdue — elle atterrit dans une dernière famille.
+
+   LA RECHERCHE. C'est elle qui remplace vraiment le sommaire : on tape
+   « jupe », on a les six lignes qui parlent de jupes, dans toutes les
+   familles à la fois. Les accents et la casse sont ignorés.
+
+   LE REPÈRE. Une barre colle sous la navigation et dit dans quelle famille
+   on se trouve. Sur douze mille pixels, savoir où l'on est n'est pas un luxe.
+   ═════════════════════════════════════════════════════════════════════════════ */
+const FAMILLES_TARIFS = [
+  { id: 'famille-nettoyage',     fr: 'Nettoyage',            prefixes: ['nettoyage'] },
+  { id: 'famille-blanchisserie', fr: 'Blanchisserie',        prefixes: ['blanchisserie'] },
+  { id: 'famille-retouches',     fr: 'Retouches et couture', prefixes: ['retouches', 'couture'] },
+  { id: 'famille-entretien',     fr: 'Entretien spécialisé',  prefixes: ['entretien'] }
+];
+
+/* « RÉSERVE » reçoit toute section dont le préfixe n'est prévu nulle part :
+   mieux vaut une famille mal nommée qu'un prix disparu de la page. */
+const RESERVE_TARIFS = { id: 'famille-autres', fr: 'Autres prestations', prefixes: [] };
+
+/* « Taie d'oreiller » → « taie d oreiller » : la recherche ignore la casse,
+   les accents, les ligatures, la forme de l'apostrophe et l'exposant du m².
+   Chacun de ces cas vient des données réelles — `Taie d'oreiller` s'écrit
+   avec une apostrophe typographique, un clavier de téléphone en produit une
+   autre, et personne ne tape « m² » à la main. */
+function normaliser(texte) {
+  return texte
+    .toLowerCase()
+    .replace(/œ/g, 'oe').replace(/æ/g, 'ae')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/²/g, '2').replace(/³/g, '3')
+    .replace(/[’'`´]/g, ' ')
+    .replace(/[-–—]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
+
+const groupes = document.querySelector('[data-tarifs-groupes]');
+
+/* Sans données, la page afficherait quatre ancres vides, une liste vide et un
+   champ de recherche inerte. Elle le dit, et retire ce qui ne sert plus. */
+if (groupes && (typeof TARIFS === 'undefined' || !TARIFS.length)) {
+  groupes.innerHTML = '<p class="note-tarif">Les prix sont momentanément '
+    + 'indisponibles. Appelez-nous, nous vous les donnons de vive voix.</p>';
+  const barreVide = document.querySelector('.barre-tarifs');
+  if (barreVide) barreVide.remove();
+  const navVide = document.querySelector('[data-familles]');
+  if (navVide) navVide.closest('section').remove();
+}
+
+if (groupes && typeof TARIFS !== 'undefined' && TARIFS.length) {
+
+  /* ---- 1 · le rangement -------------------------------------------------- */
+  const rangees = FAMILLES_TARIFS.map(f => ({ ...f, sections: [] }));
+  const reserve = { ...RESERVE_TARIFS, sections: [] };
+
+  TARIFS.forEach(sec => {
+    const prefixe = sec.id.split('-')[0];
+    const famille = rangees.find(f => f.prefixes.includes(prefixe)) || reserve;
+    famille.sections.push(sec);
+  });
+  if (reserve.sections.length) rangees.push(reserve);
+
+  const presentes = rangees.filter(f => f.sections.length);
+
+  presentes.forEach(f => {
+    const bloc = document.createElement('section');
+    bloc.className = 'famille-tarifs';
+    bloc.id = f.id;
+
+    const titre = document.createElement('h2');
+    titre.textContent = f.fr;
+    bloc.append(titre);
+
+    f.sections.forEach(sec => bloc.append(tableauSection(sec, 'h3')));
+    groupes.append(bloc);
+  });
+  revelerDans(groupes);
+
+  /* ---- 2 · les quatre ancres, en tête ------------------------------------- */
+  const nav = document.querySelector('[data-familles]');
+  if (nav) {
+    presentes.forEach(f => {
+      const a = document.createElement('a');
+      a.href = '#' + f.id;
+      a.textContent = f.fr;
+      a.dataset.pourFamille = f.id;
+      nav.append(a);
+    });
+  }
+
+  /* ---- 3 · la recherche --------------------------------------------------- */
+  /* Déclarée ici pour que `filtrer()` puisse l'appeler : le repère est
+     construit plus bas, et une recherche déplace des milliers de pixels. */
+  let situerPlusTard = () => {};
+
+  const champ  = document.getElementById('chercher-tarif');
+  const compte = document.querySelector('[data-compte-tarifs]');
+  const blocs  = [...groupes.querySelectorAll('.tarif-bloc')];
+  const totalLignes = groupes.querySelectorAll('tbody tr').length;
+
+  function filtrer() {
+    const q = normaliser(champ.value.trim());
+    let vues = 0;
+
+    blocs.forEach(bloc => {
+      /* LE TITRE DE SECTION COMPTE AUTANT QUE LA LIGNE. Chercher « chemise »
+         ne trouvait aucune des cinq lignes de « Retouches — Chemises », qui
+         s'appellent « Ajuster manches » ou « Retourner col » : le visiteur en
+         concluait que la prestation n'existe pas. Quand le titre correspond,
+         toute la section est gardée. */
+      const titre = normaliser(bloc.querySelector('h2,h3,h4').textContent);
+      const sectionEntiere = q && titre.includes(q);
+      let n = 0;
+      bloc.querySelectorAll('tbody tr').forEach(tr => {
+        const libelle = normaliser(tr.querySelector('th').textContent);
+        const garde = !q || sectionEntiere || libelle.includes(q);
+        tr.hidden = !garde;
+        if (garde) n++;
+      });
+      bloc.hidden = (n === 0);
+      vues += n;
+    });
+
+    /* Une famille dont toutes les sections sont masquées disparaît aussi —
+       son titre seul n'apprendrait rien — et son ancre avec elle. */
+    presentes.forEach(f => {
+      const fam = document.getElementById(f.id);
+      const reste = [...fam.querySelectorAll('.tarif-bloc')].some(b => !b.hidden);
+      fam.hidden = !reste;
+      const ancre = nav && nav.querySelector('[data-pour-famille="' + f.id + '"]');
+      if (ancre) ancre.hidden = !reste;
+    });
+
+    /* Le repere doit suivre : une recherche masque des milliers de pixels
+       sans qu'aucun defilement ne se produise. */
+    situerPlusTard();
+
+    /* « prestations » et non « articles » : la moitié des lignes sont des
+       travaux — retourner un col, poser une doublure — pas des objets. */
+    if (!q)          compte.textContent = totalLignes + ' prestations';
+    else if (!vues)  compte.textContent = 'Aucune prestation ne correspond';
+    else             compte.textContent = vues + (vues > 1 ? ' prestations trouvées' : ' prestation trouvée')
+                                        + ' sur ' + totalLignes;
+  }
+
+  if (champ && compte) {
+    champ.addEventListener('input', filtrer);
+    champ.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { champ.value = ''; filtrer(); }
+    });
+    filtrer();
+  }
+
+  /* ---- 4 · le repère : dans quelle famille suis-je ? ---------------------- */
+  const ou = document.querySelector('[data-famille-courante]');
+  if (ou) {
+    /* PAS D'IntersectionObserver ICI, et c'est délibéré. Les quatre familles
+       font plusieurs milliers de pixels : deux d'entre elles peuvent croiser
+       en même temps une bande de détection, et l'ordre des entrées ne dit
+       pas laquelle est la bonne. Sur quatre éléments, chercher directement
+       le dernier titre passé sous le mobilier est à la fois moins de code et
+       toujours juste.
+
+       `requestAnimationFrame` suffit à ne calculer qu'une fois par image :
+       le défilement peut émettre des dizaines d'événements entre deux. */
+    const titres = presentes.map(f => document.getElementById(f.id));
+    const barre = document.querySelector('.barre-tarifs');
+    let enAttente = false;
+
+    situerPlusTard = function () {
+      if (!enAttente) { enAttente = true; requestAnimationFrame(situer); }
+    };
+
+    function situer() {
+      enAttente = false;
+
+      /* LE SEUIL EST LA POSITION COLLANTE DE LA BARRE, pas sa position
+         actuelle. Tant que la page n'a pas defile, la barre est encore dans
+         le flux, mille pixels plus bas : `getBoundingClientRect().bottom`
+         y vaut 1200 et le seuil ne veut plus rien dire — toutes les familles
+         passent au-dessus, et le repere annonce la derniere. On lit donc son
+         `top` CSS resolu (52 px sur ordinateur, la hauteur de la plaque sur
+         telephone) et sa hauteur propre, deux valeurs stables.
+
+         Les 30 px de tolerance ne sont pas decoratifs : une ancre depose sa
+         cible 18 px SOUS la barre, et sans eux le repere annoncerait encore
+         la famille d'ou l'on vient juste apres le saut. */
+      const seuil = barre
+        ? parseFloat(getComputedStyle(barre).top) + barre.offsetHeight + 30
+        : 140;
+
+      const visibles = titres.filter(t => !t.hidden);
+      if (!visibles.length) { ou.textContent = '—'; return; }
+
+      /* La première famille VISIBLE, et non la première tout court : après une
+         recherche, la première peut avoir disparu. */
+      let courante = visibles[0];
+      visibles.forEach(t => {
+        if (t.getBoundingClientRect().top <= seuil) courante = t;
+      });
+      const nom = courante.querySelector('h2').textContent;
+      if (ou.textContent !== nom) ou.textContent = nom;
+    }
+
+    /* Trois déclencheurs, pas un seul. Le défilement, bien sûr ; mais aussi
+       le redimensionnement, qui change la hauteur du mobilier ; et le retour
+       arrière du navigateur, qui restaure une position sans défiler. Une
+       recherche appelle le même recalcul depuis `filtrer()` : elle masque des
+       milliers de pixels sans qu'aucun de ces trois événements se produise. */
+    addEventListener('scroll',   situerPlusTard, { passive: true });
+    addEventListener('resize',   situerPlusTard);
+    addEventListener('pageshow', situerPlusTard);
+    /* UN SAUT D'ANCRE EST UN CAS A PART. Le navigateur emet `hashchange`
+       AVANT d'avoir applique le nouveau defilement, et l'animation douce
+       (`scroll-behavior:smooth`) etale ensuite le trajet sur plusieurs
+       centaines de millisecondes. Recalculer sur la frame suivante ne suffit
+       donc pas : le repere annoncerait la famille d'ou l'on vient.
+       `scrollend` se declenche quand le defilement s'est reellement arrete,
+       animation comprise. Les navigateurs qui ne le connaissent pas encore
+       gardent le repli : un recalcul deux frames plus tard, puis les
+       evenements de defilement ordinaires finissent le travail. */
+    addEventListener('scrollend', situer);
+    addEventListener('hashchange', function () {
+      requestAnimationFrame(() => requestAnimationFrame(situer));
+    });
+    situer();
+  }
+}
+
 
 
 /* ═══════════════════════════════════════════════════════════════════════════

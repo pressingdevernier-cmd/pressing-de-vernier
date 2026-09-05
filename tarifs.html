@@ -139,16 +139,46 @@
   </div>
 </div>
 
-<section class="section serree">
+<!-- ═══════════════ LES QUATRE FAMILLES ═══════════════
+     Dix-sept ancres remplacaient un plan. Elles sont quatre, ce sont les
+     metiers, et c'est assets/site.js qui les ecrit a partir du prefixe des
+     identifiants de data/tarifs.js. -->
+<section class="section serree" style="padding-bottom:0">
   <div class="zone">
-    <nav class="sommaire" id="sommaire-tarifs" aria-label="Aller &#224; une famille de tarifs"></nav>
-    <!-- `data-niveau` : ici les familles viennent directement sous le <h1> de la
-         page, un <h3> y sauterait un niveau. Sur nettoyage.html elles sont sous
-         un <h2> et gardent le <h3> par defaut. -->
-    <div data-tarifs="tout" data-niveau="h2"></div>
+    <nav class="familles-tarifs" data-familles aria-label="Les quatre familles de tarifs"></nav>
+  </div>
+</section>
+
+<!-- La barre est collante : elle doit se decoller a la fin des tarifs, pas
+     a la fin de la page. Un element colle jusqu au bord de son CONTENEUR ;
+     sans cette enveloppe, elle accompagnerait encore le visiteur pendant
+     « Nous trouver » en annoncant « Entretien specialise ». -->
+<div class="zone-tarifs">
+
+<!-- ═══════════════ LA BARRE DES TARIFS ═══════════════
+     Collante sous la navigation. A gauche, la famille ou l'on se trouve ; a
+     droite, la recherche. Sur douze mille pixels, savoir ou l'on est et
+     pouvoir demander un article sont les deux seuls services qui comptent. -->
+<div class="barre-tarifs">
+  <div class="zone">
+    <p class="ou" data-famille-courante>Nettoyage</p>
+    <div class="chercher">
+      <label class="lecture-seule" for="chercher-tarif">Chercher un vêtement ou une prestation dans la liste</label>
+      <input type="search" id="chercher-tarif" autocomplete="off" spellcheck="false"
+             placeholder="Chercher un v&#234;tement, une prestation&#8230;">
+    </div>
+    <p class="compte" role="status" data-compte-tarifs></p>
+  </div>
+</div>
+
+<section class="section serree" style="padding-top:var(--s4)">
+  <div class="zone">
+    <div class="groupes-tarifs" data-tarifs-groupes></div>
     <div class="mentions-tarifs" data-mentions></div>
   </div>
 </section>
+
+</div>
 
 <section class="section">
   <div class="zone duo">

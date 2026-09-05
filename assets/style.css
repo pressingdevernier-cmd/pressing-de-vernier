@@ -574,17 +574,17 @@ h4{ font-size:var(--t-l); }
 .planche .trait{
   fill:none; stroke:var(--ivoire); stroke-width:1.7; opacity:.88;
   stroke-linejoin:round; stroke-linecap:round;
-  filter:url(#grain-craie) drop-shadow(0 0 2.5px rgba(246,243,236,.4));
+  filter:var(--grain) drop-shadow(0 0 2.5px rgba(246,243,236,.4));
 }
 .planche .repasse{
   fill:none; stroke:var(--ivoire); stroke-width:1.5; opacity:.58;
-  stroke-linejoin:round; stroke-linecap:round; filter:url(#grain-craie);
+  stroke-linejoin:round; stroke-linecap:round; filter:var(--grain);
 }
 /* Ce qui fait reconnaître la pièce : revers, col de chemise, rabats de
    poche, ceinture et passants, pliure du pantalon. */
 .planche .detail{
   fill:none; stroke:var(--ivoire); stroke-width:.9; opacity:.5;
-  stroke-linecap:round; stroke-linejoin:round; filter:url(#grain-craie);
+  stroke-linecap:round; stroke-linejoin:round; filter:var(--grain);
 }
 .planche .detail.fin{ stroke-width:.85; opacity:.36; }   /* les hachures du tissu */
 
@@ -640,14 +640,6 @@ h4{ font-size:var(--t-l); }
 .mentions-tarifs{ margin-top:var(--s4); padding-top:var(--s3); border-top:1px solid var(--papier); }
 .mentions-tarifs p{ font-size:13px; color:var(--acier-texte); margin:0 0 5px; }
 
-.sommaire{ list-style:none; margin:var(--s4) 0 var(--s6); padding:0; display:flex; flex-wrap:wrap; gap:8px; }
-.sommaire a{
-  display:inline-flex; align-items:center; min-height:40px; padding:0 15px;
-  font-size:11px; letter-spacing:.12em; text-transform:uppercase;
-  border:1px solid var(--papier); border-radius:100px; color:var(--acier-texte);
-  transition:border-color var(--transition), color var(--transition);
-}
-.sommaire a:hover{ border-color:var(--or); color:var(--or); }
 
 /* ============================================================================
    HORAIRES ET PLAN
@@ -705,7 +697,7 @@ h4{ font-size:var(--t-l); }
    ============================================================================ */
 .pied a{ display:inline-flex; align-items:center; min-height:44px; }
 .pied .mentions a{ min-height:0; }
-.sommaire a,.coordonnees a{ min-height:44px; }
+.coordonnees a{ min-height:44px; }
 /* Le telephone du bandeau : c est le lien le plus clique sur mobile */
 .bandeau-infos a{ display:inline-flex; align-items:center; min-height:44px; }
 
@@ -762,7 +754,102 @@ h4{ font-size:var(--t-l); }
 }
 
 /* ============================================================================
-   LES CINQ PLANCHES, CÔTE À CÔTE — page Retouches et couture
+   LA PAGE TARIFS — quatre familles, une recherche, un repère
+   ----------------------------------------------------------------------------
+   La page faisait plus de douze mille pixels d'un seul tenant, précédés d'un
+   sommaire de dix-sept ancres. Elle n'est plus la porte d'entrée du site :
+   on l'ouvre en sachant ce qu'on cherche.
+   ============================================================================ */
+
+/* ── Les quatre familles, en tête ─────────────────────────────────────────
+   Plus grandes que les anciennes dix-sept pastilles : quatre entrées, ce
+   sont des portes, pas une liste. */
+.familles-tarifs{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr)); gap:1px;
+  background:var(--papier); border:1px solid var(--papier); }
+.familles-tarifs a{
+  background:var(--blanc); padding:var(--s3);
+  display:flex; align-items:center; min-height:76px;
+  font-family:var(--serif); font-size:var(--t-xl); font-weight:500; color:var(--vert);
+  transition:background var(--transition), color var(--transition);
+}
+.familles-tarifs a:hover{ background:#FCFBF8; color:var(--or-grave); }
+
+/* ── La barre collante ────────────────────────────────────────────────────
+   Elle se pose sous ce qui colle déjà : la navigation sur ordinateur, la
+   plaque du nom sur téléphone — dont la hauteur est mesurée par
+   assets/site.js et exposée en `--h-plaque`. Sans ce calage, la barre se
+   glisserait DERRIÈRE le mobilier au lieu de dessous. */
+.barre-tarifs{
+  position:sticky; top:52px; z-index:59;
+  background:rgba(246,243,236,.94); backdrop-filter:blur(8px);
+  border-block:1px solid var(--papier);
+}
+.barre-tarifs .zone{
+  display:flex; align-items:center; gap:var(--s3);
+  min-height:58px; padding-block:9px; flex-wrap:wrap;
+}
+.barre-tarifs .ou{
+  margin:0; flex:none;
+  font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--or-grave);
+}
+.barre-tarifs .chercher{ flex:1; min-width:200px; margin-left:auto; }
+.barre-tarifs input{
+  width:100%; min-height:40px; padding:0 14px;
+  font:inherit; font-size:15px; color:var(--graphite);
+  background:var(--blanc); border:1px solid var(--papier); border-radius:2px;
+  transition:border-color var(--transition);
+}
+.barre-tarifs input::placeholder{ color:var(--acier-texte); }
+.barre-tarifs input:focus{ border-color:var(--or); outline:none; }
+.barre-tarifs input:focus-visible{ outline:2px solid var(--or); outline-offset:2px; }
+.barre-tarifs .compte{
+  margin:0; flex:none; min-width:15ch; text-align:right;
+  font-size:12.5px; color:var(--acier-texte); font-variant-numeric:tabular-nums;
+}
+
+/* ── Les familles, dans la liste ──────────────────────────────────────────
+   Le titre de famille est la seule chose qui sépare deux métiers sur douze
+   mille pixels : il doit se voir de loin, et le filet d'or le pose. */
+.famille-tarifs{ margin-top:var(--s6); }
+.famille-tarifs:first-child{ margin-top:var(--s3); }
+.famille-tarifs > h2{
+  font-size:var(--t-2xl); padding-bottom:14px; margin-bottom:var(--s4);
+  border-bottom:2px solid var(--or);
+}
+
+/* Les ancres visent une famille ou une section : elles doivent s'arrêter
+   SOUS la navigation ET sous la barre des tarifs.
+   `scroll-margin-top` S'AJOUTE au `scroll-padding-top` de la page, il ne le
+   remplace pas. La page réserve déjà 68 px pour la navigation ; il ne reste
+   ici que la hauteur de la barre, 59 px, et non la somme des deux. */
+.groupes-tarifs .tarif-bloc,
+.famille-tarifs{ scroll-margin-top:59px; }
+
+/* `!important` : une ligne de tableau masquée doit l'être quoi qu'il arrive.
+   `display:table-row` d'une feuille de navigateur l'emporterait sinon sur
+   l'attribut `hidden`, et la recherche ne filtrerait rien. */
+[hidden]{ display:none !important; }
+
+@media (max-width:860px){
+  /* La plaque colle deja 97 px : la barre doit rester mince, sinon le
+     mobilier fixe mange un quart de l'ecran. Retiree a 78 px -- une ligne de
+     reperes, une ligne de recherche, et rien de plus. */
+  .barre-tarifs{ top:var(--h-plaque,97px); }
+  .barre-tarifs .zone{ min-height:0; padding-block:8px; gap:7px; }
+  .barre-tarifs input{ min-height:38px; font-size:14.5px; }
+  .barre-tarifs .ou,.barre-tarifs .compte{ font-size:10.5px; }
+  .barre-tarifs .ou{ order:1; }
+  .barre-tarifs .compte{ order:2; margin-left:auto; text-align:right; min-width:0; }
+  .barre-tarifs .chercher{ order:3; flex-basis:100%; margin-left:0; }
+  /* 116 px sont déjà réservés par la page ; la barre en ajoute 79. */
+  .groupes-tarifs .tarif-bloc,
+  .famille-tarifs{ scroll-margin-top:79px; }
+  .familles-tarifs a{ min-height:64px; font-size:var(--t-l); }
+}
+
+
+/* ============================================================================
+   LES PLANCHES, CÔTE À CÔTE — page Retouches et couture
    ----------------------------------------------------------------------------
    Plus d'onglets : les pièces sont toutes là, on voit laquelle est la sienne
    et on y va. Ce qui suit règle le seul vrai problème de cette mise en page.
@@ -781,10 +868,14 @@ h4{ font-size:var(--t-l); }
    ============================================================================ */
 .planches{
   display:grid;
-  /* `min(400px,100%)` et non `400px` : sur un ecran de 375 px une piste de
-     400 px deborde, et `overflow-x:hidden` du corps masque le debordement au
-     lieu de le corriger. */
-  grid-template-columns:repeat(auto-fit,minmax(min(400px,100%),1fr));
+  /* UNE SEULE COLONNE PAR DÉFAUT, et deux déclarées explicitement dans le
+     même palier que le grossissement des repères, plus bas. Avec un
+     `auto-fit`, la grille passait à deux colonnes dès 920 px alors que les
+     repères ne grossissaient qu'à partir de 1000 : entre les deux, chaque
+     planche tombait à 380 px et son libellé à 5 px — exactement le défaut
+     que les trois paliers devaient supprimer. Les deux réglages doivent
+     basculer ensemble, donc au même endroit. */
+  grid-template-columns:1fr;
   gap:var(--s4) var(--s3); margin-top:var(--s5);
 }
 .planches figure{ margin:0; }
@@ -795,8 +886,20 @@ h4{ font-size:var(--t-l); }
 }
 /* La liste de repli, qui remplace les repères quand ils deviennent trop
    petits. Elle est dans le balisage à toute largeur — même source, deux
-   présentations — et masquée tant que les repères tiennent. */
-.prestations{ display:none; }
+   présentations.
+
+   AU-DESSUS DE 760 px ELLE EST MASQUÉE À L'ŒIL, PAS AU LECTEUR D'ÉCRAN. Les
+   planches portent `role="img"` : leur contenu est alors traité comme une
+   image opaque, et les `<text>` des repères ne sont pas lus. Un
+   `display:none` sur la liste retirerait donc les prix de TOUTE présentation
+   non visuelle — le lecteur d'écran n'entendrait que « Chemise dessinée à
+   plat ». La liste est donc simplement sortie du champ, comme le fait
+   `.lecture-seule`. */
+.prestations{
+  position:absolute; width:1px; height:1px; overflow:hidden;
+  clip-path:inset(50%); white-space:nowrap;
+  margin:0; padding:0; list-style:none;
+}
 
 /* AU-DESSUS DE 1000 px la grille passe à deux colonnes et chaque planche
    tombe à environ 500 px : les repères sont grossis en unités de dessin pour
@@ -804,6 +907,7 @@ h4{ font-size:var(--t-l); }
    colonne, la planche reprend toute la largeur, et les tailles d'origine
    suffisent — c'est pour cette largeur-là qu'elles ont été réglées. */
 @media (min-width:1000px){
+  .planches{ grid-template-columns:1fr 1fr; }
   .planches .planche text.nom{ font-size:13.5px; letter-spacing:.1em; }
   .planches .planche text.prix{ font-size:25px; }
   .planches .planche text.prix .mention{ font-size:15px; }
@@ -818,7 +922,9 @@ h4{ font-size:var(--t-l); }
   .planches .planche .reperes{ display:none; }
   .planches figcaption{ margin-top:14px; }
   .prestations{
-    display:block; list-style:none; margin:10px 0 0; padding:0;
+    position:static; width:auto; height:auto; overflow:visible;
+    clip-path:none; white-space:normal;
+    display:block; margin:10px 0 0;
   }
   .prestations li{
     display:flex; align-items:baseline; justify-content:space-between; gap:var(--s2);
@@ -1064,7 +1170,8 @@ h4{ font-size:var(--t-l); }
   /* `.ent-nav` et `.menu-mobile` sont des freres du <header>, pas ses
      enfants : masquer `.entete` ne les emporte plus. Sans cette ligne, la
      liste des prix sort du papier avec sa barre de navigation. */
-  .entete,.ent-nav,.menu-mobile,.pied,.burger,.sommaire{ display:none; }
+  .entete,.ent-nav,.menu-mobile,.pied,.burger,
+  .familles-tarifs,.barre-tarifs{ display:none; }
   body{ background:#fff; color:#000; font-size:11pt; }
   .sombre{ background:#fff; color:#000; }
   a::after{ content:""; }

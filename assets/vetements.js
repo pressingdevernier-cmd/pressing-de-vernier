@@ -25,7 +25,9 @@
 
 const VETEMENTS = {
 
-  /* Les identifiants sont ceux des onglets de couture.html (data-section)
+  /* Les identifiants sont ceux des sections de data/tarifs.js : la page
+     Couture affiche toute piece qui a a la fois un dessin ici et une section
+     de prix la-bas, et les reperes citent les lignes par leur libelle
      et des sections de data/tarifs.js. NE PAS LES RENOMMER. */
 
   /* ══════════════════════════════════════════════════════════════════════
@@ -247,9 +249,11 @@ const VETEMENTS = {
 
 
 /* ============================================================================
-   LE COMPLET — dessiné et validé, mais pas encore employé : aucun onglet de
-   couture.html ne lui correspond, et data/tarifs.js n'a pas de section
-   « complet ». Conservé ici pour le jour où une page le demandera.
+   LE COMPLET — dessiné et validé, mais pas encore employé : data/tarifs.js
+   n'a pas de section « complet », et une planche sans prix n'aurait aucun
+   repère à porter. Le jour où cette section existe, il suffit de déplacer ce
+   dessin dans VETEMENTS sous la clé correspondante : la page Couture
+   l'affichera sans qu'on y touche.
    ============================================================================ */
 const VETEMENT_COMPLET = {
     nom: 'Complet',
@@ -461,9 +465,14 @@ function dessinVetement(idSection) {
   const zip = t.zip ? fermetureEclair(t.zip) : '';
 
   /* Le filtre de grain est déclaré dans le dessin lui-même : la planche reste
-     autonome, où qu'on la place dans la page. */
-  return '<svg viewBox="' + v.boite + '" role="img" aria-label="' + v.alt + '">'
-       + '<defs><filter id="grain-craie" x="-5%" y="-5%" width="110%" height="110%">'
+     autonome, où qu'on la place dans la page. Son identifiant porte celui du
+     vêtement — quatre planches affichées ensemble déclaraient sinon quatre
+     fois le même `id`, ce qui rend le document invalide et les références
+     `url(#…)` ambiguës. */
+  const grain = 'grain-craie-' + idSection;
+  return '<svg viewBox="' + v.boite + '" role="img" aria-label="' + v.alt + '"'
+       + ' style="--grain:url(#' + grain + ')">'
+       + '<defs><filter id="' + grain + '" x="-5%" y="-5%" width="110%" height="110%">'
        + '<feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="3" seed="7" result="b"/>'
        + '<feDisplacementMap in="SourceGraphic" in2="b" scale="1.7"'
        + ' xChannelSelector="R" yChannelSelector="G"/></filter></defs>'
