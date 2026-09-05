@@ -142,7 +142,10 @@
 <section class="section serree">
   <div class="zone">
     <nav class="sommaire" id="sommaire-tarifs" aria-label="Aller &#224; une famille de tarifs"></nav>
-    <div data-tarifs="tout"></div>
+    <!-- `data-niveau` : ici les familles viennent directement sous le <h1> de la
+         page, un <h3> y sauterait un niveau. Sur nettoyage.html elles sont sous
+         un <h2> et gardent le <h3> par defaut. -->
+    <div data-tarifs="tout" data-niveau="h2"></div>
     <div class="mentions-tarifs" data-mentions></div>
   </div>
 </section>
@@ -193,15 +196,15 @@
       </svg></div>
     <div class="colonnes">
       <div>
-        <h4>Horaires</h4>
+        <h2>Horaires</h2>
         <ul data-horaires-pied></ul>
       </div>
       <div>
-        <h4>Adresse</h4>
+        <h2>Adresse</h2>
         <p data-adresse-lignes></p>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2>Contact</h2>
         <p><a href="tel:+41223416818" data-tel></a></p>
         <p><a href="mailto:pressingdevernier@gmail.com" data-email></a></p>
       </div>

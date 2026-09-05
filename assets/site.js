@@ -243,13 +243,17 @@ function formatPrix(n) {
   return Number.isInteger(n) ? n + '.–' : n.toFixed(2);
 }
 
-function tableauSection(sec) {
+/* `niveau` : le rang du titre de famille. Sur la page Tarifs les familles
+   viennent directement sous le <h1> de la page — un <h3> y sauterait un
+   niveau, ce qu'un lecteur d'ecran signale comme un trou dans le plan. Sur
+   la page Couture elles sont imbriquees sous un <h2>, et <h3> est juste. */
+function tableauSection(sec, niveau) {
   const doubles = Boolean(sec.colonnes);
   const bloc = document.createElement('section');
   bloc.className = 'tarif-bloc revele';
   bloc.id = sec.id;
 
-  const titre = document.createElement('h3');
+  const titre = document.createElement(niveau || 'h3');
   titre.textContent = sec.fr;
   bloc.append(titre);
 
@@ -266,7 +270,10 @@ function tableauSection(sec) {
   if (doubles) {
     const thead = document.createElement('thead');
     const tr = document.createElement('tr');
-    tr.innerHTML = '<th scope="col"></th>' +
+    /* La cellule d'angle n'est pas vide : elle nomme la colonne des
+       prestations. Le mot est masque a l'oeil, pas au lecteur d'ecran, qui
+       annoncerait sinon une colonne sans nom. */
+    tr.innerHTML = '<th scope="col"><span class="lecture-seule">Prestation</span></th>' +
       sec.colonnes.fr.map(c => '<th scope="col">' + c + '</th>').join('');
     thead.append(tr); table.append(thead);
   }
@@ -322,7 +329,7 @@ document.querySelectorAll('[data-tarifs]').forEach(conteneur => {
   const sections = demande === 'tout'
     ? TARIFS
     : TARIFS.filter(s => demande.split(/\s*,\s*/).includes(s.id));
-  sections.forEach(s => conteneur.append(tableauSection(s)));
+  sections.forEach(s => conteneur.append(tableauSection(s, conteneur.dataset.niveau)));
   revelerDans(conteneur);
 });
 
@@ -411,7 +418,7 @@ if (sommaire) {
   document.querySelectorAll('.tarif-bloc').forEach(bloc => {
     const a = document.createElement('a');
     a.href = '#' + bloc.id;
-    a.textContent = bloc.querySelector('h3').textContent;
+    a.textContent = bloc.querySelector('h2,h3,h4').textContent;
     sommaire.append(a);
   });
 }

@@ -23,7 +23,13 @@
      3,15:1 et l'or clair à 2,16:1 — tous deux restent justes pour un grand
      texte, un filet ou un aplat, jamais pour une légende. */
   --or-grave:      #82631F;   /* 5,05:1 sur ivoire                 */
-  --acier:         #8A979B;   /* gris froid — légendes, cotes      */
+  --acier:         #8A979B;   /* gris froid — filets, bordures     */
+  /* Le gris du PETIT TEXTE. Même logique que --or-grave : --acier tient
+     2,71:1 sur l'ivoire, très en dessous des 4,5:1 qu'exige une légende ou
+     un lien. Il reste juste pour une bordure ou un aplat, jamais pour un mot
+     qu'on doit lire. Celui-ci tient 5,22:1 sur l'ivoire et 5,78 sur le
+     blanc des tableaux. */
+  --acier-texte:   #5A686C;   /* 5,22:1 sur ivoire                 */
   --blanc:         #FFFFFF;
 
   /* ---- TEXTES SUR FOND SOMBRE ---------------------------------------- */
@@ -132,7 +138,7 @@ h4{ font-size:var(--t-l); }
 
 .sur-titre{
   font-family:var(--sans); font-size:10px; font-weight:500;
-  letter-spacing:.3em; text-transform:uppercase; color:var(--acier);
+  letter-spacing:.3em; text-transform:uppercase; color:var(--acier-texte);
   margin:0 0 var(--s3);
 }
 
@@ -366,7 +372,11 @@ h4{ font-size:var(--t-l); }
 .pied{ background:var(--vert-nuit); color:var(--sur-nuit); padding:var(--s6) 0 var(--s4); }
 .pied .sceau{ width:120px; margin:0 auto var(--s4); color:var(--or-clair); }
 .pied .colonnes{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s4); }
-.pied h4{ font-size:var(--t-s); font-family:var(--sans); font-weight:500;
+/* Les titres de colonne du pied sont des h2 et non des h3 : trois pages du
+   site n'ont pour l'instant qu'un h1 dans leur contenu, et un h3 y sauterait
+   un niveau. Un h2 est juste partout — le pied est un repere separe, ses
+   titres ne s'imbriquent pas dans le plan de la page. */
+.pied h2{ font-size:var(--t-s); font-family:var(--sans); font-weight:500;
           letter-spacing:.2em; text-transform:uppercase; color:var(--or-clair); margin-bottom:var(--s2); }
 .pied p,.pied li{ font-size:var(--t-s); color:var(--sur-nuit-doux); margin:0 0 7px; }
 .pied ul{ list-style:none; margin:0; padding:0; }
@@ -493,7 +503,7 @@ h4{ font-size:var(--t-l); }
 .bandeau-infos dl > div{ padding:var(--s3); border-left:1px solid var(--papier); }
 .bandeau-infos dl > div:first-child{ border-left:0; padding-left:0; }
 .bandeau-infos dl > div:last-child{ padding-right:0; }
-.bandeau-infos dt{ font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--or); margin-bottom:7px; }
+.bandeau-infos dt{ font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--or-grave); margin-bottom:7px; }
 .bandeau-infos dd{ margin:0; font-size:15px; }
 .bandeau-infos a:hover{ color:var(--or); }
 
@@ -620,28 +630,28 @@ h4{ font-size:var(--t-l); }
    TABLEAUX DE PRIX
    ============================================================================ */
 .tarif-bloc{ margin-bottom:var(--s5); break-inside:avoid; }
-.tarif-bloc h3{ font-size:var(--t-xl); padding-bottom:12px; margin-bottom:6px; border-bottom:1px solid var(--or); }
+.tarif-bloc :is(h2,h3){ font-size:var(--t-xl); padding-bottom:12px; margin-bottom:6px; border-bottom:1px solid var(--or); }
 .tarif-table{ width:100%; border-collapse:collapse; }
 .tarif-table th{ font-weight:400; text-align:left; }
 .tarif-table thead th{
   font-family:var(--sans); font-size:9.5px; letter-spacing:.18em; text-transform:uppercase;
-  color:var(--acier); padding:12px 0 8px; text-align:right;
+  color:var(--acier-texte); padding:12px 0 8px; text-align:right;
 }
 .tarif-table tbody th{ padding:11px 16px 11px 0; font-size:15px; color:var(--graphite); border-bottom:1px dotted var(--papier); }
 .tarif-table td{ padding:11px 0; text-align:right; white-space:nowrap; border-bottom:1px dotted var(--papier); vertical-align:baseline; }
 .tarif-table tr:last-child th,.tarif-table tr:last-child td{ border-bottom:0; }
 .tarif-table b{ font-family:var(--serif); font-size:var(--t-l); font-weight:600; color:var(--vert); font-variant-numeric:tabular-nums; }
-.tarif-table em{ font-style:normal; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--acier); }
-.tarif-table .unite{ font-size:12px; color:var(--acier); }
+.tarif-table em{ font-style:normal; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--acier-texte); }
+.tarif-table .unite{ font-size:12px; color:var(--acier-texte); }
 .tarif-table.deux-colonnes td{ min-width:120px; }
 .mentions-tarifs{ margin-top:var(--s4); padding-top:var(--s3); border-top:1px solid var(--papier); }
-.mentions-tarifs p{ font-size:13px; color:var(--acier); margin:0 0 5px; }
+.mentions-tarifs p{ font-size:13px; color:var(--acier-texte); margin:0 0 5px; }
 
 .sommaire{ list-style:none; margin:var(--s4) 0 var(--s6); padding:0; display:flex; flex-wrap:wrap; gap:8px; }
 .sommaire a{
   display:inline-flex; align-items:center; min-height:40px; padding:0 15px;
   font-size:11px; letter-spacing:.12em; text-transform:uppercase;
-  border:1px solid var(--papier); border-radius:100px; color:var(--acier);
+  border:1px solid var(--papier); border-radius:100px; color:var(--acier-texte);
   transition:border-color var(--transition), color var(--transition);
 }
 .sommaire a:hover{ border-color:var(--or); color:var(--or); }
@@ -652,7 +662,7 @@ h4{ font-size:var(--t-l); }
 .horaires{ list-style:none; margin:var(--s4) 0 0; padding:0; }
 .horaires > div{ display:flex; justify-content:space-between; gap:var(--s3); padding:13px 0; border-bottom:1px solid var(--papier); font-size:15px; }
 .horaires dt{ margin:0; }
-.horaires dd{ margin:0; color:var(--acier); text-align:right; font-variant-numeric:tabular-nums; }
+.horaires dd{ margin:0; color:var(--acier-texte); text-align:right; font-variant-numeric:tabular-nums; }
 .horaires > div.aujourdhui,.horaires > div.aujourdhui dd{ color:var(--or); }
 .sombre .horaires > div{ border-bottom-color:rgba(246,243,236,.14); }
 .sombre .horaires dd{ color:var(--sur-nuit-doux); }
@@ -664,7 +674,7 @@ h4{ font-size:var(--t-l); }
 }
 .plan .epingle{ text-align:center; padding:var(--s3); }
 .plan .epingle b{ font-family:var(--serif); font-size:var(--t-l); font-weight:600; display:block; color:var(--vert); }
-.plan .epingle span{ font-size:12.5px; color:var(--acier); }
+.plan .epingle span{ font-size:12.5px; color:var(--acier-texte); }
 .coordonnees{ display:grid; gap:var(--s2); margin-top:var(--s4); }
 .coordonnees a{ display:flex; align-items:center; gap:14px; font-size:16px; min-height:44px; transition:color var(--transition); }
 .coordonnees a:hover{ color:var(--or); }
@@ -712,7 +722,7 @@ h4{ font-size:var(--t-l); }
 .onglet-vetement{
   min-height:46px; padding:0 20px; border-radius:100px;
   font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:500;
-  background:none; border:1px solid var(--papier); color:var(--acier);
+  background:none; border:1px solid var(--papier); color:var(--acier-texte);
   transition:background var(--transition), border-color var(--transition), color var(--transition);
 }
 .onglet-vetement:hover{ border-color:var(--or); color:var(--or); }
@@ -743,7 +753,7 @@ h4{ font-size:var(--t-l); }
   text-transform:uppercase; color:var(--or); font-style:normal;
 }
 .note-tarif{
-  font-size:13.5px; color:var(--acier); margin:10px 0 var(--s2); max-width:60ch;
+  font-size:13.5px; color:var(--acier-texte); margin:10px 0 var(--s2); max-width:60ch;
 }
 
 /* ============================================================================
