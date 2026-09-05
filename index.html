@@ -24,57 +24,74 @@
   </linearGradient>
 </defs></svg>
 
-<!-- ═══════════════ LA BANDE DE RACCORD ═══════════════
-     Le logo du site à gauche — le même balisage `.marque` que les huit pages
-     intérieures, au caractère près : c'est lui qui fait le raccord entre
-     l'accueil et le reste. L'état d'ouverture au centre, sur l'axe de la page ;
-     le téléphone à droite. L'ancienneté n'est plus ici : c'est un argument de
-     confiance, pas une information d'usage, et elle a rejoint le nom d'or. -->
-<div class="bande-logo">
-  <div class="zone">
-    <a class="marque" href="index.html" aria-label="Pressing de Vernier, accueil">
-      <svg viewBox="0 0 96 96" fill="none" aria-hidden="true">
-        <circle cx="48" cy="48" r="37" stroke="currentColor" stroke-width="5"/>
-        <circle cx="48" cy="48" r="28" stroke="currentColor" stroke-width="1.4" opacity=".45"/>
-        <path d="M37.5 37.5 58.5 58.5M58.5 37.5 37.5 58.5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-        <circle cx="37.5" cy="37.5" r="5" fill="currentColor"/><circle cx="58.5" cy="37.5" r="5" fill="currentColor"/>
-        <circle cx="37.5" cy="58.5" r="5" fill="currentColor"/><circle cx="58.5" cy="58.5" r="5" fill="currentColor"/>
-      </svg>
-      <span class="mots">
-        <b>Pressing de Vernier</b>
-        <span>Nettoyage &#183; Blanchisserie &#183; Couture</span>
-      </span>
-    </a>
-    <span class="bl-etat pastille" data-etat-ouverture>&#8212;</span>
-    <a class="bl-tel" href="tel:+41223416818" data-tel>022 341 68 18</a>
-  </div>
-</div>
+<!-- ═══════════════ L'EN-TÊTE ═══════════════
+     Le même mobilier sur les neuf pages, dans le même ordre, aux mêmes
+     places. Trois bandes : le logo et les faits sur ivoire, le nom d'or sur
+     sa plaque verte, la navigation sur ivoire.
 
-<!-- ═══════════════ L'EN-TÊTE — elle porte le nom ═══════════════
-     Sur l'accueil, l'enseigne n'est plus un bloc à part sur le mur : le nom
-     en or vit dans l'en-tête, qui passe au vert de nuit. Comme l'en-tête est
-     collante, le nom reste présent pendant tout le défilement au lieu de
-     disparaître au premier geste. Le mur vert n'a plus qu'un seul rôle,
-     tenir la tringle. -->
-<header class="entete entete-nom">
+     Deux choses seulement changent d'une page à l'autre, et elles le
+     doivent : l'entrée de menu marquée `aria-current`, et la balise du nom
+     — `h1` sur l'accueil, où le nom EST le titre de la page, `p` ailleurs,
+     où la page a déjà le sien.
+
+     La navigation est HORS du `<header>` : elle est collante, et une bande
+     collante enfermée dans un conteneur court se décolle avec lui dès que
+     celui-ci sort de l'écran. Un `<nav>` est un repère de navigation à part
+     entière, la sémantique n'y perd rien. -->
+<header class="entete">
+
+  <div class="ent-logo">
+    <div class="zone">
+      <a class="marque" href="index.html">
+        <svg viewBox="0 0 96 96" fill="none" aria-hidden="true">
+          <circle cx="48" cy="48" r="37" stroke="currentColor" stroke-width="5"/>
+          <circle cx="48" cy="48" r="28" stroke="currentColor" stroke-width="1.4" opacity=".45"/>
+          <path d="M37.5 37.5 58.5 58.5M58.5 37.5 37.5 58.5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="37.5" cy="37.5" r="5" fill="currentColor"/><circle cx="58.5" cy="37.5" r="5" fill="currentColor"/>
+          <circle cx="37.5" cy="58.5" r="5" fill="currentColor"/><circle cx="58.5" cy="58.5" r="5" fill="currentColor"/>
+        </svg>
+        <span class="mots">
+          <b>Pressing de Vernier</b>
+          <span>Nettoyage &#183; Blanchisserie &#183; Couture</span>
+        </span>
+      </a>
+      <p class="ent-faits">
+        <span data-depuis>Depuis 2006 &#224; Vernier</span>
+        <i></i>
+        <span class="pastille" data-etat-ouverture>&#8212;</span>
+      </p>
+      <a class="ent-tel" href="tel:+41223416818" data-tel>022 341 68 18</a>
+    </div>
+  </div>
+
+  <div class="ent-plaque">
+    <div class="zone">
+      <a class="nom" href="index.html">
+        <h1 class="nom-enseigne">
+          <span class="plaque une-ligne" aria-hidden="true">
+            <svg><text font-size="100" font-weight="500" letter-spacing="22">PRESSING DE VERNIER</text></svg>
+          </span>
+          <!-- Sur petit écran, la ligne unique tomberait à 30 px de haut : le
+               nom passe alors sur deux lignes, de même hauteur de lettre. -->
+          <span class="plaque deux-lignes" aria-hidden="true">
+            <svg data-groupe="nom"><text font-size="100" font-weight="500" letter-spacing="26">PRESSING</text></svg>
+            <svg data-groupe="nom"><text font-size="100" font-weight="500" letter-spacing="26">DE VERNIER</text></svg>
+          </span>
+          <span class="lecture-seule">Pressing de Vernier &#8212; nettoyage textile et atelier de couture &#224; Vernier</span>
+        </h1>
+      </a>
+      <div class="filet"><i></i></div>
+      <button class="burger" type="button" aria-expanded="false" aria-controls="menu-mobile" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+</header>
+
+<nav class="ent-nav" aria-label="Menu principal">
   <div class="zone">
-    <a class="nom" href="index.html" aria-label="Pressing de Vernier, accueil">
-      <h1 class="nom-enseigne">
-        <span class="plaque une-ligne" aria-hidden="true">
-          <svg><text font-size="100" font-weight="500" letter-spacing="22">PRESSING DE VERNIER</text></svg>
-        </span>
-        <!-- Sur petit ecran, la ligne unique tomberait a 30 px de haut :
-             le nom passe alors sur deux lignes, de meme hauteur de lettre. -->
-        <span class="plaque deux-lignes" aria-hidden="true">
-          <svg data-groupe="nom"><text font-size="100" font-weight="500" letter-spacing="26">PRESSING</text></svg>
-          <svg data-groupe="nom"><text font-size="100" font-weight="500" letter-spacing="26">DE VERNIER</text></svg>
-        </span>
-        <span class="lecture-seule">Pressing de Vernier &#8212; nettoyage textile et atelier de couture &#224; Vernier</span>
-      </h1>
-    </a>
-    <div class="filet"><i></i></div>
-    <p class="entete-depuis" data-depuis>Depuis 2006 a Vernier</p>
-    <nav class="navigation" aria-label="Menu">
+    <div class="navigation">
       <a href="nettoyage.html">Nettoyage</a>
       <a href="blanchisserie.html">Blanchisserie</a>
       <a href="repassage.html">Repassage</a>
@@ -83,12 +100,9 @@
       <a href="professionnels.html">Professionnels</a>
       <a href="tarifs.html">Tarifs</a>
       <a href="trouver.html">Nous trouver</a>
-    </nav>
-    <button class="burger" type="button" aria-expanded="false" aria-controls="menu-mobile" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+    </div>
   </div>
-</header>
+</nav>
 
 <div class="menu-mobile" id="menu-mobile" hidden>
   <nav aria-label="Menu">

@@ -23,21 +23,68 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 const burger = document.querySelector('.burger');
 const menu = document.querySelector('.menu-mobile');
+
 if (burger && menu) {
+
+  /* Une seule fonction ouvre et ferme. Trois choses doivent bouger ensemble —
+     l'état annoncé du bouton, la visibilité du panneau et le verrou de
+     défilement de la page — et les faire bouger à trois endroits différents,
+     c'est se garantir qu'un jour l'une des trois restera en arrière. */
+  function basculerMenu(ouvrir) {
+    if (ouvrir === (burger.getAttribute('aria-expanded') === 'true')) return;
+    burger.setAttribute('aria-expanded', String(ouvrir));
+    menu.hidden = !ouvrir;
+    document.body.style.overflow = ouvrir ? 'hidden' : '';
+
+    /* Le reste de la page passe en `inert` : sans ça, la tabulation continue
+       DERRIÈRE le panneau, sur des liens que le panneau recouvre entièrement.
+       On ne peut pas le voir, on peut l'atteindre. */
+    [...document.body.children].forEach(el => {
+      if (el !== menu && el !== burger.closest('.entete')) el.inert = ouvrir;
+    });
+
+    if (ouvrir) menu.querySelector('a').focus();
+    else burger.focus();          /* le focus revient d'où il vient */
+  }
+
   burger.addEventListener('click', () => {
-    const ouvert = burger.getAttribute('aria-expanded') === 'true';
-    burger.setAttribute('aria-expanded', String(!ouvert));
-    menu.hidden = ouvert;
-    document.body.style.overflow = ouvert ? '' : 'hidden';
+    basculerMenu(burger.getAttribute('aria-expanded') !== 'true');
   });
-  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    burger.setAttribute('aria-expanded', 'false');
-    menu.hidden = true;
-    document.body.style.overflow = '';
-  }));
+
+  menu.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => basculerMenu(false)));
+
   addEventListener('keydown', e => {
-    if (e.key === 'Escape' && !menu.hidden) burger.click();
+    if (e.key === 'Escape' && !menu.hidden) basculerMenu(false);
   });
+
+  /* Le menu n'existe qu'en dessous de 861 px. Au-dessus, la feuille de style
+     masque le panneau ET le bouton : sans ce garde-fou, faire pivoter le
+     téléphone ou élargir la fenêtre menu ouvert laisserait la page
+     définitivement verrouillée, sans plus rien pour la déverrouiller. */
+  const etroit = matchMedia('(max-width:860px)');
+  const surveiller = () => { if (!etroit.matches) basculerMenu(false); };
+  etroit.addEventListener ? etroit.addEventListener('change', surveiller)
+                          : etroit.addListener(surveiller);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   1 bis · LA HAUTEUR DE LA BANDE DU LOGO
+   ----------------------------------------------------------------------------
+   Sur téléphone, l'en-tête est collant et remonté de la hauteur exacte de sa
+   première bande : celle-ci sort de l'écran, la plaque du nom reste. Cette
+   hauteur vaut 60 px plus un filet, mais c'est un `min-height` — un visiteur
+   qui a forcé une taille de texte minimale dans son navigateur ferait grandir
+   la bande, et le décalage figé laisserait une tranche visible au-dessus de
+   la plaque. On mesure donc, et la feuille de style lit la mesure.
+   ═══════════════════════════════════════════════════════════════════════════ */
+const bandeLogo = document.querySelector('.ent-logo');
+if (bandeLogo && window.ResizeObserver) {
+  new ResizeObserver(([e]) => {
+    document.documentElement.style.setProperty(
+      '--h-bande-logo', Math.round(e.target.getBoundingClientRect().height) + 'px');
+  }).observe(bandeLogo);
 }
 
 

@@ -171,75 +171,153 @@ h4{ font-size:var(--t-l); }
 .sombre .bouton.vide:hover{ background:rgba(201,162,77,.14); }
 
 /* ============================================================================
-   LE BANDEAU VERT — tout en haut, sur toutes les pages
-   Il porte les trois informations qu'on vient chercher en premier :
-   l'ancienneté, les horaires, le téléphone.
+   L'EN-TÊTE — le même mobilier sur les neuf pages
+   ----------------------------------------------------------------------------
+   Trois bandes, dans cet ordre, aux mêmes places partout :
+
+     1 · LA BANDE DU LOGO   ivoire   le bouton et le nom composé à gauche,
+                                     l'ancienneté et l'état d'ouverture au
+                                     centre, le téléphone à droite
+     2 · LA PLAQUE DU NOM   vert     le nom en or et son filet. C'est la
+                                     SEULE surface verte de l'en-tête, et la
+                                     seule à porter le dégradé et le grain.
+                                     Le second endroit vert de la page est le
+                                     bloc des six cartes, et il n'y en a pas
+                                     d'autre.
+     3 · LA NAVIGATION      ivoire   les huit entrées, centrées
+
+   D'une page à l'autre, deux choses seulement changent, et elles le doivent :
+   l'entrée de menu marquée `aria-current`, et la balise du nom — `h1` sur
+   l'accueil, où le nom EST le titre de la page, `p` ailleurs, où la page a
+   déjà le sien. Tout le reste est identique au caractère près.
+
+   CE QUI EST COLLANT, ET POURQUOI SEULEMENT ÇA
+   La bande 3, et rien d'autre : 52 px. À l'arrivée l'en-tête dit qui nous
+   sommes ; en cours de lecture il ne doit plus que mener quelque part.
+   Coller les trois, ce serait garder 230 px à l'écran en permanence — un
+   quart d'un portable de 900 px de haut.
+   La navigation est donc posée HORS du `<header>` : une bande collante
+   enfermée dans un `<header>` court se décolle avec lui dès que celui-ci
+   sort de l'écran. Un `<nav>` est un repère de navigation à part entière,
+   la sémantique n'y perd rien.
+
+   Sur téléphone, la navigation se replie derrière le bouton du menu. C'est
+   alors la PLAQUE qui devient collante, sinon le menu cesserait d'être
+   atteignable une fois la page défilée : l'en-tête entier colle à
+   `top:-61px`, la hauteur exacte de la bande du logo, qui remonte et sort.
+
+   Tout est calé sur `.zone`, donc sur le conteneur de 1180 px, comme le pied
+   de page et comme la tringle.
    ============================================================================ */
-.bandeau-haut{
-  background:var(--vert);
-  color:var(--ivoire);
-  font-size:11.5px;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-}
-.bandeau-haut .zone{
-  display:flex; align-items:center; justify-content:center;
-  gap:16px; min-height:48px; flex-wrap:wrap;
-  padding-block:6px;
-}
-.bandeau-haut span{ color:rgba(246,243,236,.9); }
-/* Le losange du filet, en séparateur */
-.bandeau-haut i{
-  width:5px; height:5px; background:var(--or-clair);
-  transform:rotate(45deg); flex:none;
-}
-.bandeau-haut a{
-  color:var(--or-clair); font-weight:500;
-  display:inline-flex; align-items:center; min-height:44px;   /* cible tactile */
-  padding-inline:4px;
-  transition:color var(--transition);
-}
-.bandeau-haut a:hover{ color:var(--ivoire); }
 
-/* Sur téléphone, l'ancienneté saute : les horaires et le téléphone priment */
-@media (max-width:620px){
-  .bandeau-haut{ font-size:10.5px; letter-spacing:.08em; }
-  .bandeau-haut .zone{ gap:11px; }
-  .bandeau-haut span:first-of-type,
-  .bandeau-haut i:first-of-type{ display:none; }
+/* ── 1 · LA BANDE DU LOGO ─────────────────────────────────────────────────
+   Trois zones, trois registres : l'identité à gauche, les faits au centre,
+   l'action à droite. La grille est `1fr auto 1fr`, donc les faits tombent
+   exactement sur l'axe de la page — le même axe que le nom d'or en dessous
+   et que la tringle plus bas. */
+.ent-logo{ background:var(--ivoire); border-bottom:1px solid var(--papier); }
+.ent-logo .zone{
+  display:grid; grid-template-columns:1fr auto 1fr;
+  column-gap:var(--s3); align-items:center;
+  min-height:60px; padding-block:7px;
 }
 
-/* ============================================================================
-   EN-TÊTE
-   ============================================================================ */
-.entete{
-  position:sticky; top:0; z-index:60;
-  background:var(--ivoire);
-  border-bottom:1px solid var(--papier);
-}
-.entete .zone{ display:flex; align-items:center; gap:var(--s3); min-height:76px; }
-
-.marque{ display:flex; align-items:center; gap:13px; margin-right:auto; min-width:0; }
+.marque{ display:flex; align-items:center; gap:13px; min-width:0; min-height:44px; }
 .marque svg{ width:34px; flex:none; color:var(--vert); }
 .marque .mots{ display:flex; flex-direction:column; line-height:1; }
 .marque .mots b{
   font-family:var(--logotype); font-size:17px; font-weight:600;
   letter-spacing:.12em; text-transform:uppercase; color:var(--vert); white-space:nowrap;
 }
+/* Or gravé et non or du site : 8 px espacés, c'est du petit texte, et l'or
+   du site n'y tient que 3,15:1 sur l'ivoire. */
 .marque .mots span{
   font-size:8px; letter-spacing:.24em; text-transform:uppercase;
-  color:var(--or); margin-top:5px; white-space:nowrap;
+  color:var(--or-grave); margin-top:5px; white-space:nowrap;
 }
 
-.navigation{ display:flex; gap:var(--s4); }
+/* Les deux faits qu'on vient chercher, sur l'axe de la page. */
+.ent-faits{
+  margin:0; display:flex; align-items:center; gap:13px;
+  font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+  color:rgba(35,40,37,.78); white-space:nowrap;
+}
+.ent-faits i{ width:5px; height:5px; background:var(--or); transform:rotate(45deg); flex:none; }
+
+/* Le téléphone est la seule action de la bande : il porte le fil d'or que le
+   site coud sous ses liens de navigation — ici cousu en permanence. Le
+   chiffre reste vert et non or : l'or sur l'ivoire plafonne à 3,15:1, sous
+   le seuil de 4,5:1 exigé d'un texte de cette taille. */
+.ent-tel{
+  justify-self:end; position:relative; white-space:nowrap;
+  font-size:13.5px; font-weight:600; letter-spacing:.09em; color:var(--vert);
+}
+/* La cible tactile fait bien 44 px, mais hors du flux : un `min-height` sur
+   le lien en ferait la pièce la plus haute de la bande, qui gagnerait dix
+   pixels de vide. */
+.ent-tel::before{
+  content:""; position:absolute; left:-8px; right:-8px;
+  top:50%; height:44px; transform:translateY(-50%);
+}
+.ent-tel::after{
+  content:""; position:absolute; left:0; right:0; bottom:-5px; height:1px;
+  background:var(--or); transition:background var(--transition);
+}
+.ent-tel:hover::after{ background:var(--vert); }
+
+/* ── 2 · LA PLAQUE DU NOM ─────────────────────────────────────────────────
+   Les deux halos et le grain : un vert lumineux qui tombe du haut, un reflet
+   doré au coin bas droit. Sans eux l'aplat sombre paraît plat. Ce traitement
+   ne se réemploie nulle part ailleurs. */
+.ent-plaque{
+  background:var(--vert-nuit);
+  border-bottom:1px solid rgba(201,162,77,.28);
+  position:relative; isolation:isolate; overflow:hidden;
+}
+.ent-plaque::before{
+  content:""; position:absolute; inset:0; z-index:-2;
+  background:
+    radial-gradient(115% 78% at 50% -6%, rgba(15,90,50,.42), transparent 62%),
+    radial-gradient(88% 58% at 88% 106%, rgba(201,162,77,.14), transparent 60%);
+}
+.ent-plaque::after{                   /* le grain */
+  content:""; position:absolute; inset:0; z-index:-1; opacity:.16; pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+.ent-plaque .zone{ padding-block:clamp(20px,2.4vw,28px) clamp(17px,2vw,23px); }
+/* `.ent-plaque .nom` et non `.nom` seul : les planches techniques de la page
+   Couture produisent des <text class="nom"> en SVG, que le selecteur nu
+   attrapait aussi. */
+.ent-plaque .nom{ display:block; max-width:min(495px,72%); margin:0 auto; }
+/* Le titre doit occuper toute la largeur du lien, sinon la plaque se calibre
+   sur son contenu et le nom rétrécit. */
+.nom-enseigne{ margin:0; font-size:inherit; font-weight:inherit; width:100%; }
+
+/* Le filet à losange ferme le nom. Il est remonté contre lui — il en est
+   l'ornement de clôture, pas une légende posée en dessous. */
+.ent-plaque .filet{
+  max-width:min(230px,40%);
+  margin:clamp(11px,1.4vw,15px) auto 0;
+}
+.ent-plaque .filet::before,.ent-plaque .filet::after{
+  background:linear-gradient(90deg,transparent,var(--or-clair),transparent);
+}
+.ent-plaque .filet i{ background:var(--or-clair); width:6px; height:6px; }
+
+/* ── 3 · LA NAVIGATION ───────────────────────────────────────────────────── */
+.ent-nav{
+  position:sticky; top:0; z-index:60;
+  background:var(--ivoire); border-bottom:1px solid var(--papier);
+}
+.navigation{ display:flex; justify-content:center; gap:clamp(16px,2.2vw,32px); }
 .navigation a{
   font-size:11px; letter-spacing:.17em; text-transform:uppercase;
-  color:rgba(35,40,37,.7); position:relative; padding:6px 0;
+  color:rgba(35,40,37,.7); position:relative; padding:17px 0; white-space:nowrap;
   transition:color var(--transition);
 }
 /* Le fil qui se coud sous le lien */
 .navigation a::after{
-  content:""; position:absolute; left:0; bottom:0; height:1px; width:100%;
+  content:""; position:absolute; left:0; bottom:11px; height:1px; width:100%;
   background:var(--or); transform:scaleX(0); transform-origin:left;
   transition:transform var(--transition);
 }
@@ -248,20 +326,14 @@ h4{ font-size:var(--t-l); }
 .navigation a[aria-current="page"]::after{ transform:scaleX(1); }
 .navigation a[aria-current="page"]{ color:var(--vert); }
 
-.burger{ display:none; background:none; border:0; padding:11px; margin-right:-11px; }
-.burger span{ display:block; width:22px; height:1.5px; background:var(--vert); margin:5px 0; }
-
-/* Au-dessus du seuil du burger, la navigation prend sa propre ligne :
-   huit entrees ne tiennent pas a cote du nom sur une seule ligne. */
-@media (min-width:861px){
-  .entete .zone{ flex-wrap:wrap; min-height:0; padding-block:15px 0; }
-  .navigation{
-    flex-basis:100%; justify-content:center;
-    gap:clamp(16px,2.2vw,32px);
-    margin-top:15px; border-top:1px solid var(--papier);
-  }
-  .navigation a{ padding:15px 0; }
+/* ── LE BOUTON DU MENU, sur téléphone ────────────────────────────────────
+   Il vit dans la plaque, en or, et n'apparaît qu'une fois la navigation
+   repliée. */
+.burger{
+  display:none; background:none; border:0; padding:11px;
+  position:absolute; right:var(--marge-page); top:50%; transform:translateY(-50%);
 }
+.burger span{ display:block; width:22px; height:1.5px; background:var(--or-clair); margin:5px 0; }
 
 /* ============================================================================
    BANDEAUX SOMBRES
@@ -310,15 +382,80 @@ h4{ font-size:var(--t-l); }
    PETITS ÉCRANS
    ============================================================================ */
 @media (max-width:1120px){
+  /* La ligne « nettoyage · blanchisserie · couture » saute la première : le
+     nom composé se suffit, et la bande a besoin de sa place pour les faits. */
   .marque .mots span{ display:none; }
 }
 @media (max-width:860px){
   :root{ --s6:64px; --s7:88px; }
-  .navigation{ display:none; }
+
+  /* La navigation se replie derrière le bouton du menu. C'est donc la plaque
+     qui doit rester à l'écran, sinon le menu devient inatteignable une fois
+     la page défilée : l'en-tête entier colle, remonté de la hauteur exacte
+     de la bande du logo — 60 px de bande plus son filet.
+     La valeur de repli est 61 px ; `--h-bande-logo` la remplace par la
+     hauteur RÉELLE, mesurée par assets/site.js. Voir le commentaire là-bas :
+     un visiteur qui a forcé une taille de texte minimale fait grandir la
+     bande, et un décalage figé laisserait une tranche à l'écran. */
+  .entete{ position:sticky; top:calc(-1 * var(--h-bande-logo, 61px)); z-index:60; }
+  .ent-nav{ display:none; }
   .burger{ display:block; }
+
   .marque svg{ width:28px; }
   .marque .mots b{ font-size:15px; letter-spacing:.09em; }
+  /* L'ancienneté sort de la bande : à cette largeur, le nom composé, la
+     phrase d'ouverture et le numéro ne tiennent plus à trois sur une ligne.
+     C'est l'ancienneté qui cède — elle reste sur la plaque du nom, où elle
+     est un argument, pas une information d'usage. */
+  .ent-faits [data-depuis],
+  .ent-faits i{ display:none; }
+  .ent-faits{ font-size:10.5px; letter-spacing:.08em; }
+  .ent-logo .zone{ column-gap:11px; }
+  .ent-tel{ font-size:12.5px; }
+  /* Le nom RESTE CENTRÉ : le bouton du menu est en position absolue, il ne
+     pousse rien. 62 % et non 72 : c'est la largeur qui laisse dix-sept
+     pixels entre le bord du nom et le bouton à 375 px, la largeur la plus
+     serrée du site. Le calage sur l'axe de la page vaut aussi ici, et un nom
+     poussé à gauche sur une tablette de 768 px paraîtrait tombé. */
+  .ent-plaque .nom{ max-width:min(495px,62%); }
+  .ent-plaque .zone{ padding-block:16px 14px; }
+  /* Le filet sort : sous un nom de cette taille il ne sépare plus rien, et
+     la plaque doit rester basse — c'est elle qui reste collée en haut. */
+  .ent-plaque .filet{ display:none; }
+
   .pied .colonnes{ grid-template-columns:1fr; gap:var(--s3); }
+}
+@media (max-width:620px){
+  /* LE LOGO SORT DE LA BANDE. Mesuré à 375 px : le bouton, l'état
+     d'ouverture dans sa formulation la plus longue (« Fermé · ouvre lundi à
+     8h00 », 190 px) et le numéro font 325 px à eux trois, soit exactement la
+     largeur disponible — le numéro se cassait sur deux lignes. Il fallait
+     libérer une des trois pièces.
+
+     C'est le bouton qui cède, et c'est le bon choix : le nom de la maison
+     est écrit soixante pixels plus bas, en or, dix fois plus gros, et il
+     ramène lui aussi à l'accueil. L'état et le numéro, eux, ne sont écrits
+     nulle part ailleurs en haut de page.
+
+     Reste deux zones : les faits à gauche, l'action à droite. */
+  .marque{ display:none; }
+  .ent-logo .zone{ grid-template-columns:minmax(0,1fr) auto; }
+  .ent-faits{ grid-column:1; justify-self:start; }
+  .ent-tel{ grid-column:2; }
+
+  /* L'ÉTAT PEUT PASSER À LA LIGNE, et lui seul. Mesuré à 320 px, la largeur
+     d'écran la plus étroite encore rencontrée : la formulation la plus longue
+     que produit assets/site.js — « Fermé · ouvre mercredi à 8h00 » — fait
+     218 px, le numéro 94, et il ne reste que 269 px. Le numéro sortait de
+     l'écran, masqué par le `overflow-x:hidden` du corps : invisible, donc
+     jamais corrigé.
+
+     Le réglage se règle tout seul : tant que la phrase tient sur une ligne
+     elle y reste — c'est le cas dès 360 px — et elle ne se replie que quand
+     il le faut. Le numéro, lui, garde son `nowrap` : un numéro de téléphone
+     coupé en deux ne se compose pas. */
+  .ent-faits{ white-space:normal; min-width:0; }
+  .ent-faits .pastille{ min-width:0; }
 }
 @media (max-width:620px){
   body{ font-size:16px; }
@@ -329,9 +466,16 @@ h4{ font-size:var(--t-l); }
 /* ============================================================================
    MENU SUR TÉLÉPHONE
    ============================================================================ */
+/* Le panneau couvre tout l'écran et PASSE SOUS l'en-tête, qui garde son
+   z-index supérieur : le bouton qui a ouvert le menu doit rester visible et
+   cliquable pour le refermer. Un panneau calé sous une hauteur fixe se
+   décale dès que la page est défilée — l'en-tête ne fait plus alors que la
+   hauteur de sa plaque. Le retrait par le haut est donc un `padding`, pas
+   une position : il dégage l'en-tête à l'arrivée, et ne gêne rien ensuite. */
 .menu-mobile{
-  position:fixed; inset:118px 0 0; z-index:55;   /* 42px de bandeau + 76px d en-tete */
-  background:var(--ivoire); padding:var(--s4) var(--marge-page); overflow-y:auto;
+  position:fixed; inset:0; z-index:54;
+  background:var(--ivoire); overflow-y:auto;
+  padding:170px var(--marge-page) var(--s4);
 }
 .menu-mobile ul{ list-style:none; margin:0; padding:0; }
 .menu-mobile li{ border-bottom:1px solid var(--papier); }
@@ -582,7 +726,6 @@ h4{ font-size:var(--t-l); }
    Tout lien doit offrir au moins 44 px de hauteur au doigt. Sans ça,
    on rate le lien une fois sur trois sur un téléphone.
    ============================================================================ */
-.marque{ min-height:44px; }
 .pied a{ display:inline-flex; align-items:center; min-height:44px; }
 .pied .mentions a{ min-height:0; }
 .sommaire a,.onglet-vetement,.coordonnees a{ min-height:44px; }
@@ -652,7 +795,6 @@ h4{ font-size:var(--t-l); }
   position:absolute; width:1px; height:1px; overflow:hidden;
   clip-path:inset(50%); white-space:nowrap;
 }
-.nom-enseigne{ margin:0; font-size:inherit; font-weight:inherit; }
 .plaque{ display:block; }
 .plaque svg{ width:100%; height:auto; display:block; }
 .plaque text{ font-family:var(--logotype); fill:url(#orfevre); }
@@ -706,226 +848,14 @@ h4{ font-size:var(--t-l); }
    IMPRESSION — la liste de prix doit sortir proprement sur papier
    ============================================================================ */
 @media print{
-  .entete,.pied,.burger,.sommaire{ display:none; }
+  /* `.ent-nav` et `.menu-mobile` sont des freres du <header>, pas ses
+     enfants : masquer `.entete` ne les emporte plus. Sans cette ligne, la
+     liste des prix sort du papier avec sa barre de navigation. */
+  .entete,.ent-nav,.menu-mobile,.pied,.burger,.sommaire{ display:none; }
   body{ background:#fff; color:#000; font-size:11pt; }
   .sombre{ background:#fff; color:#000; }
   a::after{ content:""; }
 }
-
-
-/* ============================================================================
-   L'EN-TÊTE DE L'ACCUEIL — elle porte le nom
-   ----------------------------------------------------------------------------
-   Sur l'accueil seulement, l'en-tête passe au vert de nuit et reçoit la
-   plaque d'or. Sur ivoire, les reflets clairs du dégradé d'orfèvre
-   disparaîtraient ; sur le vert ils tiennent. Le vert devient alors le fond
-   continu du haut de page, du bandeau jusqu'au mur, et l'ivoire n'appartient
-   plus qu'aux six cartes : le seul endroit clair de l'écran est celui qu'on
-   doit lire. L'en-tête étant collante, le nom ne défile plus.
-   ============================================================================ */
-.entete-nom{
-  background:var(--vert-nuit);
-  border-bottom:1px solid rgba(201,162,77,.28);
-  /* Pas de `position` ici : `.entete` est déjà en `sticky`, qui suffit à
-     ancrer les deux calques et qu'il ne faut surtout pas écraser. */
-  isolation:isolate; overflow:hidden;
-}
-/* Les deux halos et le grain du bandeau du nom, tels que décrits au brief :
-   un vert lumineux qui tombe du haut, un reflet doré au coin bas droit.
-   Sans eux, l'aplat sombre paraît plat. Ils étaient portés par l'ancienne
-   enseigne ; ils suivent le nom dans son nouveau logement. */
-.entete-nom::before{
-  content:""; position:absolute; inset:0; z-index:-2;
-  background:
-    radial-gradient(115% 78% at 50% -6%, rgba(15,90,50,.42), transparent 62%),
-    radial-gradient(88% 58% at 88% 106%, rgba(201,162,77,.14), transparent 60%);
-}
-.entete-nom::after{                   /* le grain */
-  content:""; position:absolute; inset:0; z-index:-1; opacity:.16; pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
-}
-.entete-nom .zone{ display:block; padding-block:clamp(18px,2.2vw,28px) 0; }
-.entete-nom .nom{
-  display:flex; align-items:center; justify-content:center;
-  max-width:min(495px,72%); margin:0 auto;
-}
-/* Le titre doit occuper toute la largeur du lien, sinon la plaque se
-   calibre sur son contenu et le nom rétrécit. */
-.entete-nom .nom-enseigne{ width:100%; }
-/* Le filet à losange remplace la simple ligne qui séparait le nom de la
-   navigation : sous un nom de cette taille une hairline pleine largeur
-   paraissait maigre, et le filet est le séparateur de la maison. */
-.entete-nom .filet{
-  max-width:min(230px,40%);
-  margin:clamp(13px,1.7vw,19px) auto clamp(9px,1.1vw,13px);
-}
-.entete-nom .filet::before,.entete-nom .filet::after{
-  background:linear-gradient(90deg,transparent,var(--or-clair),transparent);
-}
-.entete-nom .filet i{ background:var(--or-clair); width:6px; height:6px; }
-.entete-nom .navigation{
-  display:flex; flex-basis:100%; justify-content:center;
-  gap:clamp(16px,2.2vw,32px); margin-top:0; border-top:0;
-}
-.entete-nom .navigation a{ color:rgba(246,243,236,.72); padding:11px 0 14px; }
-.entete-nom .navigation a::after{ background:var(--or-clair); bottom:9px; }
-.entete-nom .navigation a:hover,
-.entete-nom .navigation a[aria-current="page"]{ color:var(--or-clair); }
-.entete-nom .burger span{ background:var(--or-clair); }
-
-@media (max-width:860px){
-  .entete-nom .zone{ display:flex; align-items:center; gap:var(--s3); padding-block:12px; }
-  .entete-nom .nom{ margin:0; max-width:min(260px,64%); }
-  .entete-nom .filet{ display:none; }
-  /* Il faut le redire ici : `.entete-nom .navigation` est plus spécifique que
-     le `.navigation{display:none}` du site, et l'emporterait malgré la media
-     query. La navigation resterait dépliée sur téléphone. */
-  .entete-nom .navigation{ display:none; }
-}
-
-
-/* ============================================================================
-   LA BANDE DE RACCORD — accueil, tout en haut
-   ----------------------------------------------------------------------------
-   Sur l'accueil, le bandeau vert cède la place à une bande ivoire qui porte
-   le LOGO DU SITE : le même balisage `.marque` que les huit pages
-   intérieures, au caractère près. C'est lui qui fait le raccord entre
-   l'accueil et le reste. Le nom d'or, juste en dessous, n'est pas le logo
-   mais l'enseigne de la maison — les deux ne jouent pas le même rôle.
-
-   Trois zones, trois registres : l'identité à gauche, l'heure au centre,
-   l'action à droite. La grille est `1fr auto 1fr`, donc l'état d'ouverture
-   tombe exactement sur l'axe de la page — le même axe que le nom d'or et que
-   la tringle plus bas.
-
-   Les trois groupes se posent sur la MÊME LIGNE DE BASE, celle du nom du
-   logo. Sa ligne « nettoyage · blanchisserie · couture » pend en dessous,
-   sans vis-à-vis : une seule ligne forte traverse la bande, et l'asymétrie
-   du bas devient lisible au lieu d'être subie.
-
-   Aucun losange ici. Les losanges séparaient trois informations collées les
-   unes aux autres ; trois zones distinctes se séparent toutes seules.
-   ============================================================================ */
-.bande-logo{
-  background:var(--ivoire);
-  color:var(--graphite);
-  border-bottom:1px solid var(--papier);
-}
-.bande-logo .zone{
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  column-gap:var(--s3);
-  align-items:baseline;
-  /* Sept pixels seulement : la cible tactile de 44 px que le site impose au
-     logo donne déjà sa hauteur à la bande. */
-  padding-block:7px;
-}
-/* Le logo est un conteneur flex. Sans réglage, sa ligne de base serait celle
-   de son premier élément — le bouton, une image, donc son bord bas — et non
-   celle du nom. Le bouton sort de l'alignement par `align-self`, la ligne de
-   base remonte au nom, et le logo s'aligne sur l'état et le numéro.
-   Son `margin-right:auto`, hérité de `.marque`, suffit à le caler à gauche
-   ET à réduire sa boîte au contenu : le clic n'est pas capté dans le vide. */
-.bande-logo .marque{ align-items:baseline; }
-.bande-logo .marque svg{ align-self:center; }
-
-/* La pastille du site est une boîte inline-flex : posée telle quelle dans la
-   grille, sa ligne de base serait celle de son point et non de son texte, et
-   l'état ne s'alignerait pas sur le nom. Le point passe donc en absolu et
-   l'état retrouve une ligne de base de texte. L'animation ne change pas. */
-.bl-etat.pastille{
-  display:inline; position:relative; padding-left:15px; white-space:nowrap;
-  font-size:11px; letter-spacing:.12em; text-transform:uppercase;
-}
-.bl-etat.pastille::before{ position:absolute; left:0; top:.42em; margin:0; }
-
-/* Le téléphone est la seule action de la bande : il porte le fil d'or que le
-   site coud sous ses liens de navigation — ici cousu en permanence. Le
-   chiffre reste vert et non or : l'or sur l'ivoire plafonne à 3,15:1, sous
-   le seuil de 4,5:1 exigé d'un texte de cette taille. */
-.bl-tel{
-  justify-self:end; position:relative;
-  font-size:13.5px; font-weight:600; letter-spacing:.09em; color:var(--vert);
-}
-/* La cible tactile fait bien 44 px, mais hors du flux : un `min-height` sur
-   le lien lui-même en ferait la pièce la plus haute de la bande, qui
-   gagnerait dix pixels de vide. */
-.bl-tel::before{
-  content:""; position:absolute; left:-8px; right:-8px;
-  top:50%; height:44px; transform:translateY(-50%);
-}
-.bl-tel::after{                       /* le fil d'or, cousu en permanence */
-  content:""; position:absolute; left:0; right:0; bottom:-5px; height:1px;
-  background:var(--or); transition:background var(--transition);
-}
-.bl-tel:hover::after{ background:var(--vert); }
-
-/* Le seuil du burger, déjà celui du site : mesurés, le nom (235 px de
-   texte), l'état fermé (216) et le numéro (94) ne tiennent pas dans les
-   339 px d'un iPhone. Le logo garde sa ligne, l'état et le numéro passent
-   dessous. La ligne « nettoyage · blanchisserie · couture » du logo, elle,
-   s'escamote dès 1120 px — la feuille du site s'en charge déjà. */
-@media (max-width:860px){
-  .bande-logo .zone{
-    grid-template-columns:1fr auto;
-    column-gap:11px; row-gap:8px; padding-block:6px;
-  }
-  .bande-logo .marque{ grid-column:1 / 3; }
-  .bl-etat.pastille{
-    grid-column:1; justify-self:start;
-    font-size:10.5px; letter-spacing:.08em; white-space:normal;
-  }
-  .bl-tel{ grid-column:2; font-size:12.5px; }
-}
-
-
-/* ============================================================================
-   « DEPUIS 2006 À VERNIER », SOUS LE NOM D'OR
-   ----------------------------------------------------------------------------
-   C'est l'argument de la maison, pas une légende : aucun concurrent genevois
-   ne peut l'écrire. Il est donc traité au corps d'un texte qu'on lit, en
-   Cinzel — la police du nom juste au-dessus, même voix, une échelle en
-   dessous — et rien ne l'encadre.
-
-   L'ESPACEMENT FAIT TOUT LE TRAVAIL. Posé à égale distance du filet et de la
-   navigation, l'argument se lirait comme la légende du filet. Le filet est
-   donc remonté contre le nom, dont il est l'ornement de clôture, et
-   l'argument reçoit près du triple de cet écart au-dessus de lui : onze
-   pixels au-dessus du filet, vingt-sept en dessous. Il n'appartient plus à
-   l'ornement, il se tient seul.
-   ============================================================================ */
-.entete-nom .filet{ margin-block:clamp(8px,1vw,11px) 0; }
-.entete-depuis{
-  font-family:var(--logotype);
-  font-size:clamp(11.5px,1.05vw,13.5px); font-weight:500; line-height:1;
-  letter-spacing:.34em;
-  text-indent:.34em;                  /* rend au centrage la traîne du dernier D */
-  text-transform:uppercase;
-  color:var(--or-clair);
-  text-align:center;
-  margin:clamp(19px,2.4vw,27px) 0 clamp(13px,1.5vw,18px);
-}
-
-@media (max-width:860px){
-  /* Sur téléphone, l'en-tête redevient une rangée que le nom et le burger se
-     partagent, et le filet est escamoté. L'argument y serait un troisième
-     élément coincé entre les deux : la rangée passe donc en `wrap` et il
-     descend sur sa propre ligne, l'`order` gardant le burger en haut malgré
-     l'ordre du balisage.
-
-     `row-gap:0` est indispensable : la rangée porte `gap:var(--s3)`, et dès
-     qu'elle passe en `wrap` ces 24 px deviennent aussi un écart de RANGÉE —
-     l'argument tomberait 33 px sous le nom au lieu de 9, et l'en-tête
-     gagnerait 24 px pour rien. */
-  .entete-nom .zone{ flex-wrap:wrap; row-gap:0; }
-  .entete-nom .burger{ order:0; }
-  .entete-depuis{
-    order:1; flex-basis:100%; margin:9px 0 0;
-    font-size:10.5px; letter-spacing:.26em; text-indent:.26em;
-  }
-}
-
-
 
 
 /* ============================================================================
