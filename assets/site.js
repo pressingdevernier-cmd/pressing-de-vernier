@@ -298,8 +298,10 @@ document.querySelectorAll('[data-mentions]').forEach(el => {
 
 /* ═══════════════════════════════════════════════════════════════════════════
    6 · LE CHOIX DU VÊTEMENT — page Couture
-   Les onglets affichent le tableau de retouches correspondant, et le
-   dessin technique se retrace pour le vêtement choisi.
+   Les onglets affichent le tableau de retouches correspondant, et la
+   planche à la craie du vêtement choisi. Tous les vêtements ne sont pas
+   encore dessinés : quand la planche manque, la zone se retire et le
+   tableau prend toute la largeur.
    ═══════════════════════════════════════════════════════════════════════════ */
 const onglets = document.querySelectorAll('.onglet-vetement');
 const zoneVetement = document.getElementById('tarifs-vetement');
@@ -310,18 +312,38 @@ if (onglets.length && zoneVetement && typeof TARIFS !== 'undefined') {
 
   function afficherVetement(idSection) {
     const sec = TARIFS.find(s => s.id === idSection);
-    zoneVetement.innerHTML = '';
     if (!sec) return;
+
+    // La planche d'abord. Tous les vêtements ne sont pas dessinés : quand
+    // elle manque, la zone se retire au lieu de rester vide.
+    const dessin = (zoneDessin && typeof dessinVetement === 'function')
+      ? dessinVetement(idSection) : '';
+
+    if (zoneDessin) {
+      zoneDessin.innerHTML = dessin;
+      zoneDessin.hidden = !dessin;
+      if (dessin) {
+        zoneDessin.classList.remove('vu');
+        void zoneDessin.offsetWidth;   // force le navigateur à repartir de zéro
+        zoneDessin.classList.add('vu');
+      }
+    }
+
+    // Le tableau des prix. Quand la pièce est dessinée, elle porte déjà les
+    // prestations les plus demandées : la liste complète passe alors derrière
+    // un bouton. Sans planche, elle s'affiche directement.
+    zoneVetement.innerHTML = '';
     const bloc = tableauSection(sec);
     bloc.classList.add('vu');          // pas d'attente : le choix doit être instantané
-    zoneVetement.append(bloc);
 
-    // Le dessin technique suit le vêtement choisi, et se retrace à chaque fois
-    if (zoneDessin && typeof dessinVetement === 'function') {
-      zoneDessin.classList.remove('vu');
-      zoneDessin.innerHTML = dessinVetement(idSection, 'Longueur');
-      void zoneDessin.offsetWidth;     // force le navigateur à repartir de zéro
-      zoneDessin.classList.add('vu');
+    if (dessin) {
+      const depliant = document.createElement('details');
+      const bouton = document.createElement('summary');
+      bouton.textContent = 'Voir le prix de toutes les retouches';
+      depliant.append(bouton, bloc);
+      zoneVetement.append(depliant);
+    } else {
+      zoneVetement.append(bloc);
     }
   }
 
@@ -443,92 +465,142 @@ function calerLeNom() {
 if (document.querySelector('.plaque')) {
   calerLeNom();                                   // tout de suite, avec la police de secours
   if (document.fonts) document.fonts.ready.then(calerLeNom);   // puis avec la vraie police
+
+  /* Le nom passe d'une à deux lignes selon la largeur. La version cachée ne
+     peut pas être mesurée — getBBox() renvoie zéro — elle n'est donc calée
+     qu'une fois devenue visible. Sans ce recalage, un téléphone qu'on fait
+     pivoter affiche un nom rogné. */
+  let recalage;
+  addEventListener('resize', () => {
+    clearTimeout(recalage);
+    recalage = setTimeout(calerLeNom, 150);
+  });
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   8 · LE DÉPLIANT DES SERVICES (page d'accueil)
-   Les prix ne sont pas recopiés : ils sont lus dans data/tarifs.js.
-   Pour changer un prix affiché ici, modifiez-le là-bas, rien d'autre.
-   ═══════════════════════════════════════════════════════════════════════════ */
-const SERVICES_ACCUEIL = [
-  { num: '01', titre: 'Nettoyage & entretien', page: 'nettoyage.html',
-    resume: 'Vêtements, pièces délicates, tapis, cuir et sacs',
-    texte: "Vêtements courants, costumes, robes, manteaux et doudounes. Soie, laine et cachemire. "
-         + "Nous prenons aussi en charge les tapis, le cuir, le daim et la restauration de sacs.",
-    prix: [['nettoyage-vetements', 'Chemise sur cintre'],
-           ['nettoyage-vetements', 'Pantalon'],
-           ['nettoyage-vetements', 'Complet'],
-           ['nettoyage-manteaux',  'Manteau long']] },
+/* ════════════════════════════════════════════════════════════════════════════
+   8 · LES SIX MÉTIERS (page d'accueil)
+   ----------------------------------------------------------------------------
+   Six cartes de papier suspendues aux pinces d'une tringle de laiton. Une
+   carte par métier, une page par carte.
 
-  { num: '02', titre: 'Blanchisserie & repassage', page: 'nettoyage.html',
-    resume: 'Chemises, linge au kilo, literie et linge de maison',
-    texte: "Chemises lavées et repassées, rendues sur cintre ou pliées. Repassage seul si vous "
-         + "apportez du linge déjà lavé. Literie, nappes et linge de bain.",
-    prix: [['blanchisserie-kilo',    'Linge courant — selon la formule choisie'],
-           ['blanchisserie-literie', 'Drap avec repassage'],
-           ['blanchisserie-literie', 'Housse de duvet'],
-           ['blanchisserie-maison',  'Nappe']] },
+   `vue`  : hauteur d'affichage de l'illustration, en fraction de la largeur
+            utile de la carte. Ce n'est pas une valeur arbitraire : elle vient
+            d'un calage sur la surface perçue. Les proportions des six dessins
+            vont de 0,42 à 1,06 — à largeur égale, le costume paraîtrait deux
+            fois plus petit que le fer. Les deux pièces hautes et étroites
+            montent donc plus haut que les carrées.
+   `l`,`h`: les dimensions réelles du fichier, pour que le navigateur réserve
+            la place avant de l'avoir chargé.
 
-  { num: '03', titre: 'Couture & retouches', page: 'couture.html',
-    resume: 'Ourlets, réparations, transformations et créations',
-    texte: "Toute la couture est réalisée dans notre atelier. Ourlets et réparations, mais aussi "
-         + "doublures, transformations, broderies et créations sur mesure.",
-    prix: [['retouches-pantalons', 'Ourlet simple piqué machine'],
-           ['retouches-pantalons', 'Fermeture éclair'],
-           ['retouches-chemises',  'Retourner col'],
-           ['retouches-manteaux',  'Doublure de manches']] },
+   Les textes sont écrits ici et nulle part ailleurs.
+   ════════════════════════════════════════════════════════════════════════════ */
+const METIERS = [
+  { cle: 'nettoyage', page: 'nettoyage.html', vue: 1.176, l: 124, h: 296,
+    titre: 'Nettoyage à sec',
+    alt: "Un costume sur cintre, dessiné au trait doré",
+    texte: "Costumes, robes, manteaux, doudounes et textiles délicats : un nettoyage en profondeur tout en douceur." },
 
-  { num: '04', titre: 'Professionnels', page: 'professionnels.html',
-    resume: 'Restaurants, entreprises, crèches, clubs, boutiques',
-    texte: "Entretien régulier du linge, tenues de travail, retouches en série, broderies et pose "
-         + "de patchs. Collecte et livraison étudiées au cas par cas.",
-    prix: [] }
+  { cle: 'blanchisserie', page: 'blanchisserie.html', vue: 1.017, l: 196, h: 256,
+    titre: 'Blanchisserie',
+    alt: "Une machine à laver, dessinée au trait doré",
+    texte: "Linge de maison, draps, serviettes et pièces du quotidien : propreté impeccable et finitions soignées." },
+
+  { cle: 'repassage', page: 'repassage.html', vue: .890, l: 235, h: 224,
+    titre: 'Repassage',
+    alt: "Un fer à repasser posé sur une chemise pliée, dessiné au trait doré",
+    texte: "Chemises, linge de maison, pièces du quotidien : rendus prêts à porter, pliés ou sur cintre." },
+
+  { cle: 'couture', page: 'couture.html', vue: 1.193, l: 128, h: 300,
+    titre: 'Retouches et couture',
+    alt: "Un buste de couturière et une bobine de fil, dessinés au trait doré",
+    texte: "Ajustements, transformations et réparations pour des vêtements qui vous vont à la perfection." },
+
+  { cle: 'cuir', page: 'cuir.html', vue: .874, l: 232, h: 220,
+    titre: 'Cuir, daim, tapis et sacs',
+    alt: "Un tapis roulé et un sac en cuir, dessinés au trait doré",
+    texte: "Nettoyage, soin et rénovation de vos articles en cuir, daim, tapis et sacs d'exception." },
+
+  { cle: 'professionnels', page: 'professionnels.html', vue: .922, l: 246, h: 232,
+    titre: 'Professionnels',
+    alt: "Une blouse et une veste de cuisinier avec sa toque, dessinées au trait doré",
+    texte: "Solutions sur mesure pour entreprises, hôtels, restaurants et professions exigeantes." }
 ];
 
-const zoneCartes = document.getElementById('cartes-services');
+const zoneCartes = document.getElementById('cartes-metiers');
 
-if (zoneCartes && typeof TARIFS !== 'undefined') {
+if (zoneCartes) {
 
-  /* Retrouve une ligne dans la liste officielle */
-  const ligneTarif = (idSection, libelle) => {
-    const sec = TARIFS.find(s => s.id === idSection);
-    return sec ? sec.lignes.find(l => l.fr === libelle) : null;
-  };
+  /* Les deux premières cartes sont visibles d'emblée : elles se chargent tout
+     de suite. Les quatre autres attendent d'approcher de l'écran. */
+  zoneCartes.innerHTML = METIERS.map((m, i) =>
+      '<a class="tr-carte" href="' + m.page + '" style="--vue:' + m.vue + '">'
+    +   '<span class="tr-vue">'
+    +     '<img src="assets/illustrations/' + m.cle + '.webp" width="' + m.l + '" height="' + m.h + '"'
+    +          ' alt="' + m.alt + '"' + (i < 2 ? '' : ' loading="lazy"') + ' decoding="async">'
+    +   '</span>'
+    +   '<h2>' + m.titre + '</h2>'
+    +   '<span class="tr-filet"></span>'
+    +   '<p>' + m.texte + '</p>'
+    +   '<span class="tr-voir"><i></i>Voir</span>'
+    + '</a>').join('');
 
-  const montant = l => {
-    if (!l) return '<b>&mdash;</b>';
-    if (l.devis) return '<b>Sur devis</b>';
-    return (l.des ? '<em>dès</em> ' : '') + '<b>' + formatPrix(l.prix) + '</b>'
-         + (l.unite ? ' <em>' + l.unite.fr + '</em>' : '');
-  };
+  const zonePoints = document.getElementById('points-metiers');
+  zonePoints.innerHTML = METIERS.map((m, i) =>
+      '<li><button type="button" data-va="' + i + '" aria-current="' + (i === 0) + '">'
+    +   '<span class="lecture-seule">' + m.titre + '</span></button></li>').join('');
 
-  SERVICES_ACCUEIL.forEach(s => {
-    const extrait = s.prix.length
-      ? s.prix.map(([sec, lib]) => {
-          const l = ligneTarif(sec, lib);
-          return '<li><span>' + (l ? l.fr : lib) + '</span>' + montant(l) + '</li>';
-        }).join('')
-      : '<li><span>Selon le volume et la fréquence</span><b>Sur devis</b></li>';
 
-    const carte = document.createElement('article');
-    carte.className = 'carte-service revele';
-    carte.innerHTML =
-      '<div>' +
-        '<span class="num">' + s.num + '</span>' +
-        '<h2>' + s.titre + '</h2>' +
-        '<p class="texte">' + s.texte + '</p>' +
-        '<div class="liens">' +
-          '<a class="bouton plein" href="' + s.page + '">En savoir plus</a>' +
-          (s.prix.length ? '<a class="bouton vide" href="tarifs.html">Tous les tarifs</a>' : '') +
-        '</div>' +
-      '</div>' +
-      '<ul class="extrait">' + extrait + '</ul>';
-    zoneCartes.append(carte);
-  });
+  /* ───────────────────────────────────────────────────────────────────────────
+     LE GLISSEMENT
+     Sous 1440 px la tringle ne se coupe pas et ne se redresse pas : c'est le
+     regard qui la parcourt. Pinces et cartes défilent ensemble, donc restent
+     alignées.
+     ─────────────────────────────────────────────────────────────────────────── */
+  const piste  = document.getElementById('tringle');
+  const cartes = [...zoneCartes.querySelectorAll('.tr-carte')];
+  const points = [...zonePoints.querySelectorAll('button')];
+  const voileG = document.querySelector('.tr-voile.gauche');
+  const voileD = document.querySelector('.tr-voile.droite');
 
-  /* Les cartes viennent d'être créées : elles doivent elles aussi
-     apparaître au défilement. */
-  revelerDans(zoneCartes);
+  points.forEach(b => b.addEventListener('click', () => {
+    cartes[+b.dataset.va].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }));
+
+  /* La carte la plus proche du centre de la piste est la carte courante. */
+  function suivreLaTringle() {
+    const p = piste.getBoundingClientRect();
+    const centre = p.left + p.width / 2;
+    let proche = 0, ecart = Infinity;
+    cartes.forEach((c, i) => {
+      const b = c.getBoundingClientRect();
+      const d = Math.abs(b.left + b.width / 2 - centre);
+      if (d < ecart) { ecart = d; proche = i; }
+    });
+    points.forEach((b, i) => b.setAttribute('aria-current', String(i === proche)));
+
+    /* Le voile dit « il reste des cartes de ce côté ». On ne peut pas le
+       déduire de scrollLeft : l'aimant recentre la première et la dernière
+       carte, si bien que la piste n'atteint jamais ses extrêmes. On regarde
+       donc si la première et la dernière carte sont entièrement visibles. */
+    const pre = cartes[0].getBoundingClientRect();
+    const der = cartes[cartes.length - 1].getBoundingClientRect();
+    voileG.toggleAttribute('data-eteint', pre.left >= p.left - 2);
+    voileD.toggleAttribute('data-eteint', der.right <= p.right + 2);
+  }
+
+  piste.addEventListener('scroll', suivreLaTringle, { passive: true });
+  addEventListener('resize', suivreLaTringle);
+  suivreLaTringle();
+
+  /* La tringle n'est pas encore chargée au premier appel : la piste ne connaît
+     donc pas sa largeur, et les deux voiles s'éteindraient à tort. */
+  const rail = document.querySelector('.tr-rail');
+  if (rail.complete) suivreLaTringle();
+  else rail.addEventListener('load', suivreLaTringle, { once: true });
+
+  /* La tabulation amène le focus sur une carte hors champ : le navigateur la
+     fait défiler, il ne reste qu'à remettre les points d'accord. */
+  cartes.forEach(c => c.addEventListener('focus', () => setTimeout(suivreLaTringle, 60)));
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

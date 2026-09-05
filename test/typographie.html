@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pressing de Vernier — comparatif typographique</title>
+
+<!-- ============================================================================
+     PAGE DE TEST — NE FAIT PAS PARTIE DU SITE
+     ----------------------------------------------------------------------------
+     Quatre propositions typographiques posées sur les vrais contenus du site
+     (enseigne, section, extrait de tarifs, horaires, bandeau de service) et sur
+     la vraie palette relevée dans assets/style.css.
+
+     Aucun fichier du site n'est lu ni modifié par cette page : les couleurs et
+     les textes y sont recopiés volontairement, pour qu'elle reste isolée.
+
+     Les polices sont ici chargées depuis Google Fonts, le temps de l'essai.
+     Le jour où un couple est retenu, les fichiers .woff2 seront déposés dans
+     assets/polices/ comme les polices actuelles — aucun appel extérieur ne
+     subsistera sur le site.
+     ============================================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Familjen+Grotesk:wght@400..700&family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,0..100,0..1&family=Inter:wght@300..600&family=Karla:ital,wght@0,300..600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..400&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================================
+   1 · LA PALETTE — recopiée à l'identique depuis assets/style.css
+   ============================================================================ */
+:root{
+  --ivoire:#F6F3EC; --papier:#EAE5D9; --graphite:#232825;
+  --vert:#04321E;   --vert-nuit:#04180F;
+  --or:#A8842F;     --or-clair:#C9A24D;
+  --acier:#8A979B;  --blanc:#FFFFFF;
+  --sur-nuit:#F6F3EC; --sur-nuit-doux:rgba(246,243,236,.74);
+
+  /* Police de l'outil lui-même : volontairement neutre et sans caractère,
+     pour ne jamais entrer en concurrence avec les échantillons. */
+  --ui:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{ -webkit-text-size-adjust:100%; }
+
+body{
+  margin:0;
+  background:var(--papier);
+  color:var(--graphite);
+  font-family:var(--ui);
+  overflow-x:hidden;
+}
+
+:focus-visible{ outline:2px solid var(--or); outline-offset:3px; border-radius:2px; }
+
+
+/* ============================================================================
+   2 · LE BANDEAU DE L'OUTIL
+   ============================================================================ */
+.outil{
+  position:sticky; top:0; z-index:50;
+  background:var(--vert-nuit); color:var(--sur-nuit);
+  padding:14px clamp(14px,3vw,28px);
+  display:flex; flex-wrap:wrap; align-items:center; gap:10px 22px;
+  border-bottom:1px solid rgba(201,162,77,.3);
+}
+.outil h1{
+  font-size:13px; font-weight:600; margin:0;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--or-clair);
+}
+.outil p{ margin:0; font-size:12.5px; color:var(--sur-nuit-doux); flex:1 1 260px; }
+
+.filtres{ display:flex; flex-wrap:wrap; gap:6px; }
+.filtres button{
+  font:inherit; font-size:12px; font-weight:500; cursor:pointer;
+  padding:7px 13px; min-height:34px;
+  color:var(--sur-nuit-doux); background:transparent;
+  border:1px solid rgba(201,162,77,.34); border-radius:2px;
+  transition:background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+.filtres button:hover{ color:var(--sur-nuit); border-color:var(--or-clair); }
+.filtres button[aria-pressed="true"]{
+  background:var(--or-clair); border-color:var(--or-clair); color:var(--vert-nuit); font-weight:600;
+}
+
+
+/* ============================================================================
+   3 · LA GRILLE DE COMPARAISON
+   ============================================================================ */
+/* Les sept blocs de l'échantillon sont alignés d'une colonne à l'autre par
+   « subgrid » : chaque rangée prend la hauteur du plus haut des quatre. Sans
+   cela, un titre qui passe sur deux lignes dans une colonne décale tout ce qui
+   suit, et la comparaison horizontale devient fausse.
+   Les navigateurs sans subgrid ignorent la ligne et retombent sur des rangées
+   automatiques : la page reste lisible, seulement moins bien alignée. */
+.grille{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-template-rows:repeat(7,auto);
+  gap:1px;
+  background:var(--papier);
+}
+.colonne{
+  display:grid;
+  grid-row:span 7;
+  grid-template-rows:subgrid;
+  background:var(--ivoire);
+  min-width:0;
+}
+.colonne[hidden]{ display:none; }
+
+/* Une seule option : la colonne est centrée et ramenée à une largeur de
+   lecture. À pleine largeur d'écran, les lignes atteindraient 150 signes et
+   on ne jugerait plus la police mais la fatigue. */
+.grille.isole{ grid-template-columns:minmax(0,740px); justify-content:center; }
+
+@media (max-width:1240px){ .grille{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:720px){  .grille{ grid-template-columns:1fr; } }
+
+
+/* ---- L'en-tête de colonne : le nom de chaque police, dans sa propre police ---
+   Elle reste collée sous la barre d'outil pendant le défilement, pour qu'on
+   sache toujours quelle police on regarde. La hauteur de la barre change quand
+   elle se replie sur écran étroit : elle est donc mesurée en JavaScript et
+   publiée dans --h-outil, jamais écrite en dur. */
+.fiche{
+  position:sticky; top:var(--h-outil,57px); z-index:20;
+  background:var(--ivoire);
+  border-bottom:1px solid var(--papier);
+  padding:20px clamp(16px,2vw,26px) 18px;
+}
+/* En colonne unique, les échantillons se lisent l'un après l'autre :
+   une fiche collante n'aiderait plus, elle mangerait la hauteur d'écran. */
+@media (max-width:720px){ .fiche{ position:static; } }
+.fiche .rang{
+  font-size:10.5px; font-weight:600; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--acier); margin:0 0 8px;
+}
+.fiche .titre{ font-family:var(--ui); font-size:17px; font-weight:600; margin:0 0 12px; color:var(--vert); }
+.fiche .noms{ margin:0 0 10px; line-height:1.35; }
+.fiche .noms b{ display:block; font-weight:500; font-size:21px; color:var(--graphite); }
+.fiche .noms b + b{ margin-top:2px; }
+.fiche .noms span{
+  font-family:var(--ui); font-size:10px; font-weight:600; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--acier); vertical-align:.32em; margin-left:8px;
+}
+.fiche .evoque{ font-family:var(--ui); font-size:12.5px; line-height:1.5; color:#5C6560; margin:0; }
+
+.actuel .fiche{ border-bottom-color:var(--or); }
+.actuel .fiche .rang{ color:var(--or); }
+
+
+/* ============================================================================
+   4 · L'ÉCHANTILLON — structure commune aux quatre colonnes
+   Seules les polices changent d'une colonne à l'autre. Tailles, couleurs,
+   espacements et contenus sont rigoureusement identiques.
+   ============================================================================ */
+.bloc{ padding:clamp(22px,2.6vw,34px) clamp(16px,2vw,26px); border-bottom:1px solid var(--papier); }
+
+.etiquette{
+  font-family:var(--ui); font-size:9.5px; font-weight:600; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--acier); margin:0 0 16px;
+}
+.etiquette.sur-nuit{ color:rgba(246,243,236,.42); }
+
+
+/* ---- 4.1 · L'enseigne, sur fond de nuit comme sur le site ------------------ */
+.enseigne{
+  background:var(--vert-nuit); color:var(--sur-nuit);
+  padding:clamp(28px,3.4vw,42px) clamp(16px,2vw,26px) clamp(24px,3vw,34px);
+  border-bottom:1px solid var(--papier);
+}
+.filet{ display:flex; align-items:center; gap:9px; margin-bottom:clamp(20px,2.6vw,28px); }
+.filet::before,.filet::after{ content:""; height:1px; flex:1;
+  background:linear-gradient(90deg,transparent,var(--or-clair),transparent); }
+.filet i{ width:6px; height:6px; background:var(--or-clair); transform:rotate(45deg); flex:none; }
+
+.nom{
+  font-family:var(--display); font-weight:var(--display-nom-graisse);
+  font-size:calc(clamp(20px,2.15vw,29px) * var(--k-display));
+  line-height:1.06; letter-spacing:var(--nom-chasse);
+  text-transform:uppercase; color:var(--sur-nuit);
+  margin:0; text-wrap:balance;
+}
+.metiers{
+  font-family:var(--texte); font-weight:500;
+  font-size:calc(11px * var(--k-texte));
+  letter-spacing:.34em; text-transform:uppercase; color:var(--or-clair);
+  margin:22px 0 0; line-height:1.5;
+}
+.lieu{
+  font-family:var(--texte); font-size:calc(13px * var(--k-texte));
+  color:rgba(246,243,236,.5); margin:11px 0 0;
+}
+
+
+/* ---- 4.2 · La phrase de positionnement ------------------------------------ */
+.positionnement p{
+  font-family:var(--display); font-style:italic;
+  font-weight:var(--display-graisse);
+  font-size:calc(20px * var(--k-display));
+  line-height:1.42; color:var(--vert); margin:0; text-wrap:pretty;
+}
+
+
+/* ---- 4.3 · Un titre de section et son texte ------------------------------- */
+.num{
+  font-family:var(--texte); font-size:calc(11px * var(--k-texte)); font-weight:600;
+  letter-spacing:.2em; color:var(--or); display:block; margin-bottom:10px;
+}
+.bloc h2{
+  font-family:var(--display); font-weight:var(--display-graisse);
+  font-size:calc(clamp(25px,2.4vw,31px) * var(--k-display));
+  line-height:1.14; letter-spacing:var(--titre-chasse);
+  color:var(--vert); margin:0 0 10px; text-wrap:balance;
+}
+.resume{
+  font-family:var(--texte); font-size:calc(14px * var(--k-texte)); font-weight:500;
+  color:var(--or); margin:0 0 16px; line-height:1.45;
+}
+.corps{
+  font-family:var(--texte); font-weight:var(--texte-graisse);
+  font-size:calc(17px * var(--k-texte)); line-height:1.62;
+  color:var(--graphite); margin:0; text-wrap:pretty;
+}
+
+
+/* ---- 4.4 · L'extrait des tarifs ------------------------------------------- */
+.tarifs h3{
+  font-family:var(--display); font-weight:var(--display-graisse);
+  font-size:calc(22px * var(--k-display)); color:var(--vert);
+  margin:0 0 4px; padding-bottom:11px; border-bottom:1px solid var(--or);
+}
+.tarifs dl{ margin:0; font-family:var(--texte); }
+.tarifs .ligne{
+  display:flex; align-items:baseline; justify-content:space-between; gap:16px;
+  padding:9px 0; border-bottom:1px solid var(--papier);
+}
+.tarifs dt{
+  font-size:calc(16px * var(--k-texte)); font-weight:var(--texte-graisse);
+  line-height:1.35; min-width:0;
+}
+.tarifs dd{
+  margin:0; font-size:calc(16px * var(--k-texte)); font-weight:600;
+  color:var(--vert); white-space:nowrap; font-variant-numeric:tabular-nums lining-nums;
+}
+.tarifs dd em{
+  font-style:normal; font-weight:400; font-size:.82em;
+  color:var(--acier); margin-right:3px; letter-spacing:.02em;
+}
+/* Le vrai test : la mention légale, à 12 px, sur ivoire. */
+.mention{
+  font-family:var(--texte); font-size:calc(12px * var(--k-texte)); line-height:1.55;
+  color:var(--acier); margin:14px 0 0;
+}
+
+
+/* ---- 4.5 · Les horaires --------------------------------------------------- */
+.horaires{ font-family:var(--texte); }
+.pastille{
+  display:inline-flex; align-items:center; gap:7px;
+  font-size:calc(13px * var(--k-texte)); font-weight:600; color:var(--vert);
+  margin-bottom:16px;
+}
+.pastille::before{
+  content:""; width:7px; height:7px; border-radius:50%;
+  background:#2E7D52; flex:none;
+}
+.horaires .jour{
+  display:flex; align-items:baseline; justify-content:space-between; gap:14px;
+  padding:7px 0; border-bottom:1px solid var(--papier);
+  font-size:calc(15px * var(--k-texte));
+}
+.horaires .jour:last-of-type{ border-bottom:0; }
+.horaires dt{ font-weight:var(--texte-graisse); color:var(--graphite); }
+.horaires dd{
+  margin:0; text-align:right; color:#4A534E; font-weight:500;
+  font-variant-numeric:tabular-nums lining-nums;
+}
+.horaires .ferme dd{ color:var(--acier); font-weight:400; }
+
+
+/* ---- 4.6 · Le bandeau de service, sur fond de nuit ------------------------ */
+.bandeau{
+  background:var(--vert-nuit); color:var(--sur-nuit);
+  padding:clamp(26px,3vw,36px) clamp(16px,2vw,26px);
+}
+.bandeau h2{
+  font-family:var(--display); font-weight:var(--display-graisse);
+  font-size:calc(23px * var(--k-display)); line-height:1.2;
+  letter-spacing:var(--titre-chasse);
+  color:var(--or-clair); margin:0 0 12px; text-wrap:balance;
+}
+.bandeau p{
+  font-family:var(--texte); font-weight:var(--texte-graisse);
+  font-size:calc(15px * var(--k-texte)); line-height:1.6;
+  color:var(--sur-nuit-doux); margin:0 0 20px; text-wrap:pretty;
+}
+.bouton{
+  display:inline-block; font-family:var(--texte);
+  font-size:calc(15px * var(--k-texte)); font-weight:600;
+  color:var(--vert-nuit); background:var(--or-clair);
+  padding:12px 22px; border-radius:2px; text-decoration:none;
+  font-variant-numeric:tabular-nums lining-nums;
+}
+.sceau{
+  font-family:var(--texte); font-size:calc(9.5px * var(--k-texte)); font-weight:500;
+  letter-spacing:.28em; text-transform:uppercase;
+  color:var(--or-clair); margin:24px 0 0;
+}
+
+
+/* ============================================================================
+   5 · LES QUATRE RÉGLAGES
+   ----------------------------------------------------------------------------
+   Chaque famille a sa propre hauteur d'x : à taille égale en pixels, Cormorant
+   Garamond paraît nettement plus petit que Fraunces. Les coefficients k-display
+   et k-texte rétablissent une taille apparente comparable — sans quoi le
+   comparatif jugerait des réglages plutôt que des caractères.
+   ============================================================================ */
+
+/* --- Référence : le couple actuel du brief -------------------------------- */
+.actuel{
+  --display:"Cormorant Garamond",Georgia,serif;
+  --texte:"Inter",-apple-system,"Segoe UI",Roboto,Helvetica,sans-serif;
+  --k-display:1.18;   /* très petite hauteur d'x : il faut le grossir */
+  --k-texte:0.99;
+  --display-graisse:500;
+  --display-nom-graisse:500;
+  --texte-graisse:300;
+  --nom-chasse:.2em;
+  --titre-chasse:0;
+}
+
+/* --- A · Précision suisse -------------------------------------------------- */
+.opt-a{
+  --display:"Newsreader",Georgia,serif;
+  --texte:"Archivo",-apple-system,"Segoe UI",Roboto,Helvetica,sans-serif;
+  --k-display:1;
+  --k-texte:0.97;
+  --display-graisse:400;
+  --display-nom-graisse:400;
+  --texte-graisse:400;
+  --nom-chasse:.17em;
+  --titre-chasse:-.005em;
+}
+.opt-a .nom,.opt-a .bloc h2,.opt-a .tarifs h3,.opt-a .bandeau h2,.opt-a .positionnement p{
+  font-variation-settings:"opsz" 48;
+}
+.opt-a .corps,.opt-a .tarifs dt{ font-variation-settings:"opsz" 16; }
+
+/* --- B · Enseigne peinte --------------------------------------------------- */
+.opt-b{
+  --display:"Fraunces",Georgia,serif;
+  --texte:"Karla",-apple-system,"Segoe UI",Roboto,Helvetica,sans-serif;
+  --k-display:0.92;   /* grande hauteur d'x : il faut le retenir */
+  --k-texte:1.02;
+  --display-graisse:500;
+  --display-nom-graisse:600;
+  --texte-graisse:400;
+  --nom-chasse:.14em;
+  --titre-chasse:-.012em;
+}
+/* WONK n'est levé que sur les très grands corps : le nom et les titres.
+   Partout ailleurs il est à 0, sinon la fantaisie devient un tic. */
+.opt-b .nom{ font-variation-settings:"opsz" 120,"SOFT" 30,"WONK" 1; }
+.opt-b .bloc h2,.opt-b .bandeau h2,.opt-b .tarifs h3{
+  font-variation-settings:"opsz" 72,"SOFT" 26,"WONK" 1;
+}
+.opt-b .positionnement p{ font-variation-settings:"opsz" 40,"SOFT" 40,"WONK" 0; }
+
+/* --- C · Plaque émaillée (rôles inversés : le sans titre, le serif lit) ----- */
+.opt-c{
+  --display:"Familjen Grotesk",-apple-system,"Segoe UI",Helvetica,sans-serif;
+  --texte:"Spectral",Georgia,serif;
+  --k-display:0.9;
+  --k-texte:0.97;
+  --display-graisse:600;
+  --display-nom-graisse:600;
+  --texte-graisse:400;
+  --nom-chasse:.13em;
+  --titre-chasse:-.018em;
+}
+/* Le titre devient une plaque : capitales, chasse ouverte. */
+.opt-c .bloc h2,.opt-c .bandeau h2,.opt-c .tarifs h3{
+  text-transform:uppercase; letter-spacing:.045em; line-height:1.16;
+  font-size:calc(clamp(19px,1.85vw,24px) * var(--k-display));
+}
+.opt-c .positionnement p{ font-style:normal; font-weight:500; letter-spacing:-.012em; }
+
+
+/* ============================================================================
+   6 · LE PIED DE PAGE
+   ============================================================================ */
+.note{
+  background:var(--vert-nuit); color:var(--sur-nuit-doux);
+  border-top:1px solid rgba(201,162,77,.28);   /* sépare le pied du dernier bandeau, de même fond */
+  padding:clamp(26px,3vw,40px) clamp(16px,3vw,28px);
+  font-size:13.5px; line-height:1.66;
+}
+.note h2{
+  font-size:11px; font-weight:600; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--or-clair); margin:0 0 14px;
+}
+.note ul{ margin:0; padding-left:19px; max-width:70ch; }
+.note li{ margin-bottom:9px; }
+.note li:last-child{ margin-bottom:0; }
+.note b{ color:var(--sur-nuit); font-weight:600; }
+
+
+@media (prefers-reduced-motion:reduce){
+  *{ transition-duration:.01ms !important; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ═══════════════ LE BANDEAU DE L'OUTIL ═══════════════ -->
+<div class="outil">
+  <h1>Comparatif typographique</h1>
+  <p>Mêmes textes, mêmes tailles, même palette. Seules les polices changent.</p>
+  <div class="filtres" role="group" aria-label="Afficher une option seule">
+    <button type="button" data-voir="tout" aria-pressed="true">Les quatre</button>
+    <button type="button" data-voir="actuel" aria-pressed="false">Actuel</button>
+    <button type="button" data-voir="opt-a"  aria-pressed="false">A</button>
+    <button type="button" data-voir="opt-b"  aria-pressed="false">B</button>
+    <button type="button" data-voir="opt-c"  aria-pressed="false">C</button>
+  </div>
+</div>
+
+
+<div class="grille" id="grille">
+
+  <!-- ══════════════════════ RÉFÉRENCE ══════════════════════ -->
+  <div class="colonne actuel" data-option="actuel">
+    <div class="fiche">
+      <p class="rang">Référence &#183; brief actuel</p>
+      <p class="titre">Le couple en place</p>
+      <p class="noms">
+        <b>Cormorant Garamond<span>Titres</span></b>
+        <b>Inter<span>Texte</span></b>
+      </p>
+      <p class="evoque">Élégance de catalogue. Regardez la mention légale et les horaires&#160;: c&#8217;est sous 14&#160;px que le d&#233;bat se tranche.</p>
+    </div>
+
+    <div class="enseigne">
+      <div class="filet"><i></i></div>
+      <p class="nom">Pressing de Vernier</p>
+      <p class="metiers">Nettoyage &#183; Blanchisserie &#183; Couture</p>
+      <p class="lieu">201 route de Vernier &#183; 1214 Vernier, Gen&#232;ve</p>
+    </div>
+
+    <div class="bloc positionnement">
+      <p>Chaque textile m&#233;rite le traitement juste &#8212; nous vous conseillons avant d&#8217;agir.</p>
+    </div>
+
+    <div class="bloc">
+      <span class="num">01</span>
+      <h2>Nettoyage &amp; entretien</h2>
+      <p class="resume">V&#234;tements, pi&#232;ces d&#233;licates, tapis, cuir et sacs</p>
+      <p class="corps">V&#234;tements courants, costumes, robes, manteaux et doudounes. Soie, laine et cachemire. Nous prenons aussi en charge les tapis, le cuir, le daim et la restauration de sacs.</p>
+    </div>
+
+    <div class="bloc tarifs">
+      <h3>Nettoyage &#8212; V&#234;tements</h3>
+      <dl>
+        <div class="ligne"><dt>Chemise sur cintre</dt><dd>5.50</dd></div>
+        <div class="ligne"><dt>Pantalon</dt><dd>11.&#8211;</dd></div>
+        <div class="ligne"><dt>Complet</dt><dd>24.&#8211;</dd></div>
+        <div class="ligne"><dt>Robe en soie</dt><dd><em>d&#232;s</em>15.&#8211;</dd></div>
+        <div class="ligne"><dt>Manteau long</dt><dd><em>d&#232;s</em>25.&#8211;</dd></div>
+        <div class="ligne"><dt>Tapis</dt><dd>Sur devis</dd></div>
+      </dl>
+      <p class="mention">Tous les prix sont TTC, TVA 8,1&#160;% comprise. Mise &#224; jour&#160;: 30 ao&#251;t 2026.</p>
+    </div>
+
+    <div class="bloc horaires">
+      <p class="etiquette">Horaires</p>
+      <p class="pastille">Ouvert &#183; jusqu&#8217;&#224; 18h30</p>
+      <dl>
+        <div class="jour"><dt>Lundi &#8211; Vendredi</dt><dd>8h00 &#8211; 12h30<br>13h30 &#8211; 18h30</dd></div>
+        <div class="jour"><dt>Samedi</dt><dd>8h00 &#8211; 12h00</dd></div>
+        <div class="jour ferme"><dt>Dimanche</dt><dd>Ferm&#233;</dd></div>
+      </dl>
+    </div>
+
+    <div class="bandeau">
+      <p class="etiquette sur-nuit">Bandeau de service</p>
+      <h2>Une urgence, un volume, une pi&#232;ce particuli&#232;re&#160;?</h2>
+      <p>Appelez-nous&#160;: nous vous dirons imm&#233;diatement ce qui est possible, selon la pi&#232;ce et la charge de l&#8217;atelier.</p>
+      <a class="bouton" href="tel:+41223416818">022 341 68 18</a>
+      <p class="sceau">Pressing de Vernier &#183; Depuis 2006</p>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════ OPTION A ══════════════════════ -->
+  <div class="colonne opt-a" data-option="opt-a">
+    <div class="fiche">
+      <p class="rang">Option A</p>
+      <p class="titre">Pr&#233;cision suisse</p>
+      <p class="noms">
+        <b>Newsreader<span>Titres</span></b>
+        <b>Archivo<span>Texte</span></b>
+      </p>
+      <p class="evoque">Le registre tenu, l&#8217;&#233;tiquette cousue, le ticket de d&#233;p&#244;t. Newsreader a de vraies tailles optiques&#160;; Archivo est dessin&#233; pour les petits corps.</p>
+    </div>
+
+    <div class="enseigne">
+      <div class="filet"><i></i></div>
+      <p class="nom">Pressing de Vernier</p>
+      <p class="metiers">Nettoyage &#183; Blanchisserie &#183; Couture</p>
+      <p class="lieu">201 route de Vernier &#183; 1214 Vernier, Gen&#232;ve</p>
+    </div>
+
+    <div class="bloc positionnement">
+      <p>Chaque textile m&#233;rite le traitement juste &#8212; nous vous conseillons avant d&#8217;agir.</p>
+    </div>
+
+    <div class="bloc">
+      <span class="num">01</span>
+      <h2>Nettoyage &amp; entretien</h2>
+      <p class="resume">V&#234;tements, pi&#232;ces d&#233;licates, tapis, cuir et sacs</p>
+      <p class="corps">V&#234;tements courants, costumes, robes, manteaux et doudounes. Soie, laine et cachemire. Nous prenons aussi en charge les tapis, le cuir, le daim et la restauration de sacs.</p>
+    </div>
+
+    <div class="bloc tarifs">
+      <h3>Nettoyage &#8212; V&#234;tements</h3>
+      <dl>
+        <div class="ligne"><dt>Chemise sur cintre</dt><dd>5.50</dd></div>
+        <div class="ligne"><dt>Pantalon</dt><dd>11.&#8211;</dd></div>
+        <div class="ligne"><dt>Complet</dt><dd>24.&#8211;</dd></div>
+        <div class="ligne"><dt>Robe en soie</dt><dd><em>d&#232;s</em>15.&#8211;</dd></div>
+        <div class="ligne"><dt>Manteau long</dt><dd><em>d&#232;s</em>25.&#8211;</dd></div>
+        <div class="ligne"><dt>Tapis</dt><dd>Sur devis</dd></div>
+      </dl>
+      <p class="mention">Tous les prix sont TTC, TVA 8,1&#160;% comprise. Mise &#224; jour&#160;: 30 ao&#251;t 2026.</p>
+    </div>
+
+    <div class="bloc horaires">
+      <p class="etiquette">Horaires</p>
+      <p class="pastille">Ouvert &#183; jusqu&#8217;&#224; 18h30</p>
+      <dl>
+        <div class="jour"><dt>Lundi &#8211; Vendredi</dt><dd>8h00 &#8211; 12h30<br>13h30 &#8211; 18h30</dd></div>
+        <div class="jour"><dt>Samedi</dt><dd>8h00 &#8211; 12h00</dd></div>
+        <div class="jour ferme"><dt>Dimanche</dt><dd>Ferm&#233;</dd></div>
+      </dl>
+    </div>
+
+    <div class="bandeau">
+      <p class="etiquette sur-nuit">Bandeau de service</p>
+      <h2>Une urgence, un volume, une pi&#232;ce particuli&#232;re&#160;?</h2>
+      <p>Appelez-nous&#160;: nous vous dirons imm&#233;diatement ce qui est possible, selon la pi&#232;ce et la charge de l&#8217;atelier.</p>
+      <a class="bouton" href="tel:+41223416818">022 341 68 18</a>
+      <p class="sceau">Pressing de Vernier &#183; Depuis 2006</p>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════ OPTION B ══════════════════════ -->
+  <div class="colonne opt-b" data-option="opt-b">
+    <div class="fiche">
+      <p class="rang">Option B</p>
+      <p class="titre">Enseigne peinte</p>
+      <p class="noms">
+        <b>Fraunces<span>Titres</span></b>
+        <b>Karla<span>Texte</span></b>
+      </p>
+      <p class="evoque">La devanture peinte &#224; la main, la dorure &#224; la feuille sur vitrine. Des empattements charnus, qui tiennent l&#8217;or l&#224; o&#249; un tr&#232;s fort contraste le perd.</p>
+    </div>
+
+    <div class="enseigne">
+      <div class="filet"><i></i></div>
+      <p class="nom">Pressing de Vernier</p>
+      <p class="metiers">Nettoyage &#183; Blanchisserie &#183; Couture</p>
+      <p class="lieu">201 route de Vernier &#183; 1214 Vernier, Gen&#232;ve</p>
+    </div>
+
+    <div class="bloc positionnement">
+      <p>Chaque textile m&#233;rite le traitement juste &#8212; nous vous conseillons avant d&#8217;agir.</p>
+    </div>
+
+    <div class="bloc">
+      <span class="num">01</span>
+      <h2>Nettoyage &amp; entretien</h2>
+      <p class="resume">V&#234;tements, pi&#232;ces d&#233;licates, tapis, cuir et sacs</p>
+      <p class="corps">V&#234;tements courants, costumes, robes, manteaux et doudounes. Soie, laine et cachemire. Nous prenons aussi en charge les tapis, le cuir, le daim et la restauration de sacs.</p>
+    </div>
+
+    <div class="bloc tarifs">
+      <h3>Nettoyage &#8212; V&#234;tements</h3>
+      <dl>
+        <div class="ligne"><dt>Chemise sur cintre</dt><dd>5.50</dd></div>
+        <div class="ligne"><dt>Pantalon</dt><dd>11.&#8211;</dd></div>
+        <div class="ligne"><dt>Complet</dt><dd>24.&#8211;</dd></div>
+        <div class="ligne"><dt>Robe en soie</dt><dd><em>d&#232;s</em>15.&#8211;</dd></div>
+        <div class="ligne"><dt>Manteau long</dt><dd><em>d&#232;s</em>25.&#8211;</dd></div>
+        <div class="ligne"><dt>Tapis</dt><dd>Sur devis</dd></div>
+      </dl>
+      <p class="mention">Tous les prix sont TTC, TVA 8,1&#160;% comprise. Mise &#224; jour&#160;: 30 ao&#251;t 2026.</p>
+    </div>
+
+    <div class="bloc horaires">
+      <p class="etiquette">Horaires</p>
+      <p class="pastille">Ouvert &#183; jusqu&#8217;&#224; 18h30</p>
+      <dl>
+        <div class="jour"><dt>Lundi &#8211; Vendredi</dt><dd>8h00 &#8211; 12h30<br>13h30 &#8211; 18h30</dd></div>
+        <div class="jour"><dt>Samedi</dt><dd>8h00 &#8211; 12h00</dd></div>
+        <div class="jour ferme"><dt>Dimanche</dt><dd>Ferm&#233;</dd></div>
+      </dl>
+    </div>
+
+    <div class="bandeau">
+      <p class="etiquette sur-nuit">Bandeau de service</p>
+      <h2>Une urgence, un volume, une pi&#232;ce particuli&#232;re&#160;?</h2>
+      <p>Appelez-nous&#160;: nous vous dirons imm&#233;diatement ce qui est possible, selon la pi&#232;ce et la charge de l&#8217;atelier.</p>
+      <a class="bouton" href="tel:+41223416818">022 341 68 18</a>
+      <p class="sceau">Pressing de Vernier &#183; Depuis 2006</p>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════ OPTION C ══════════════════════ -->
+  <div class="colonne opt-c" data-option="opt-c">
+    <div class="fiche">
+      <p class="rang">Option C &#183; r&#244;les invers&#233;s</p>
+      <p class="titre">Plaque &#233;maill&#233;e</p>
+      <p class="noms">
+        <b>Familjen Grotesk<span>Titres</span></b>
+        <b>Spectral<span>Texte</span></b>
+      </p>
+      <p class="evoque">Le sans passe en titre, le serif descend dans le texte. Le titre fait plaque, le texte fait papeterie. C&#8217;est l&#8217;option qu&#8217;un site g&#233;n&#233;r&#233; ne produira jamais.</p>
+    </div>
+
+    <div class="enseigne">
+      <div class="filet"><i></i></div>
+      <p class="nom">Pressing de Vernier</p>
+      <p class="metiers">Nettoyage &#183; Blanchisserie &#183; Couture</p>
+      <p class="lieu">201 route de Vernier &#183; 1214 Vernier, Gen&#232;ve</p>
+    </div>
+
+    <div class="bloc positionnement">
+      <p>Chaque textile m&#233;rite le traitement juste &#8212; nous vous conseillons avant d&#8217;agir.</p>
+    </div>
+
+    <div class="bloc">
+      <span class="num">01</span>
+      <h2>Nettoyage &amp; entretien</h2>
+      <p class="resume">V&#234;tements, pi&#232;ces d&#233;licates, tapis, cuir et sacs</p>
+      <p class="corps">V&#234;tements courants, costumes, robes, manteaux et doudounes. Soie, laine et cachemire. Nous prenons aussi en charge les tapis, le cuir, le daim et la restauration de sacs.</p>
+    </div>
+
+    <div class="bloc tarifs">
+      <h3>Nettoyage &#8212; V&#234;tements</h3>
+      <dl>
+        <div class="ligne"><dt>Chemise sur cintre</dt><dd>5.50</dd></div>
+        <div class="ligne"><dt>Pantalon</dt><dd>11.&#8211;</dd></div>
+        <div class="ligne"><dt>Complet</dt><dd>24.&#8211;</dd></div>
+        <div class="ligne"><dt>Robe en soie</dt><dd><em>d&#232;s</em>15.&#8211;</dd></div>
+        <div class="ligne"><dt>Manteau long</dt><dd><em>d&#232;s</em>25.&#8211;</dd></div>
+        <div class="ligne"><dt>Tapis</dt><dd>Sur devis</dd></div>
+      </dl>
+      <p class="mention">Tous les prix sont TTC, TVA 8,1&#160;% comprise. Mise &#224; jour&#160;: 30 ao&#251;t 2026.</p>
+    </div>
+
+    <div class="bloc horaires">
+      <p class="etiquette">Horaires</p>
+      <p class="pastille">Ouvert &#183; jusqu&#8217;&#224; 18h30</p>
+      <dl>
+        <div class="jour"><dt>Lundi &#8211; Vendredi</dt><dd>8h00 &#8211; 12h30<br>13h30 &#8211; 18h30</dd></div>
+        <div class="jour"><dt>Samedi</dt><dd>8h00 &#8211; 12h00</dd></div>
+        <div class="jour ferme"><dt>Dimanche</dt><dd>Ferm&#233;</dd></div>
+      </dl>
+    </div>
+
+    <div class="bandeau">
+      <p class="etiquette sur-nuit">Bandeau de service</p>
+      <h2>Une urgence, un volume, une pi&#232;ce particuli&#232;re&#160;?</h2>
+      <p>Appelez-nous&#160;: nous vous dirons imm&#233;diatement ce qui est possible, selon la pi&#232;ce et la charge de l&#8217;atelier.</p>
+      <a class="bouton" href="tel:+41223416818">022 341 68 18</a>
+      <p class="sceau">Pressing de Vernier &#183; Depuis 2006</p>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="note">
+  <h2>Comment lire cette page</h2>
+  <ul>
+    <li><b>Descendez jusqu&#8217;aux tarifs et aux horaires avant de trancher.</b> Un nom d&#8217;enseigne est beau dans presque toutes les polices. C&#8217;est &#224; 12 et 15&#160;px, sur la mention de TVA et sur les heures d&#8217;ouverture, que les caract&#232;res se s&#233;parent vraiment.</li>
+    <li><b>Les tailles sont &#233;galis&#233;es, pas identiques.</b> Chaque famille a sa propre hauteur d&#8217;x&#160;: un coefficient par colonne ram&#232;ne les quatre &#224; la m&#234;me taille apparente. Sans lui, vous compareriez des r&#233;glages plut&#244;t que des polices.</li>
+    <li><b>Le bandeau vert nuit est le second juge.</b> C&#8217;est l&#224; que l&#8217;or est mis &#224; l&#8217;&#233;preuve&#160;: un caract&#232;re &#224; d&#233;li&#233;s tr&#232;s fins y perd son reflet m&#233;tallique et vire au jaune terne.</li>
+    <li><b>Regardez la colonne A et la colonne C c&#244;te &#224; c&#244;te en cliquant &laquo;&#160;Les quatre&#160;&raquo;</b>, puis chacune seule pour juger &#224; taille r&#233;elle.</li>
+    <li>Les polices sont charg&#233;es depuis Google Fonts, <b>le temps de l&#8217;essai seulement</b>. Le couple retenu sera h&#233;berg&#233; dans <code>assets/polices/</code> comme les polices actuelles, sans appel ext&#233;rieur.</li>
+  </ul>
+</div>
+
+
+<script>
+/* La barre d'outil se replie sur écran étroit : sa hauteur est mesurée et
+   publiée dans --h-outil, sur lequel les fiches collantes se calent. */
+(function () {
+  const barre = document.querySelector('.outil');
+
+  const mesurer = () => {
+    document.documentElement.style.setProperty(
+      '--h-outil', Math.round(barre.getBoundingClientRect().height) + 'px');
+  };
+
+  mesurer();
+  if (window.ResizeObserver) new ResizeObserver(mesurer).observe(barre);
+  else window.addEventListener('resize', mesurer);
+})();
+
+
+/* Afficher les quatre colonnes, ou une seule à pleine largeur. */
+(function () {
+  const grille  = document.getElementById('grille');
+  const boutons = document.querySelectorAll('.filtres button');
+  const colonnes = document.querySelectorAll('.colonne');
+
+  boutons.forEach(bouton => {
+    bouton.addEventListener('click', () => {
+      const choix = bouton.dataset.voir;
+
+      boutons.forEach(b => b.setAttribute('aria-pressed', String(b === bouton)));
+      grille.classList.toggle('isole', choix !== 'tout');
+      colonnes.forEach(c => { c.hidden = (choix !== 'tout' && c.dataset.option !== choix); });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

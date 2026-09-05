@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pressing de Vernier — huit logotypes à l'épreuve du fil</title>
+
+<!-- ============================================================================
+     PAGE DE TEST — NE FAIT PAS PARTIE DU SITE
+     ----------------------------------------------------------------------------
+     Choisir le nom composé une fois : site, enseigne, facture, et surtout
+     BRODÉ SUR DU TISSU.
+
+     La broderie prime sur le reste. Une aiguille ne sait pas faire un délié
+     de deux dixièmes de millimètre : sous une certaine épaisseur, le point de
+     bourdon ne tient pas, le fil se casse ou fait un paquet. Ce qui est élégant
+     à l'écran peut être infaisable au fil.
+
+     Cette page ne se contente donc pas de montrer : elle MESURE. Pour chaque
+     police, le trait le plus fin du nom composé est calculé, puis converti en
+     millimètres à la taille d'une broderie de poitrine (90 mm de large).
+     C'est ce chiffre qui décide, pas le goût.
+
+     Aucun fichier du projet n'est lu ni modifié.
+     ============================================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@500;700&family=Arvo:wght@400;700&family=Bitter:wght@500;600&family=Cinzel:wght@500;600&family=Jost:wght@400;500&family=Libre+Franklin:wght@500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Rubik:wght@500;600&display=swap">
+
+<style>
+/* ============================================================================
+   1 · LA PALETTE — celle de la maison, relevée dans assets/style.css
+   ============================================================================ */
+:root{
+  --ivoire:#F6F3EC; --papier:#EAE5D9; --graphite:#232825;
+  --vert:#04321E;   --vert-nuit:#04180F;
+  --or:#A8842F;     --or-clair:#C9A24D;
+  --acier:#8A979B;
+  --sur-nuit-doux:rgba(246,243,236,.74);
+  --ui:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+
+  /* Le seuil qui décide. En point de bourdon, sous 1 mm le trait devient
+     fragile ; sous 0,7 mm il ne tient plus et il faut passer au point de
+     tige, qui change le dessin de la lettre. */
+  --seuil-confort: 1;
+  --seuil-limite: .7;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; }
+body{ margin:0; background:var(--papier); color:var(--graphite); font-family:var(--ui); }
+:focus-visible{ outline:2px solid var(--or); outline-offset:3px; border-radius:2px; }
+
+
+/* ============================================================================
+   2 · L'EN-TÊTE — la prémisse, posée une fois
+   ============================================================================ */
+.entete{
+  background:var(--vert-nuit); color:var(--ivoire);
+  padding:clamp(26px,3.5vw,44px) clamp(16px,3vw,40px);
+}
+.entete h1{
+  font-size:12px; font-weight:600; margin:0 0 14px;
+  letter-spacing:.22em; text-transform:uppercase; color:var(--or-clair);
+}
+.entete p{
+  margin:0 0 10px; font-size:15px; line-height:1.6;
+  color:var(--sur-nuit-doux); max-width:74ch;
+}
+.entete p:last-child{ margin-bottom:0; }
+.entete b{ color:var(--ivoire); font-weight:600; }
+
+.commandes{ display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; align-items:center; }
+.etiquette-commande{
+  font-size:10px; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(246,243,236,.4); margin-right:4px; min-width:104px;
+}
+.commandes button{
+  font:inherit; font-size:12px; font-weight:500; cursor:pointer;
+  padding:8px 14px; min-height:38px;
+  color:var(--sur-nuit-doux); background:transparent;
+  border:1px solid rgba(201,162,77,.34); border-radius:2px;
+  transition:background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+.commandes button:hover{ color:var(--ivoire); border-color:var(--or-clair); }
+.commandes button[aria-pressed="true"]{
+  background:var(--or-clair); border-color:var(--or-clair);
+  color:var(--vert-nuit); font-weight:600;
+}
+
+
+/* ============================================================================
+   3 · UNE BANDE PAR PROPOSITION
+   ============================================================================ */
+.prop{ border-bottom:1px solid var(--papier); background:var(--ivoire); }
+.prop[hidden]{ display:none; }
+
+.deux{ display:grid; grid-template-columns:minmax(0,1fr); }
+@media (min-width:900px){ .deux{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); } }
+
+/* --- l'usage site et enseigne : or sur vert nuit --------------------------- */
+.usage-or{
+  background:var(--vert-nuit);
+  padding:clamp(30px,4vw,54px) clamp(18px,2.5vw,36px);
+  display:grid; align-content:center; gap:14px; min-height:200px;
+}
+/* --- l'usage fil : monochrome, à la taille réelle de broderie ------------- */
+.usage-fil{
+  background:var(--ivoire);
+  padding:clamp(30px,4vw,54px) clamp(18px,2.5vw,36px);
+  display:grid; align-content:center; gap:22px; min-height:200px;
+  border-left:1px solid var(--papier);
+}
+@media (max-width:899px){ .usage-fil{ border-left:0; border-top:1px solid var(--papier); } }
+
+.mention{
+  font-size:9.5px; font-weight:600; letter-spacing:.2em; text-transform:uppercase;
+  margin:0; min-width:0;
+}
+/* Ceinture : le nom est en nowrap, il ne doit jamais pousser sa colonne. */
+.bloc-or,.bloc-fil{ min-width:0; overflow:hidden; }
+.usage-or .mention{ color:rgba(246,243,236,.4); }
+.usage-fil .mention{ color:var(--acier); }
+
+/* Le nom composé. Une seule règle de dessin, la police change autour. */
+.nom{
+  margin:0; line-height:1.18; white-space:nowrap;
+  font-family:var(--police); font-weight:var(--graisse);
+  letter-spacing:var(--chasse); text-transform:uppercase;
+  font-size:clamp(15px,2.4vw,30px);
+}
+/* L'or de la maison, repris du dégradé « orfèvre » de l'accueil. */
+.nom.or{
+  background:linear-gradient(100deg,#9C7638,#CBA965 24%,#F6E4B4 48%,#CBA965 72%,#9C7638);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.nom.fil{ color:var(--vert); }
+
+/* La règle d'échelle : un trait de la largeur brodée, la légende dessous.
+   Le trait vaut la largeur annoncée — c'est lui qui rend la taille lisible. */
+.echelle{
+  font-size:11px; color:var(--acier); margin:0;
+  display:flex; flex-direction:column; gap:6px; align-items:flex-start;
+}
+.echelle::before{
+  content:""; height:1px; background:var(--acier); opacity:.55;
+  width:var(--largeur-90mm,90px); max-width:100%;
+}
+
+
+/* ============================================================================
+   4 · LA FICHE — ce que la mesure dit, et ce que la lettre évoque
+   ============================================================================ */
+.fiche{
+  padding:clamp(18px,2.2vw,26px) clamp(18px,2.5vw,36px) clamp(22px,2.6vw,30px);
+  display:grid; gap:4px 34px; align-items:start;
+  grid-template-columns:minmax(0,1fr);
+}
+@media (min-width:900px){
+  .fiche{ grid-template-columns:minmax(200px,270px) minmax(0,1fr) minmax(0,1fr); }
+}
+.fiche .rang{
+  font-size:10px; font-weight:600; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--acier); margin:0 0 5px;
+}
+.fiche h2{ font-size:21px; font-weight:600; margin:0 0 8px; color:var(--vert); }
+.fiche .genre{
+  font-size:10px; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--or); margin:0;
+}
+.fiche dt{
+  font-size:9.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--or); margin:0 0 3px;
+}
+.fiche dd{ margin:0 0 12px; font-size:12.5px; line-height:1.55; color:#5C6560; }
+.fiche dd:last-child{ margin-bottom:0; }
+
+/* Le verdict, seul élément coloré de la fiche : c'est lui qui tranche. */
+.verdict{
+  display:inline-flex; align-items:baseline; gap:8px;
+  margin:0 0 10px; padding:7px 12px; border-radius:2px;
+  font-size:12px; font-weight:600;
+}
+.verdict{ flex-wrap:wrap; }
+.verdict b{ font-size:17px; font-variant-numeric:tabular-nums; }
+.detail-mesure{
+  flex-basis:100%; font-weight:400; font-size:11px; opacity:.8; margin-top:2px;
+}
+.verdict.confort{ background:rgba(4,50,30,.08);  color:var(--vert); }
+.verdict.limite{  background:rgba(168,132,47,.14); color:#7A5F1F; }
+.verdict.risque{  background:rgba(150,40,30,.10);  color:#8C2C22; }
+.verdict.mesure{  background:var(--papier); color:var(--acier); font-weight:500; }
+
+
+/* ============================================================================
+   5 · LE PIED DE PAGE
+   ============================================================================ */
+.note{
+  background:var(--vert-nuit); color:var(--sur-nuit-doux);
+  padding:clamp(26px,3vw,42px) clamp(16px,3vw,40px);
+  font-size:13.5px; line-height:1.66;
+}
+.note h2{
+  font-size:11px; font-weight:600; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--or-clair); margin:0 0 14px;
+}
+.note ul{ margin:0; padding-left:19px; max-width:80ch; }
+.note li{ margin-bottom:10px; }
+.note li:last-child{ margin-bottom:0; }
+.note b{ color:var(--ivoire); font-weight:600; }
+
+@media (prefers-reduced-motion:reduce){ *{ transition-duration:.01ms !important; } }
+</style>
+</head>
+
+<body>
+
+<div class="entete">
+  <h1>Huit logotypes à l'épreuve du fil</h1>
+  <p>Le nom sera brodé. Une aiguille ne sait pas faire un délié de deux dixièmes
+     de millimètre&#160;: sous une certaine épaisseur, le point de bourdon ne tient
+     pas — le fil casse, ou fait un paquet. <b>Ce qui est élégant à l'écran peut
+     être infaisable au fil.</b></p>
+  <p>Cette page ne se contente donc pas de montrer. Pour chaque police, le trait
+     le plus fin du nom composé est <b>mesuré</b>, puis converti en millimètres à
+     la largeur de broderie choisie. C'est ce chiffre qui décide.</p>
+  <p><b>Le premier résultat ne porte pas sur les polices.</b> «&#160;Pressing de
+     Vernier&#160;» fait dix-neuf signes. Sur une seule ligne de 90&#160;mm, la
+     capitale ne mesure que 4,3&#160;mm — et aucune police, si épaisse soit-elle,
+     n'y tient un trait d'un millimètre. Passez le nom sur deux lignes, ou
+     élargissez&#160;: les mêmes polices changent alors de catégorie.</p>
+
+  <div class="commandes" role="group" aria-label="Mise en page du nom">
+    <span class="etiquette-commande">Nom</span>
+    <button type="button" data-lignes="1" aria-pressed="true">Sur une ligne</button>
+    <button type="button" data-lignes="2" aria-pressed="false">Sur deux lignes</button>
+  </div>
+  <div class="commandes" role="group" aria-label="Largeur de la broderie">
+    <span class="etiquette-commande">Largeur brodée</span>
+    <button type="button" data-largeur="60" aria-pressed="false">60 mm</button>
+    <button type="button" data-largeur="90" aria-pressed="true">90 mm</button>
+    <button type="button" data-largeur="120" aria-pressed="false">120 mm</button>
+    <button type="button" data-largeur="160" aria-pressed="false">160 mm</button>
+  </div>
+  <div class="commandes" role="group" aria-label="Trier les propositions">
+    <span class="etiquette-commande">Ordre</span>
+    <button type="button" data-tri="mesure" aria-pressed="true">Du plus brodable au moins</button>
+    <button type="button" data-tri="ordre" aria-pressed="false">De présentation</button>
+  </div>
+</div>
+
+<div id="propositions"></div>
+
+<div class="note">
+  <h2>Comment lire cette page</h2>
+  <ul>
+    <li><b>Le chiffre est une mesure, pas un avis.</b> Le nom est composé sur une
+      toile invisible, puis chaque point d'encre est interrogé&#160;: à quelle
+      distance est le bord le plus proche&#160;? Le trait le plus fin de tout le
+      mot est retenu, et rapporté à 90&#160;mm de large. Au-dessus de
+      1&#160;mm c'est confortable, entre 0,7 et 1&#160;mm c'est jouable mais
+      il faut en parler au brodeur, en dessous il faut renoncer ou changer le
+      dessin de la lettre. Le <b>trait courant</b>, donné juste en dessous, est
+      la médiane&#160;: l'écart entre les deux dit la régularité du trait, qui
+      est le premier critère de l'aiguille.</li>
+    <li><b>La colonne de droite est à la taille réelle.</b> Le nom y occupe
+      exactement la largeur brodée annoncée sous lui — 60, 90, 120 ou
+      160&#160;mm. C'est à cette taille-là qu'il faut le juger, pas agrandi.</li>
+    <li><b>Regardez les contreformes autant que les traits</b>&#160;: le trou du
+      R, du P, du G. Une contreforme trop serrée se remplit de fil et la lettre
+      devient une tache. C'est le second défaut de broderie, après le délié.</li>
+    <li><b>L'or sert au site, à l'enseigne et à la facture.</b> Le fil, lui, sera
+      probablement d'une seule couleur&#160;: c'est pour cela que la deuxième
+      colonne est monochrome.</li>
+    <li>Newsreader, la police actuelle du site, figure comme référence. Elle
+      n'est pas là pour gagner mais pour donner la mesure de ce qu'on perd ou
+      gagne en changeant.</li>
+  </ul>
+</div>
+
+
+<script>
+/* ============================================================================
+   LES HUIT PROPOSITIONS
+   ----------------------------------------------------------------------------
+   On cherche large : un serif de lecture, deux réglettes à empattements
+   carrés, une géométrique, une grotesque, une humaniste, une arrondie et une
+   lapidaire. Chacune est notée sur ce qu'elle offre à l'aiguille, pas sur ce
+   qu'elle offre à l'écran.
+   ============================================================================ */
+const NOM = 'Pressing de Vernier';
+
+const PROPOSITIONS = [
+  {
+    police: 'Newsreader', graisse: 500, chasse: '.22em',
+    genre: 'Serif de lecture · référence',
+    broderie: "Contraste modéré, mais réel : les déliés des courbes descendent "
+            + "nettement sous les pleins. C'est là que l'aiguille butera. Les "
+            + "empattements sont fins et pointus — les premiers à disparaître.",
+    evoque: "Le registre tenu, le papier, l'écrit. C'est la police du site "
+          + "aujourd'hui : la garder ferait une identité d'un seul tenant."
+  },
+  {
+    police: 'Arvo', graisse: 400, chasse: '.20em',
+    genre: 'Réglette géométrique',
+    broderie: "Le trait ne varie presque pas, et les empattements sont des "
+            + "rectangles francs, aussi épais que les fûts. C'est le dessin le "
+            + "plus littéralement brodable de la sélection : rien à protéger.",
+    evoque: "L'atelier, l'établi, l'outil. Une solidité un peu rustique, sans "
+          + "prétention — ce qui va bien à une maison qui travaille."
+  },
+  {
+    police: 'Bitter', graisse: 600, chasse: '.20em',
+    genre: 'Réglette contemporaine',
+    broderie: "Même famille qu'Arvo mais dessinée pour l'écran : les "
+            + "empattements sont un peu plus courts, les contreformes plus "
+            + "ouvertes. Le trait reste régulier sur toute la lettre.",
+    evoque: "Plus urbain, plus récent. Le sérieux d'une enseigne de quartier "
+          + "qui a refait sa devanture il y a cinq ans."
+  },
+  {
+    police: 'Jost', graisse: 500, chasse: '.26em',
+    genre: 'Géométrique monolinéaire',
+    broderie: "Monolinéaire au sens strict : le trait a la même épaisseur "
+            + "partout, du O au I. C'est exactement ce que veut une aiguille. "
+            + "Le O parfaitement rond laisse une contreforme large.",
+    evoque: "La devanture des années trente, l'émail, le lettrage peint. "
+          + "Élégant sans être précieux."
+  },
+  {
+    police: 'Libre Franklin', graisse: 600, chasse: '.20em',
+    genre: 'Grotesque robuste',
+    broderie: "Une grotesque américaine faite pour les petits corps et les "
+            + "mauvaises impressions. Capitales larges, contreformes généreuses, "
+            + "variation de trait faible. Elle pardonne beaucoup.",
+    evoque: "L'étiquette cousue, le tampon administratif, la solidité sans "
+          + "discours. Neutre au bon sens du terme."
+  },
+  {
+    police: 'Alegreya Sans', graisse: 700, chasse: '.20em',
+    genre: 'Humaniste chaleureuse',
+    broderie: "Une légère modulation du trait — la main est visible — sans "
+            + "jamais descendre au délié. En graisse 700, les points faibles "
+            + "sont comblés. À surveiller sur le S et le R.",
+    evoque: "L'artisan plus que l'industrie. Une chaleur que les grotesques "
+          + "n'ont pas, et qui va à vingt ans au même endroit."
+  },
+  {
+    police: 'Rubik', graisse: 600, chasse: '.20em',
+    genre: 'Sans à angles adoucis',
+    broderie: "Les angles sont légèrement arrondis — ce que le fil fait de "
+            + "toute façon. La police anticipe donc le rendu au lieu de le "
+            + "subir. Trait très régulier, contreformes larges.",
+    evoque: "Contemporain, franc, un peu doux. Moins « métier » que les "
+          + "réglettes, plus accueillant."
+  },
+  {
+    police: 'Cinzel', graisse: 600, chasse: '.22em',
+    genre: 'Lapidaire romaine · la plus risquée',
+    broderie: "Dessinée d'après la pierre gravée : empattements en biseau, "
+            + "très fins à leur pointe, et un contraste marqué. C'est la plus "
+            + "belle en enseigne et la plus difficile au fil. Incluse pour "
+            + "que l'écart soit visible, pas pour être choisie à la légère.",
+    evoque: "L'inscription, la plaque, la maison ancienne. Le plus « Genève » "
+          + "de la sélection, et de loin le plus cher à broder."
+  }
+];
+
+
+/* ============================================================================
+   LA FABRICATION D'UNE BANDE
+   Le nom lui-même n'est pas écrit ici : il est posé à la mesure, parce qu'il
+   dépend du réglage une ligne / deux lignes.
+   ============================================================================ */
+function bande(p, rang) {
+  const style = "--police:'" + p.police + "'; --graisse:" + p.graisse
+              + '; --chasse:' + p.chasse + ';';
+  return '<section class="prop" data-police="' + p.police + '" style="' + style + '">'
+    + '<div class="deux">'
+    +   '<div class="usage-or">'
+    +     '<p class="mention">Site, enseigne, facture</p>'
+    +     '<div class="bloc-or" data-bloc="or"></div>'
+    +   '</div>'
+    +   '<div class="usage-fil">'
+    +     '<p class="mention" data-mention-fil>Brodé — un seul fil</p>'
+    +     '<div class="bloc-fil" data-bloc="net"></div>'
+    +     '<p class="echelle" data-echelle></p>'
+    +   '</div>'
+    + '</div>'
+    + '<div class="fiche">'
+    +   '<div>'
+    +     '<p class="rang">Proposition ' + rang + '</p>'
+    +     '<h2>' + p.police + '</h2>'
+    +     '<p class="genre">' + p.genre + '</p>'
+    +   '</div>'
+    +   '<div>'
+    +     '<p class="verdict mesure" data-verdict>mesure en cours…</p>'
+    +     '<dl><dt>Ce que l\'aiguille en dit</dt><dd>' + p.broderie + '</dd></dl>'
+    +   '</div>'
+    +   '<div>'
+    +     '<dl><dt>Ce que la lettre évoque</dt><dd>' + p.evoque + '</dd></dl>'
+    +   '</div>'
+    + '</div>'
+    + '</section>';
+}
+
+const zone = document.getElementById('propositions');
+zone.innerHTML = PROPOSITIONS.map((p, i) => bande(p, i + 1)).join('');
+
+
+/* ============================================================================
+   LA MESURE — l'épaisseur du trait le plus fin
+   ----------------------------------------------------------------------------
+   Le nom est composé sur une toile hors écran. Chaque point d'encre est
+   ensuite interrogé : à quelle distance est le bord le plus proche ? Ce calcul
+   — une transformée de distance en deux passes — donne l'épaisseur locale de
+   la lettre en tout point.
+
+   On ne retient pas la plus petite valeur brute, qui serait toujours celle
+   d'un pixel de bord. On retient les CRÊTES : les points dont la distance au
+   bord est maximale localement, c'est-à-dire l'axe médian de chaque trait.
+   L'épaisseur y vaut deux fois la distance.
+
+   La mesure porte sur la LIGNE LA PLUS LONGUE : c'est elle qui fixe la taille
+   des lettres, donc le pire cas.
+   ============================================================================ */
+
+let LIGNES_PAR_NOM = 1;
+let LARGEUR_MM = 90;
+
+function lignesDuNom() {
+  return LIGNES_PAR_NOM === 2 ? ['Pressing', 'de Vernier'] : ['Pressing de Vernier'];
+}
+
+function traitLePlusFin(police, graisse, chasse) {
+  const lignes = lignesDuNom().map(s => s.toUpperCase());
+  const L = 1100, H = 300;
+  const c = document.createElement('canvas');
+  c.width = L; c.height = H;
+  const ctx = c.getContext('2d', { willReadFrequently: true });
+  ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, L, H);
+  ctx.textBaseline = 'middle';
+
+  const poser = corps => {
+    ctx.font = graisse + ' ' + corps + 'px "' + police + '"';
+    if ('letterSpacing' in ctx) ctx.letterSpacing = (parseFloat(chasse) * corps) + 'px';
+  };
+
+  /* La ligne la plus longue fixe la taille des lettres : c'est le pire cas. */
+  poser(100);
+  const plusLongue = lignes.reduce(
+    (a, b) => ctx.measureText(a).width >= ctx.measureText(b).width ? a : b);
+
+  let corps = 200;
+  poser(corps);
+  let l = ctx.measureText(plusLongue).width;
+  corps = Math.floor(corps * (L - 60) / l);
+  poser(corps);
+  l = ctx.measureText(plusLongue).width;
+
+  ctx.fillStyle = '#000';
+  ctx.fillText(plusLongue, (L - l) / 2, H / 2);
+
+  const px = ctx.getImageData(0, 0, L, H).data;
+  const encre = new Uint8Array(L * H);
+  for (let i = 0, j = 0; i < px.length; i += 4, j++) encre[j] = px[i] < 128 ? 1 : 0;
+
+  const INF = 1e9;
+  const d = new Float32Array(L * H);
+  for (let i = 0; i < d.length; i++) d[i] = encre[i] ? INF : 0;
+  const test = (i, j, v) => { if (d[j] + v < d[i]) d[i] = d[j] + v; };
+  for (let y = 0; y < H; y++) for (let x = 0; x < L; x++) {
+    const i = y * L + x;
+    if (!encre[i]) continue;
+    if (x > 0)            test(i, i - 1, 3);
+    if (y > 0)            test(i, i - L, 3);
+    if (x > 0 && y > 0)   test(i, i - L - 1, 4);
+    if (x < L-1 && y > 0) test(i, i - L + 1, 4);
+  }
+  for (let y = H - 1; y >= 0; y--) for (let x = L - 1; x >= 0; x--) {
+    const i = y * L + x;
+    if (!encre[i]) continue;
+    if (x < L-1)            test(i, i + 1, 3);
+    if (y < H-1)            test(i, i + L, 3);
+    if (x < L-1 && y < H-1) test(i, i + L + 1, 4);
+    if (x > 0 && y < H-1)   test(i, i + L - 1, 4);
+  }
+
+  const cretes = [];
+  for (let y = 1; y < H - 1; y++) for (let x = 1; x < L - 1; x++) {
+    const i = y * L + x;
+    if (!encre[i] || d[i] < 3) continue;
+    let max = true;
+    for (let dy = -1; dy <= 1 && max; dy++)
+      for (let dx = -1; dx <= 1; dx++) {
+        if (!dx && !dy) continue;
+        if (d[i + dy * L + dx] > d[i]) { max = false; break; }
+      }
+    if (max) cretes.push((d[i] / 3) * 2);
+  }
+  if (!cretes.length) return null;
+
+  cretes.sort((a, b) => a - b);
+
+  /* Quel centile retenir ? Pas le minimum : la pointe d'un empattement s'affine
+     jusqu'à zéro dans toutes les polices à empattements, et cette pointe n'est
+     pas ce qui casse à la broderie. Le 10ᵉ centile est stable — sur une police
+     à trait régulier il vaut la médiane — et il capte les vrais déliés
+     entretenus. La médiane donne le trait courant : l'écart entre les deux
+     mesure la RÉGULARITÉ du trait, premier critère de l'aiguille. */
+  const par = f => cretes[Math.min(cretes.length - 1, Math.floor(cretes.length * f))];
+  const versMm = px => px * (LARGEUR_MM / l);
+
+  poser(corps);
+  const capPx = ctx.measureText('H').actualBoundingBoxAscent;
+  return {
+    mm:      versMm(par(0.10)),
+    courant: versMm(par(0.50)),
+    capMm:   capPx * (LARGEUR_MM / l)
+  };
+}
+
+
+/* ============================================================================
+   LE RENDU
+   Dans la colonne du fil, la ligne la plus longue occupe exactement la largeur
+   du bloc : ce bloc VAUT la largeur brodée, et l'échelle est donc juste.
+   ============================================================================ */
+function poserLignes(bloc, classes) {
+  bloc.innerHTML = lignesDuNom()
+    .map(s => '<p class="nom ' + classes + '">' + s + '</p>').join('');
+}
+
+function calerSurLargeur(bloc, largeurCible) {
+  const lignes = [...bloc.querySelectorAll('.nom')];
+  if (!lignes.length || !largeurCible) return;
+  lignes.forEach(l => l.style.fontSize = '100px');
+  const max = Math.max(...lignes.map(l => l.scrollWidth));
+  if (!max) return;
+  const corps = 100 * largeurCible / max;
+  lignes.forEach(l => l.style.fontSize = corps.toFixed(2) + 'px');
+}
+
+
+/* ============================================================================
+   LA MISE À JOUR
+   ============================================================================ */
+const resultats = new Map();
+
+async function mesurer() {
+  await document.fonts.ready;
+
+  document.querySelectorAll('.prop').forEach(sec => {
+    const p = PROPOSITIONS.find(x => x.police === sec.dataset.police);
+    const m = traitLePlusFin(p.police, p.graisse, p.chasse);
+    resultats.set(p.police, m);
+
+    /* La colonne or : taille de confort, ce n'est pas elle qu'on mesure. */
+    const blocOr = sec.querySelector('[data-bloc="or"]');
+    poserLignes(blocOr, 'or');
+    calerSurLargeur(blocOr, blocOr.clientWidth);
+
+    /* La colonne fil : la ligne la plus longue vaut la largeur brodée. */
+    const net = sec.querySelector('[data-bloc="net"]');
+    poserLignes(net, 'fil');
+    const dispo = net.clientWidth;
+    calerSurLargeur(net, dispo);
+    sec.style.setProperty('--largeur-90mm', Math.round(dispo) + 'px');
+
+    sec.querySelector('[data-mention-fil]').textContent =
+      'Brodé — un seul fil, ' + LARGEUR_MM + ' mm de large';
+    sec.querySelector('[data-echelle]').textContent =
+      LARGEUR_MM + ' mm'
+      + (m ? ' — capitale de ' + m.capMm.toFixed(1).replace('.', ',') + ' mm' : '');
+
+    const v = sec.querySelector('[data-verdict]');
+    if (!m) { v.textContent = 'mesure impossible'; return; }
+    const classe = m.mm >= 1 ? 'confort' : m.mm >= 0.7 ? 'limite' : 'risque';
+    const mot = m.mm >= 1 ? 'confortable à broder'
+              : m.mm >= 0.7 ? 'jouable, à confirmer avec le brodeur'
+              : 'trop fin pour le point de bourdon';
+    const regularite = m.courant > 0 ? m.mm / m.courant : 1;
+    v.className = 'verdict ' + classe;
+    v.innerHTML = '<b>' + m.mm.toFixed(2).replace('.', ',') + ' mm</b> ' + mot
+      + '<span class="detail-mesure">trait courant '
+      + m.courant.toFixed(2).replace('.', ',') + ' mm · '
+      + (regularite >= .85 ? 'trait régulier'
+        : regularite >= .6 ? 'légère modulation'
+        : 'contraste marqué — le délié est le point faible') + '</span>';
+  });
+
+  const actif = document.querySelector('[data-tri][aria-pressed="true"]');
+  trier(actif ? actif.dataset.tri : 'mesure');
+}
+
+function trier(mode) {
+  const sections = [...document.querySelectorAll('.prop')];
+  const ordre = PROPOSITIONS.map(p => p.police);
+  sections.sort((a, b) => {
+    if (mode === 'ordre')
+      return ordre.indexOf(a.dataset.police) - ordre.indexOf(b.dataset.police);
+    const ma = resultats.get(a.dataset.police), mb = resultats.get(b.dataset.police);
+    return (mb ? mb.mm : 0) - (ma ? ma.mm : 0);
+  });
+  sections.forEach(s => zone.append(s));
+}
+
+function brancher(attribut, action) {
+  document.querySelectorAll('[' + attribut + ']').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('[' + attribut + ']')
+        .forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      action(b.getAttribute(attribut));
+    });
+  });
+}
+
+brancher('data-lignes',  v => { LIGNES_PAR_NOM = +v; mesurer(); });
+brancher('data-largeur', v => { LARGEUR_MM = +v;     mesurer(); });
+brancher('data-tri',     v => trier(v));
+
+let minuteur;
+addEventListener('resize', () => {
+  clearTimeout(minuteur);
+  minuteur = setTimeout(mesurer, 200);
+});
+
+mesurer();
+</script>
+
+</body>
+</html>

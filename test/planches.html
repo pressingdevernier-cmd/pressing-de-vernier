@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pressing de Vernier — les planches à la craie</title>
+
+<!-- ============================================================================
+     PAGE DE TEST — NE FAIT PAS PARTIE DU SITE
+     ----------------------------------------------------------------------------
+     Le traéc retenu est définitif : main levée, trait repassé, avec revers
+     crantés, col de chemise, rabats de poche, ceinture et passants, pliure du
+     pantalon. Les propositions concurrentes ont été retirées.
+
+     Cette page ne sert plus à comparer : elle montre le rendu retenu sur les
+     trois pièces déjà dessinées, avant application au site.
+
+     Prix réels de data/tarifs.js. La page ne lit ni ne modifie aucun fichier
+     du projet.
+
+     L'or est réservé aux prix, aux traits de rappel et aux lignes de coupe.
+     Tout ce qui appartient au vêtement — fermeture éclair comprise — est à
+     la craie.
+     ============================================================================ -->
+
+<style>
+/* ============================================================================
+   1 · LA PALETTE — recopiée à l'identique depuis assets/style.css
+   ============================================================================ */
+:root{
+  --ivoire:#F6F3EC; --papier:#EAE5D9; --graphite:#232825;
+  --vert:#04321E;   --vert-nuit:#04180F;
+  --or:#A8842F;     --or-clair:#C9A24D;
+  --acier:#8A979B;
+  --sur-nuit-doux:rgba(246,243,236,.74);
+  --ui:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; }
+body{
+  margin:0; background:var(--papier); color:var(--graphite);
+  font-family:var(--ui);
+}
+:focus-visible{ outline:2px solid var(--or-clair); outline-offset:3px; border-radius:2px; }
+
+
+/* ============================================================================
+   2 · L'EN-TÊTE
+   ============================================================================ */
+.entete{
+  background:var(--vert-nuit); color:var(--ivoire);
+  padding:16px clamp(14px,2.5vw,32px);
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 22px;
+  border-bottom:1px solid rgba(201,162,77,.3);
+}
+.entete h1{
+  font-size:13px; font-weight:600; margin:0;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--or-clair);
+}
+.entete p{ margin:0; font-size:12.5px; color:var(--sur-nuit-doux); }
+
+
+/* ============================================================================
+   3 · LES TROIS PIÈCES, UN TIERS DE LARGEUR CHACUNE
+   ============================================================================ */
+.pieces{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:1px; background:var(--papier);
+}
+/* En dessous de 640 px, trois colonnes ne sont plus lisibles. On passe
+   directement à une seule : deux colonnes pour trois pièces laisseraient
+   un orphelin. */
+@media (max-width:640px){ .pieces{ grid-template-columns:minmax(0,1fr); } }
+
+.piece-bloc{ background:var(--ivoire); min-width:0; }
+.scene{ background:var(--vert-nuit); }
+.scene svg{ width:100%; height:auto; display:block; }
+
+
+/* ============================================================================
+   4 · LE DESSIN — main levée, trait repassé
+   Chaque arête est tracée deux fois : la main revient dessus et le second
+   passage ne recouvre pas le premier.
+   ============================================================================ */
+.trait{
+  fill:none; stroke:var(--ivoire); stroke-width:1.7; opacity:.88;
+  stroke-linejoin:round; stroke-linecap:round;
+  filter:url(#poudre-craie) drop-shadow(0 0 2.5px rgba(246,243,236,.4));
+}
+.repasse{
+  fill:none; stroke:var(--ivoire); stroke-width:1.5; opacity:.58;
+  stroke-linejoin:round; stroke-linecap:round; filter:url(#poudre-craie);
+}
+
+/* La structure porte l'identité de la pièce : revers, col de chemise,
+   rabats de poche, ceinture. Elle reste lisible. */
+.detail{
+  fill:none; stroke:var(--ivoire); stroke-width:.9; opacity:.5;
+  stroke-linecap:round; stroke-linejoin:round; filter:url(#poudre-craie);
+}
+/* Les hachures du tissu : présentes, jamais insistantes. */
+.detail.fin{ stroke-width:.85; opacity:.36; }
+
+/* La fermeture éclair : ruban, dents, curseur. À la craie, comme la pièce. */
+.zip-ruban{ fill:none; stroke:var(--ivoire); stroke-width:1.2; opacity:.5; }
+.dent{ stroke:var(--ivoire); stroke-width:1.35; stroke-linecap:round; opacity:.72; }
+.curseur{ fill:none; stroke:var(--ivoire); stroke-width:1.7; stroke-linejoin:round; opacity:.8; }
+
+/* Les lignes de coupe : la seule chose du vêtement qui ait droit à l'or.
+   Elles ne sont pas dessinées à la main mais calculées comme un décalage du
+   tracé de la pièce à cet endroit — elles en épousent donc exactement la
+   courbe, à une distance qui respecte les proportions réelles. */
+.coupe{
+  fill:none; stroke:var(--or-clair); stroke-width:1.5;
+  stroke-dasharray:4.5 4; stroke-linecap:round; stroke-linejoin:round;
+}
+
+text.piece-nom{
+  font-family:var(--ui); font-size:11px; font-weight:600;
+  letter-spacing:.28em; text-transform:uppercase; fill:rgba(246,243,236,.42);
+}
+
+/* Les repères de prix. Le trait de rappel, lui, reste une droite. */
+.fil-fond{ stroke:var(--vert-nuit); stroke-width:2.8; stroke-linecap:round; }
+.fil{ stroke:var(--or-clair); stroke-width:1; }
+.coche{ stroke:var(--or-clair); stroke-width:1.2; }
+.point{ fill:var(--or-clair); }
+.halo{ fill:none; stroke:var(--or-clair); stroke-width:.8; opacity:.45; }
+text.nom{
+  font-family:var(--ui); font-size:8.4px; font-weight:600;
+  letter-spacing:.15em; text-transform:uppercase; fill:var(--or-clair);
+}
+text.prix{
+  font-family:var(--ui); font-size:18px; font-weight:600;
+  fill:var(--ivoire); font-variant-numeric:tabular-nums;
+}
+text.prix tspan{ font-size:11px; font-weight:400; fill:rgba(246,243,236,.55); }
+
+
+/* ============================================================================
+   5 · LA LISTE DÉPLIABLE
+   ============================================================================ */
+.liste{ padding:0 clamp(14px,1.6vw,22px) clamp(16px,1.8vw,24px); }
+details{ border-top:1px solid var(--papier); }
+summary{
+  cursor:pointer; list-style:none; padding:13px 0; min-height:44px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  font-size:10.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--or);
+}
+summary::-webkit-details-marker{ display:none; }
+summary::after{
+  content:""; width:8px; height:8px; flex:none;
+  border-right:1.4px solid currentColor; border-bottom:1.4px solid currentColor;
+  transform:rotate(45deg) translate(-2px,-2px); transition:transform 200ms ease;
+}
+details[open] summary::after{ transform:rotate(-135deg) translate(-2px,-2px); }
+.liste dl{ margin:0 0 6px; }
+.liste .ligne{
+  display:flex; align-items:baseline; justify-content:space-between; gap:14px;
+  padding:7px 0; border-bottom:1px solid var(--papier); font-size:13.5px;
+}
+.liste .ligne:last-child{ border-bottom:0; }
+.liste .ligne.pose{ color:var(--vert); font-weight:600; }
+.liste .ligne.pose dt::before{
+  content:""; display:inline-block; width:5px; height:5px; margin-right:8px;
+  background:var(--or); border-radius:50%; vertical-align:.18em;
+}
+.liste dt{ margin:0; min-width:0; }
+.liste dd{ margin:0; white-space:nowrap; font-variant-numeric:tabular-nums; font-weight:600; }
+.liste dd em{ font-style:normal; font-weight:400; font-size:.82em; color:var(--acier); margin-right:3px; }
+.liste .legende{ font-size:11px; color:var(--acier); margin:10px 0 0; line-height:1.5; }
+
+
+/* ============================================================================
+   6 · LE PIED DE PAGE
+   ============================================================================ */
+.note{
+  background:var(--vert-nuit); color:var(--sur-nuit-doux);
+  padding:clamp(26px,3vw,40px) clamp(16px,3vw,32px);
+  font-size:13.5px; line-height:1.66;
+}
+.note h2{
+  font-size:11px; font-weight:600; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--or-clair); margin:0 0 14px;
+}
+.note ul{ margin:0; padding-left:19px; max-width:78ch; }
+.note li{ margin-bottom:9px; }
+.note li:last-child{ margin-bottom:0; }
+.note b{ color:var(--ivoire); font-weight:600; }
+
+@media (prefers-reduced-motion:reduce){ *{ transition-duration:.01ms !important; } }
+</style>
+</head>
+
+<body>
+
+<div class="entete">
+  <h1>Les planches à la craie</h1>
+  <p>Rendu retenu, sur les trois pièces déjà dessinées.</p>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="poudre-craie" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="3" seed="7" result="b"/>
+    <feDisplacementMap in="SourceGraphic" in2="b" scale="1.7"
+                       xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</defs></svg>
+
+<div class="pieces" id="pieces"></div>
+
+<div class="note">
+  <h2>Ce que montre cette page</h2>
+  <ul>
+    <li><b>Le rendu est arrêté :</b> main levée, chaque arête repassée une seconde fois, tissu suggéré par des hachures courtes. Revers crantés, col de chemise sous le col de veste, rabats de poche, ceinture et passants, pliure du pantalon.</li>
+    <li><b>Les lignes de coupe en or</b> ne sont pas dessinées : elles sont calculées comme un décalage du tracé de la pièce, et en épousent la courbe. L'écart suit les proportions réelles — un ourlet de pantalon de 3 cm se pose à 3 % de la hauteur de la jambe.</li>
+    <li><b>Le trait de rappel vers le prix reste une droite :</b> il ne désigne pas une coupe, il amène l'œil au chiffre.</li>
+    <li>Trois pièces seulement pour l'instant. Les six autres vêtements de <code>assets/vetements.js</code> restent à redessiner dans la même main.</li>
+  </ul>
+</div>
+
+
+<script>
+/* ============================================================================
+   LES PIÈCES
+   ----------------------------------------------------------------------------
+   Règles de dessin, communes aux trois :
+
+     · aucune ligne droite, aucune symétrie exacte ;
+     · les contours sont OUVERTS : quatre à dix gestes qui se dépassent aux
+       angles et ne se rejoignent pas tout à fait ;
+     · les détails qui font reconnaître la pièce priment sur les autres.
+   ============================================================================ */
+
+const BOITE = '-150 18 640 408';
+
+const VETEMENTS = {
+
+  complet: {
+    nom: 'Complet',
+    source: "Veste et pantalon : deux sections de data/tarifs.js réunies.",
+    gaucheX: -22, droiteX: 362,
+    points: [
+      { x:44,  y:168, cote:'gauche', nom:'Ajuster manches',   prix:'40.–', des:true },
+      { x:96,  y:232, cote:'gauche', nom:'Doublure complète', prix:'170.–' },
+      { x:114, y:284, cote:'gauche', nom:'Longueur de veste', prix:'40.–' },
+      { x:266, y:88,  cote:'droite', nom:'Taille et hanches', prix:'25.–' },
+      { x:268, y:392, cote:'droite', nom:'Ourlet machine',    prix:'18.–' }
+    ],
+    tarifs: [
+      ['Veste — ajuster manches', 'dès 40.–', true],
+      ['Veste — ajuster longueur', '40.–', true],
+      ['Veste — doublure de manches', '50.–', false],
+      ['Veste — doublure complète avec manches', '170.–', true],
+      ['Veste — réparer fond de poche', '15.–', false],
+      ['Pantalon — ourlet simple piqué machine', '18.–', true],
+      ['Pantalon — ajuster taille ou hanches', '25.–', true],
+      ['Pantalon — fermeture éclair', '25.–', false],
+      ['Pantalon — doublure genoux', '40.–', false]
+    ],
+    trace: {pieces: [
+          'M102,50 C86,55 71,63 62,75 C57,120 53,176 52,217 C51,241 50,260 51,276',
+          'M46,268 C73,279 107,282 140,281 C163,280 180,275 189,270',
+          'M185,277 C185,248 186,212 187,171 C188,124 188,87 187,68 C177,58 161,50 143,48',
+          'M149,50 C140,65 110,68 96,49',
+          'M62,75 C49,99 40,143 37,187 C35,213 34,238 35,258 C48,266 63,265 75,257 C76,233 77,204 79,175',
+          'M187,68 C199,92 208,136 212,181 C214,207 215,232 214,251 C201,259 187,258 176,251 C174,228 173,200 171,171',
+          'M240,54 C230,60 225,68 224,78 C226,140 230,217 236,289 C240,334 244,370 248,400',
+          'M243,392 C259,401 279,402 296,398 C299,360 303,312 307,261 C312,194 315,120 317,72 C310,61 299,54 287,51 C269,47 249,49 236,56'
+        ],
+        details: [
+          'M102,50 C91,62 84,78 82,98 C90,106 99,113 107,121',
+          'M102,50 C109,83 116,116 123,150',
+          'M147,48 C157,62 163,78 164,97 C155,104 146,112 138,120',
+          'M147,48 C140,81 133,114 126,149',
+          /* col de chemise : les deux pointes, la bande, et le pli du col —
+             c'est le trace le plus detaille, il a droit au quatrieme trait */
+          'M111,49 C114,58 118,64 124,70',
+          'M139,47 C136,55 131,63 125,70',
+          'M110,46 C118,51 132,51 140,45',
+          /* boutonnage, bouton et boutonnière */
+          'M124,154 C124,194 124,234 123,276',
+          'M116,151 C120,150 124,150 128,151',
+          'M117,178 C121,177 125,177 129,178',
+          /* poche poitrine passepoilée */
+          'M70,120 C79,118 88,117 97,118',
+          'M70,120 C70,124 70,127 71,130',
+          /* poches à rabat, avec le pli du rabat */
+          'M62,203 C74,200 87,199 99,200 C99,207 98,213 97,218',
+          'M64,209 C75,207 87,206 97,207',
+          'M148,199 C159,199 171,200 181,203 C181,210 181,215 180,219',
+          'M150,206 C160,205 170,206 179,208',
+          /* ceinture, passants, pliure, poche cavalière */
+          'M224,80 C253,88 286,88 317,77',
+          'M225,93 C254,101 287,101 316,90',
+          'M235,81 C235,87 235,91 234,95',
+          'M270,85 C270,91 270,95 270,99',
+          'M304,81 C304,87 305,91 305,95',
+          'M268,97 C265,180 261,272 265,356 C266,382 267,394 268,402',
+          'M231,105 C237,113 243,119 249,123'
+        ],
+        detailsFins: [
+          /* les hachures : le tissu suggéré par le trait, pas par la ligne */
+          'M66,140 C70,145 74,149 78,152',
+          'M64,152 C68,157 72,161 76,164',
+          'M62,164 C66,169 70,173 74,176',
+          'M160,150 C164,155 168,159 172,162',
+          'M162,162 C166,167 170,171 174,174',
+          'M96,240 C100,246 104,251 108,255',
+          'M92,252 C96,258 100,263 104,267',
+          'M244,180 C248,186 252,191 256,195',
+          'M242,196 C246,202 250,207 254,211',
+          'M286,300 C290,306 294,311 298,315',
+          'M284,316 C288,322 292,327 296,331',
+          'M79,133 C82,176 84,218 83,258'
+        ],
+        coupes: [
+          { bord:1, de:0,    a:1,     ecart:-8  },
+          { bord:7, de:0,    a:0.115, ecart:-10 },
+          { bord:4, de:0.59, a:0.76,  ecart:-8  },
+          { bord:5, de:0.59, a:0.76,  ecart:8   },
+          { d:'M224,80 C253,88 286,88 317,77', de:0.04, a:0.96, ecart:8 }
+        ]
+    }
+  },
+
+  robe: {
+    nom: 'Robe',
+    source: "Section « Retouches — Robe simple » de data/tarifs.js.",
+    gaucheX: 22, droiteX: 328,
+    points: [
+      { x:122, y:84,  cote:'gauche', nom:'Poser épaulettes',   prix:'25.–' },
+      { x:126, y:184, cote:'gauche', nom:'Éclair invisible',   prix:'30.–' },
+      { x:150, y:390, cote:'gauche', nom:'Ourlet robe droite', prix:'22.–' },
+      { x:200, y:220, cote:'droite', nom:'Ajuster taille',     prix:'30.–' },
+      { x:206, y:304, cote:'droite', nom:'Doublure',           prix:'50.–' }
+    ],
+    tarifs: [
+      ['Ourlet robe droite', '22.–', true],
+      ['Fermeture éclair invisible', '30.–', true],
+      ['Ajuster taille', '30.–', true],
+      ['Poser épaulettes', '25.–', true],
+      ['Doublure sans manches', '50.–', true],
+      ['Doublure avec manches', '75.–', false]
+    ],
+    trace: {pieces: [
+          'M154,55 C139,56 126,60 117,68 C109,83 105,100 104,118 C115,124 129,124 140,120',
+          'M137,115 C133,148 129,180 127,208 C112,264 97,330 85,394',
+          'M81,384 C115,397 156,401 193,399 C225,397 252,391 269,382',
+          'M266,390 C253,322 236,259 223,211 C220,179 218,144 216,111',
+          'M214,116 C226,123 239,121 249,113 C246,96 241,80 234,68 C225,60 211,56 199,57',
+          'M204,58 C192,75 163,80 145,56'
+        ],
+        details: [
+          'M123,212 C154,221 198,221 226,210',
+          'M122,219 C154,228 199,228 227,217',
+          'M130,149 C128,171 127,193 127,214',
+          'M118,72 C126,82 134,88 143,89',
+          'M231,70 C224,80 215,86 206,87',
+          'M136,128 C143,138 150,144 156,148',
+          'M213,126 C206,136 199,142 193,146',
+          /* les poches et leur ouverture repassée */
+          'M119,229 C123,241 128,252 133,260',
+          'M124,230 C128,242 133,252 138,259',
+          'M229,227 C225,239 220,250 216,258',
+          'M224,228 C220,240 216,250 212,257',
+          /* le boutonnage d'épaule */
+          'M126,78 C130,77 134,77 137,78',
+          'M222,76 C219,75 215,75 212,76'
+        ],
+        detailsFins: [
+          'M160,244 C156,296 152,346 150,394',
+          'M198,240 C202,292 206,342 210,390',
+          'M136,268 C134,308 132,346 131,382',
+          /* hachures du tombé de la jupe */
+          'M112,300 C116,306 120,311 124,315',
+          'M108,318 C112,324 116,329 120,333',
+          'M104,336 C108,342 112,347 116,351',
+          'M232,296 C236,302 240,307 244,311',
+          'M236,314 C240,320 244,325 248,329',
+          'M144,168 C148,174 152,179 156,183',
+          'M190,166 C194,172 198,177 202,181'
+        ],
+        coupes: [
+          { bord:2, de:0.04, a:0.96, ecart:-13 },
+          { d:'M123,212 C154,221 198,221 226,210', de:0.04, a:0.96, ecart:8 }
+        ]
+    }
+  },
+
+  manteau: {
+    nom: 'Manteau',
+    source: "Section « Retouches — Manteaux » de data/tarifs.js.",
+    gaucheX: -4, droiteX: 350,
+    points: [
+      { x:171, y:150, cote:'gauche', nom:'Fermeture éclair',  prix:'55.–', des:true },
+      { x:70,  y:218, cote:'gauche', nom:'Ajuster manches',   prix:'40.–' },
+      { x:160, y:392, cote:'gauche', nom:'Ajuster longueur',  prix:'40.–' },
+      { x:272, y:184, cote:'droite', nom:'Doublure manches',  prix:'55.–' },
+      { x:218, y:304, cote:'droite', nom:'Doublure complète', prix:'170.–', des:true }
+    ],
+    tarifs: [
+      ['Fermeture éclair', 'dès 55.–', true],
+      ['Ajuster longueur', '40.–', true],
+      ['Ajuster manches', '40.–', true],
+      ['Doublure de poche', '20.–', false],
+      ['Doublure de manches', '55.–', true],
+      ['Doublure complète sans manches', '110.–', false],
+      ['Doublure complète avec manches', 'dès 170.–', true],
+      ['Réparer fond de poche', '15.–', false]
+    ],
+    trace: {pieces: [
+          'M158,52 C137,55 121,65 109,80 C104,152 98,244 94,304 C91,344 90,372 89,396',
+          'M84,388 C112,401 146,403 174,401 C203,399 228,393 246,384',
+          'M240,394 C241,343 243,284 245,229 C247,171 249,108 249,69 C238,57 216,49 190,49',
+          'M197,51 C186,69 162,74 146,55',
+          'M109,80 C90,105 71,156 60,201 C55,221 53,235 53,248 C68,254 86,252 100,244 C103,219 107,192 111,164',
+          'M249,69 C267,94 283,147 292,195 C295,213 297,227 296,239 C283,247 265,246 253,239 C249,213 246,186 244,159'
+        ],
+        details: [
+          'M158,52 C162,71 167,89 173,102',
+          'M190,49 C188,69 184,88 178,102',
+          'M173,102 C176,105 178,105 180,102',
+          'M162,56 C166,74 171,90 176,102',
+          /* poches à rabat, ouverture repassée */
+          'M109,241 C124,235 141,234 155,236 C155,244 154,250 153,256',
+          'M112,247 C126,242 141,241 153,243',
+          'M196,235 C211,234 226,236 238,240 C238,248 238,253 237,258',
+          'M199,241 C212,240 225,242 236,245',
+          /* pattes de poignet, boutonnées */
+          'M60,229 C73,236 88,234 100,227',
+          'M64,235 C76,241 89,239 100,233',
+          'M295,225 C283,232 267,231 255,225',
+          /* la martingale, au dos, qui dépasse sur le côté */
+          'M124,262 C140,258 158,257 172,258'
+        ],
+        detailsFins: [
+          'M118,308 C125,336 128,362 126,388',
+          'M215,302 C212,330 211,356 213,382',
+          'M144,320 C148,348 150,372 149,392',
+          /* hachures : le tombé du manteau */
+          'M104,270 C108,276 112,281 116,285',
+          'M101,288 C105,294 109,299 113,303',
+          'M98,306 C102,312 106,317 110,321',
+          'M232,266 C236,272 240,277 244,281',
+          'M230,284 C234,290 238,295 242,299',
+          'M78,170 C82,176 86,181 90,185',
+          'M270,166 C274,172 278,177 282,181'
+        ],
+        coupes: [
+          { bord:1, de:0.03, a:0.97, ecart:-10 },
+          { bord:4, de:0.56, a:0.77, ecart:-8  },
+          { bord:5, de:0.58, a:0.77, ecart:8   }
+        ],
+        zip: 'M177,100 C172,169 166,249 170,319 C171,353 173,377 174,397'
+    }
+  }
+};
+
+
+/* ============================================================================
+   LES LIGNES DE COUPE
+   ----------------------------------------------------------------------------
+   Une coupe n'est pas une ligne horizontale : elle suit le bord de la pièce.
+   On échantillonne l'arête concernée, on décale chaque point le long de sa
+   normale, et on relie le tout. Le résultat est rigoureusement parallèle au
+   trait de craie, quelle que soit sa courbe.
+
+   L'écart est donné en unités de dessin, à l'échelle réelle du vêtement :
+   sur un pantalon d'environ 345 unités pour 105 cm, 1 cm vaut 3,3 unités.
+   Un ourlet de 3 cm se pose donc à 10 unités du bord — visiblement détaché.
+   ============================================================================ */
+function coupeParallele(d, de, a, ecart) {
+  const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  p.setAttribute('d', d);
+  const L = p.getTotalLength();
+  const N = 26;
+  const pts = [];
+  for (let i = 0; i <= N; i++) {
+    const s = L * (de + (a - de) * i / N);
+    const m = p.getPointAtLength(s);
+    const av = p.getPointAtLength(Math.max(0, s - 1.2));
+    const ap = p.getPointAtLength(Math.min(L, s + 1.2));
+    const dx = ap.x - av.x, dy = ap.y - av.y;
+    const n = Math.hypot(dx, dy) || 1;
+    pts.push((m.x - dy / n * ecart).toFixed(1) + ',' + (m.y + dx / n * ecart).toFixed(1));
+  }
+  return 'M' + pts.join(' L');
+}
+
+
+/* ============================================================================
+   LA FERMETURE ÉCLAIR
+   Les dents sont posées le long du ruban, perpendiculaires à sa tangente :
+   elles suivent sa courbe au lieu d'être empilées à la verticale.
+   ============================================================================ */
+function fermetureEclair(d) {
+  const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  p.setAttribute('d', d);
+  const L = p.getTotalLength();
+
+  let dents = '';
+  for (let s = 14; s < L - 5; s += 9.5) {
+    const a = p.getPointAtLength(s - 1.4);
+    const b = p.getPointAtLength(s + 1.4);
+    const dx = b.x - a.x, dy = b.y - a.y;
+    const n = Math.hypot(dx, dy) || 1;
+    const nx = -dy / n * 3.2, ny = dx / n * 3.2;
+    const m = p.getPointAtLength(s);
+    dents += `<line class="dent" x1="${(m.x - nx).toFixed(1)}" y1="${(m.y - ny).toFixed(1)}"`
+           + ` x2="${(m.x + nx).toFixed(1)}" y2="${(m.y + ny).toFixed(1)}"/>`;
+  }
+
+  const h = p.getPointAtLength(2), x = h.x, y = h.y;
+  const curseur =
+      `<path class="curseur" d="M${(x - 4).toFixed(1)},${(y + 0.5).toFixed(1)}`
+    + ` L${(x + 4).toFixed(1)},${(y + 0.5).toFixed(1)}`
+    + ` L${(x + 2.9).toFixed(1)},${(y + 11).toFixed(1)}`
+    + ` L${(x - 2.9).toFixed(1)},${(y + 11).toFixed(1)} Z"/>`
+    + `<path class="curseur" d="M${x.toFixed(1)},${(y + 11).toFixed(1)}`
+    + ` C${(x + 4.5).toFixed(1)},${(y + 16).toFixed(1)} ${(x + 2).toFixed(1)},${(y + 24).toFixed(1)}`
+    + ` ${(x - 2.5).toFixed(1)},${(y + 25).toFixed(1)}"/>`;
+
+  return `<g class="zip"><path class="zip-ruban" d="${d}"/>${dents}${curseur}</g>`;
+}
+
+
+/* ============================================================================
+   LA FABRICATION D'UNE PLANCHE
+   ============================================================================ */
+function planche(idVetement) {
+  const v = VETEMENTS[idVetement];
+  const t = v.trace;
+
+  /* Chaque arête est tracée deux fois : le second passage est décalé. */
+  const contour = t.pieces.map(d =>
+      `<path class="trait" d="${d}"/>`
+    + `<path class="repasse" d="${d}" transform="translate(2.6,1.9)"/>`).join('');
+
+  const struct = t.details.map(d => `<path class="detail" d="${d}"/>`).join('');
+  const plis   = t.detailsFins.map(d => `<path class="detail fin" d="${d}"/>`).join('');
+  const zip    = t.zip ? fermetureEclair(t.zip) : '';
+
+  /* Chaque coupe suit soit une arête du vêtement (« bord » = son rang dans
+     pieces), soit une courbe donnée (« d » : ceinture, couture de taille). */
+  const coupes = (t.coupes || []).map(c => {
+    const ref = (c.bord !== undefined) ? t.pieces[c.bord] : c.d;
+    return `<path class="coupe" d="${coupeParallele(ref, c.de, c.a, c.ecart)}"/>`;
+  }).join('');
+
+  const reperes = v.points.map(p => {
+    const aG    = p.cote === 'gauche';
+    const xFin  = aG ? v.gaucheX + 10 : v.droiteX - 10;
+    const xT    = aG ? v.gaucheX : v.droiteX;
+    const ancre = aG ? 'end' : 'start';
+    const des   = p.des ? '<tspan>dès </tspan>' : '';
+    return `
+      <g class="repere">
+        <line class="fil-fond" x1="${p.x}" y1="${p.y}" x2="${xFin}" y2="${p.y}"/>
+        <line class="fil"      x1="${p.x}" y1="${p.y}" x2="${xFin}" y2="${p.y}"/>
+        <line class="coche"    x1="${xFin}" y1="${p.y - 4.5}" x2="${xFin}" y2="${p.y + 4.5}"/>
+        <circle class="halo"  cx="${p.x}" cy="${p.y}" r="5.5"/>
+        <circle class="point" cx="${p.x}" cy="${p.y}" r="2.4"/>
+        <text class="nom"  x="${xT}" y="${p.y - 6}"  text-anchor="${ancre}">${p.nom}</text>
+        <text class="prix" x="${xT}" y="${p.y + 13}" text-anchor="${ancre}">${des}${p.prix}</text>
+      </g>`;
+  }).join('');
+
+  return `
+    <svg viewBox="${BOITE}" role="img"
+         aria-label="${v.nom} : ${v.points.length} prestations situées sur la pièce">
+      <g class="vetement">${contour}${struct}${plis}${coupes}${zip}</g>
+      <text class="piece-nom" x="-142" y="42">${v.nom}</text>
+      <g class="reperes">${reperes}</g>
+    </svg>`;
+}
+
+function liste(idVetement) {
+  const v = VETEMENTS[idVetement];
+  const lignes = v.tarifs.map(([nom, prix, pose]) => {
+    const m = prix.startsWith('dès ') ? `<em>dès</em>${prix.slice(4)}` : prix;
+    return `<div class="ligne${pose ? ' pose' : ''}"><dt>${nom}</dt><dd>${m}</dd></div>`;
+  }).join('');
+  const poses = v.tarifs.filter(t => t[2]).length;
+  return `
+    <details>
+      <summary>Voir le prix de toutes les retouches</summary>
+      <dl>${lignes}</dl>
+      <p class="legende">Les ${poses} lignes à point d'or sont posées sur la pièce.
+         ${v.source}</p>
+    </details>`;
+}
+
+document.getElementById('pieces').innerHTML =
+  ['complet', 'robe', 'manteau'].map(id => `
+    <div class="piece-bloc">
+      <div class="scene">${planche(id)}</div>
+      <div class="liste">${liste(id)}</div>
+    </div>`).join('');
+</script>
+
+</body>
+</html>

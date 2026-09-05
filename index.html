@@ -13,9 +13,26 @@
 
 <a class="saut" href="#contenu">Aller au contenu</a>
 
-<header class="entete">
+<!-- L'or du nom, défini une fois -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="orfevre" x1="0" y1="0" x2="1" y2="0.35">
+    <stop offset="0%"   stop-color="#9C7638"/>
+    <stop offset="24%"  stop-color="#CBA965"/>
+    <stop offset="48%"  stop-color="#F6E4B4"/>
+    <stop offset="72%"  stop-color="#CBA965"/>
+    <stop offset="100%" stop-color="#9C7638"/>
+  </linearGradient>
+</defs></svg>
+
+<!-- ═══════════════ LA BANDE DE RACCORD ═══════════════
+     Le logo du site à gauche — le même balisage `.marque` que les huit pages
+     intérieures, au caractère près : c'est lui qui fait le raccord entre
+     l'accueil et le reste. L'état d'ouverture au centre, sur l'axe de la page ;
+     le téléphone à droite. L'ancienneté n'est plus ici : c'est un argument de
+     confiance, pas une information d'usage, et elle a rejoint le nom d'or. -->
+<div class="bande-logo">
   <div class="zone">
-    <a class="marque" href="index.html">
+    <a class="marque" href="index.html" aria-label="Pressing de Vernier, accueil">
       <svg viewBox="0 0 96 96" fill="none" aria-hidden="true">
         <circle cx="48" cy="48" r="37" stroke="currentColor" stroke-width="5"/>
         <circle cx="48" cy="48" r="28" stroke="currentColor" stroke-width="1.4" opacity=".45"/>
@@ -28,12 +45,44 @@
         <span>Nettoyage &#183; Blanchisserie &#183; Couture</span>
       </span>
     </a>
+    <span class="bl-etat pastille" data-etat-ouverture>&#8212;</span>
+    <a class="bl-tel" href="tel:+41223416818" data-tel>022 341 68 18</a>
+  </div>
+</div>
+
+<!-- ═══════════════ L'EN-TÊTE — elle porte le nom ═══════════════
+     Sur l'accueil, l'enseigne n'est plus un bloc à part sur le mur : le nom
+     en or vit dans l'en-tête, qui passe au vert de nuit. Comme l'en-tête est
+     collante, le nom reste présent pendant tout le défilement au lieu de
+     disparaître au premier geste. Le mur vert n'a plus qu'un seul rôle,
+     tenir la tringle. -->
+<header class="entete entete-nom">
+  <div class="zone">
+    <a class="nom" href="index.html" aria-label="Pressing de Vernier, accueil">
+      <h1 class="nom-enseigne">
+        <span class="plaque une-ligne" aria-hidden="true">
+          <svg><text font-size="100" font-weight="500" letter-spacing="22">PRESSING DE VERNIER</text></svg>
+        </span>
+        <!-- Sur petit ecran, la ligne unique tomberait a 30 px de haut :
+             le nom passe alors sur deux lignes, de meme hauteur de lettre. -->
+        <span class="plaque deux-lignes" aria-hidden="true">
+          <svg data-groupe="nom"><text font-size="100" font-weight="500" letter-spacing="26">PRESSING</text></svg>
+          <svg data-groupe="nom"><text font-size="100" font-weight="500" letter-spacing="26">DE VERNIER</text></svg>
+        </span>
+        <span class="lecture-seule">Pressing de Vernier &#8212; nettoyage textile et atelier de couture &#224; Vernier</span>
+      </h1>
+    </a>
+    <div class="filet"><i></i></div>
+    <p class="entete-depuis" data-depuis>Depuis 2006 a Vernier</p>
     <nav class="navigation" aria-label="Menu">
-        <a href="nettoyage.html">Nettoyage</a>
-        <a href="couture.html">Couture</a>
-        <a href="professionnels.html">Professionnels</a>
-        <a href="tarifs.html">Tarifs</a>
-        <a href="trouver.html">Nous trouver</a>
+      <a href="nettoyage.html">Nettoyage</a>
+      <a href="blanchisserie.html">Blanchisserie</a>
+      <a href="repassage.html">Repassage</a>
+      <a href="couture.html">Couture</a>
+      <a href="cuir.html">Cuir &amp; tapis</a>
+      <a href="professionnels.html">Professionnels</a>
+      <a href="tarifs.html">Tarifs</a>
+      <a href="trouver.html">Nous trouver</a>
     </nav>
     <button class="burger" type="button" aria-expanded="false" aria-controls="menu-mobile" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -46,7 +95,10 @@
     <ul>
       <li><a href="index.html" aria-current="page">Accueil</a></li>
       <li><a href="nettoyage.html">Nettoyage</a></li>
+      <li><a href="blanchisserie.html">Blanchisserie</a></li>
+      <li><a href="repassage.html">Repassage</a></li>
       <li><a href="couture.html">Couture</a></li>
+      <li><a href="cuir.html">Cuir &amp; tapis</a></li>
       <li><a href="professionnels.html">Professionnels</a></li>
       <li><a href="tarifs.html">Tarifs</a></li>
       <li><a href="trouver.html">Nous trouver</a></li>
@@ -56,71 +108,37 @@
 
 <main id="contenu">
 
-<!-- L'or du nom, défini une fois -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-  <linearGradient id="orfevre" x1="0" y1="0" x2="1" y2="0.35">
-    <stop offset="0%"   stop-color="#9C7638"/>
-    <stop offset="24%"  stop-color="#CBA965"/>
-    <stop offset="48%"  stop-color="#F6E4B4"/>
-    <stop offset="72%"  stop-color="#CBA965"/>
-    <stop offset="100%" stop-color="#9C7638"/>
-  </linearGradient>
-</defs></svg>
 
-<!-- ═══════════════ L'ENSEIGNE ═══════════════ -->
-<header class="enseigne">
-  <div class="dedans">
-    <div class="filet"><i></i></div>
-    <h1 class="nom-enseigne">
-      <span class="plaque une-ligne" aria-hidden="true">
-        <svg><text font-size="100" font-weight="500" letter-spacing="22">PRESSING DE VERNIER</text></svg>
-      </span>
-    <!-- Sur petit ecran, la ligne unique tomberait a 30 px de haut :
-         le nom passe alors sur deux lignes, de meme hauteur de lettre. -->
-    <span class="plaque deux-lignes" aria-hidden="true">
-      <svg data-groupe="nom"><text font-size="100" font-weight="500" letter-spacing="26">PRESSING</text></svg>
-      <svg data-groupe="nom"><text font-size="100" font-weight="500" letter-spacing="26">DE VERNIER</text></svg>
-      </span>
-      <span class="lecture-seule">Pressing de Vernier &#8212; nettoyage textile et atelier de couture &#224; Vernier</span>
-    </h1>
-    <p class="metiers">Nettoyage &#183; Blanchisserie &#183; Couture</p>
-    <p class="lieu" data-adresse></p>
+<!-- ═══════════════ LES SIX MÉTIERS ═══════════════
+     Six cartes de papier suspendues aux pinces d'une tringle de laiton.
+     La tringle est une image ; les cartes sont construites par
+     assets/site.js et se calent sur les pinces mesurées dans le fichier.
+     Aucun texte de métier n'est écrit ici. -->
+<section class="tr-mur">
+  <p class="tr-titre"><i></i><span>Les six m&#233;tiers</span><i></i></p>
+
+  <span class="tr-voile gauche" data-eteint></span>
+  <span class="tr-voile droite"></span>
+
+  <div class="tr-piste" id="tringle" role="region"
+       aria-label="Les six m&#233;tiers, faites glisser pour les parcourir" tabindex="0">
+    <div class="tr-ensemble">
+      <img class="tr-rail" src="assets/illustrations/tringle.webp"
+           width="2109" height="76" alt="" fetchpriority="high">
+      <div class="tr-cartes" id="cartes-metiers"></div>
+    </div>
   </div>
 
-  <div class="pratique">
-    <ul>
-      <li>
-        <dt>Aujourd&#8217;hui</dt>
-        <dd><span class="pastille" data-etat-ouverture>&#8212;</span>
-            <small data-horaires-resume></small></dd>
-      </li>
-      <li>
-        <dt>Adresse</dt>
-        <dd><a data-itineraire target="_blank" rel="noopener">201 route de Vernier</a>
-            <small>1214 Vernier, Gen&#232;ve</small></dd>
-      </li>
-      <li>
-        <dt>T&#233;l&#233;phone</dt>
-        <dd><a data-tel></a><small>Sans rendez-vous</small></dd>
-      </li>
-    </ul>
-  </div>
-</header>
+  <ol class="tr-points" id="points-metiers"></ol>
+</section>
 
-<!-- La phrase de positionnement, ramen&#233;e &#224; une ligne -->
+<!-- La phrase de positionnement, sous la tringle -->
 <div class="positionnement">
   <p>Chaque textile m&#233;rite le traitement juste &#8212; nous vous conseillons avant d&#8217;agir.</p>
 </div>
 
-<!-- ═══════════════ LES SERVICES ═══════════════
-     Les cartes et leurs prix sont construits par assets/site.js
-     &#224; partir de data/tarifs.js. Aucun montant n&#8217;est &#233;crit ici. -->
-<section class="cartes-services">
-  <div class="pile" id="cartes-services"></div>
-</section>
-
 <!-- ═══════════════ L'APPEL ═══════════════ -->
-<section class="bande-appel">
+<section class="bande-appel sombre">
   <h2>Une urgence, un volume, une pi&#232;ce particuli&#232;re&#160;?</h2>
   <p>Appelez-nous&#160;: nous vous dirons imm&#233;diatement ce qui est possible,
      selon la pi&#232;ce et la charge de l&#8217;atelier.</p>
@@ -137,11 +155,11 @@
         <path d="M16.8 60.6A54 54 0 0 1 123.2 60.6" stroke="currentColor" stroke-width="1.2" opacity=".6"/>
         <path d="M123.2 79.4A54 54 0 0 1 16.8 79.4" stroke="currentColor" stroke-width="1.2" opacity=".6"/>
         <path d="M11 70l5-5 5 5-5 5z" fill="currentColor"/><path d="M119 70l5-5 5 5-5 5z" fill="currentColor"/>
-        <text x="70" y="64" font-family="Cormorant Garamond, Georgia, serif" font-size="14" font-weight="600"
-              letter-spacing="1.2" fill="currentColor" text-anchor="middle">PRESSING</text>
-        <text x="70" y="84" font-family="Cormorant Garamond, Georgia, serif" font-size="14" font-weight="600"
-              letter-spacing="1.2" fill="currentColor" text-anchor="middle">DE VERNIER</text>
-        <text font-family="Inter, sans-serif" font-size="8.4" font-weight="500" letter-spacing="2.8" fill="currentColor">
+        <text x="70" y="64" font-family="Cinzel, Georgia, serif" font-size="12.5" font-weight="600"
+              letter-spacing="0.9" fill="currentColor" text-anchor="middle">PRESSING</text>
+        <text x="70" y="84" font-family="Cinzel, Georgia, serif" font-size="12.5" font-weight="600"
+              letter-spacing="0.9" fill="currentColor" text-anchor="middle">DE VERNIER</text>
+        <text font-family="Archivo, sans-serif" font-size="8.4" font-weight="500" letter-spacing="2.8" fill="currentColor">
           <textPath href="#arcbas-pied" startOffset="50%" text-anchor="middle">DEPUIS 2006</textPath>
         </text>
       </svg></div>

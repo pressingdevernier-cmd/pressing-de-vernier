@@ -26,19 +26,30 @@
 
   /* ---- POLICES -------------------------------------------------------
      Hébergées dans assets/polices/ : aucun appel à un service extérieur. */
-  --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
-  --sans:  "Inter", -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --sans:  "Archivo", -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
+
+  /* Le nom de la maison, et lui seul : bandeau, en-tête, sceau. Les titres
+     de pages restent en --serif. */
+  --logotype: "Cinzel", Georgia, "Times New Roman", serif;
 
   /* ---- TAILLES DE TEXTE ----------------------------------------------
-     Gamme de rapport 1,25 : chaque taille découle de la précédente.      */
+     Les corps de TEXTE gardent le rapport 1,25 et leurs valeurs : Archivo
+     et Inter ont des hauteurs d'x voisines, rien ne bouge à la lecture.
+
+     Les corps d'AFFICHAGE descendent d'environ 15 %. La hauteur d'x de
+     Newsreader est nettement supérieure à celle de Cormorant Garamond :
+     aux mêmes valeurs en pixels, les titres paraîtraient une taille trop
+     gros. Seul --t-xl est arrondi vers le haut (22,95 → 24 px), pour
+     garder un écart perceptible avec --t-l à 21 px.                      */
   --t-xs:  12px;                        /* étiquettes espacées   */
   --t-s:   14px;                        /* légendes              */
   --t-m:   17px;                        /* texte courant         */
   --t-l:   21px;                        /* chapô, prix           */
-  --t-xl:  27px;                        /* titres de carte       */
-  --t-2xl: clamp(30px, 3.4vw, 42px);    /* titres secondaires    */
-  --t-3xl: clamp(38px, 5.6vw, 66px);    /* titres de section     */
-  --t-4xl: clamp(42px, 6.6vw, 84px);    /* titre de page         */
+  --t-xl:  24px;                        /* titres de carte       */
+  --t-2xl: clamp(26px, 2.9vw, 36px);    /* titres secondaires    */
+  --t-3xl: clamp(33px, 4.8vw, 56px);    /* titres de section     */
+  --t-4xl: clamp(36px, 5.6vw, 72px);    /* titre de page         */
 
   /* ---- ESPACEMENTS --------------------------------------------------- */
   --s1: 8px;   --s2: 16px;  --s3: 24px;  --s4: 40px;
@@ -58,6 +69,12 @@
 *,*::before,*::after{ box-sizing:border-box; }
 
 html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+
+/* Newsreader porte un axe de taille optique : son dessin s'épaissit de
+   lui-même dans les petits corps et s'affine dans les grands. C'est le
+   comportement par défaut du navigateur ; on l'écrit pour que personne ne
+   le neutralise par mégarde. */
+:where(html){ font-optical-sizing:auto; }
 
 body{
   margin:0;
@@ -200,8 +217,8 @@ h4{ font-size:var(--t-l); }
 .marque svg{ width:34px; flex:none; color:var(--vert); }
 .marque .mots{ display:flex; flex-direction:column; line-height:1; }
 .marque .mots b{
-  font-family:var(--serif); font-size:18px; font-weight:600;
-  letter-spacing:.14em; text-transform:uppercase; color:var(--vert); white-space:nowrap;
+  font-family:var(--logotype); font-size:17px; font-weight:600;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--vert); white-space:nowrap;
 }
 .marque .mots span{
   font-size:8px; letter-spacing:.24em; text-transform:uppercase;
@@ -228,18 +245,24 @@ h4{ font-size:var(--t-l); }
 .burger{ display:none; background:none; border:0; padding:11px; margin-right:-11px; }
 .burger span{ display:block; width:22px; height:1.5px; background:var(--vert); margin:5px 0; }
 
+/* Au-dessus du seuil du burger, la navigation prend sa propre ligne :
+   huit entrees ne tiennent pas a cote du nom sur une seule ligne. */
+@media (min-width:861px){
+  .entete .zone{ flex-wrap:wrap; min-height:0; padding-block:15px 0; }
+  .navigation{
+    flex-basis:100%; justify-content:center;
+    gap:clamp(16px,2.2vw,32px);
+    margin-top:15px; border-top:1px solid var(--papier);
+  }
+  .navigation a{ padding:15px 0; }
+}
+
 /* ============================================================================
    BANDEAUX SOMBRES
    ============================================================================ */
 .sombre{
   background:var(--vert-nuit); color:var(--sur-nuit);
-  position:relative; isolation:isolate;
-}
-.sombre::before{
-  content:""; position:absolute; inset:0; z-index:-2;
-  background:
-    radial-gradient(120% 80% at 50% -10%, rgba(15,90,50,.34), transparent 62%),
-    radial-gradient(90% 60% at 88% 108%, rgba(201,162,77,.12), transparent 60%);
+  position:relative;
 }
 .sombre h1,.sombre h2,.sombre h3,.sombre h4{ color:var(--sur-nuit); }
 .sombre .chapo{ color:var(--sur-nuit-doux); }
@@ -351,20 +374,75 @@ h4{ font-size:var(--t-l); }
 /* ============================================================================
    LA PLANCHE TECHNIQUE
    ============================================================================ */
-.planche svg{ width:100%; height:auto; overflow:visible; }
-.planche .piece{ fill:none; stroke:var(--vert); stroke-width:1.7; stroke-linejoin:round; stroke-linecap:round; }
-.planche .detail{ fill:none; stroke:var(--vert); stroke-width:1; opacity:.5; }
-.planche .piqure{ fill:none; stroke:var(--or); stroke-width:1.4; stroke-dasharray:5 4.5; stroke-linecap:round; }
-.planche .cote{ fill:none; stroke:var(--acier); stroke-width:.85; }
+/* La planche est dessinée à la craie : fond de nuit, trait ivoire. */
+.planche{ background:var(--vert-nuit); border-radius:3px; padding:clamp(14px,2vw,26px); }
+.planche svg{ width:100%; height:auto; overflow:visible; display:block; }
+
+/* Le contour, tracé deux fois : la main revient dessus sans recouvrir. */
+.planche .trait{
+  fill:none; stroke:var(--ivoire); stroke-width:1.7; opacity:.88;
+  stroke-linejoin:round; stroke-linecap:round;
+  filter:url(#grain-craie) drop-shadow(0 0 2.5px rgba(246,243,236,.4));
+}
+.planche .repasse{
+  fill:none; stroke:var(--ivoire); stroke-width:1.5; opacity:.58;
+  stroke-linejoin:round; stroke-linecap:round; filter:url(#grain-craie);
+}
+/* Ce qui fait reconnaître la pièce : revers, col de chemise, rabats de
+   poche, ceinture et passants, pliure du pantalon. */
+.planche .detail{
+  fill:none; stroke:var(--ivoire); stroke-width:.9; opacity:.5;
+  stroke-linecap:round; stroke-linejoin:round; filter:url(#grain-craie);
+}
+.planche .detail.fin{ stroke-width:.85; opacity:.36; }   /* les hachures du tissu */
+
+/* La fermeture éclair, à la craie elle aussi. */
+.planche .zip-ruban{ fill:none; stroke:var(--ivoire); stroke-width:1.2; opacity:.5; }
+.planche .dent{ stroke:var(--ivoire); stroke-width:1.35; stroke-linecap:round; opacity:.72; }
+.planche .curseur{ fill:none; stroke:var(--ivoire); stroke-width:1.7; stroke-linejoin:round; opacity:.8; }
+
+/* Les lignes de coupe : la seule chose du vêtement qui ait droit à l'or.
+   Calculées comme un décalage du tracé, elles en épousent la courbe. */
+.planche .coupe{
+  fill:none; stroke:var(--or-clair); stroke-width:1.5;
+  stroke-dasharray:4.5 4; stroke-linecap:round; stroke-linejoin:round;
+}
 /* La quincaillerie — anneaux, tringles : elle n est pas dans le tissu,
    c est normal, et le controle geometrique l ignore. */
-.planche .ferrure{ fill:none; stroke:var(--vert); stroke-width:1; opacity:.5; }
-.planche text{ font-family:var(--sans); font-size:7.5px; letter-spacing:.16em; text-transform:uppercase; fill:var(--acier); }
 
-/* Le tracé qui se dessine */
-.trace{ stroke-dasharray:var(--len,900); stroke-dashoffset:var(--len,900); }
-.vu .trace{ animation:tracer var(--dur,2.4s) cubic-bezier(.35,0,.15,1) var(--del,0s) forwards; }
-@keyframes tracer{ to{ stroke-dashoffset:0; } }
+/* Les étiquettes de prix posées sur la pièce. Le trait de rappel qui mène
+   au montant reste une droite : il ne désigne pas une coupe. */
+.planche .fil-fond{ stroke:var(--vert-nuit); stroke-width:2.8; stroke-linecap:round; }
+.planche .fil{ stroke:var(--or-clair); stroke-width:1; }
+.planche .coche{ stroke:var(--or-clair); stroke-width:1.2; }
+.planche .point{ fill:var(--or-clair); }
+.planche .halo{ fill:none; stroke:var(--or-clair); stroke-width:.8; opacity:.45; }
+.planche text.nom{
+  font-family:var(--sans); font-size:8.4px; font-weight:600;
+  letter-spacing:.15em; text-transform:uppercase; fill:var(--or-clair);
+}
+.planche text.prix{
+  font-family:var(--sans); font-size:18px; font-weight:600;
+  fill:var(--ivoire); font-variant-numeric:tabular-nums;
+}
+.planche text.prix .mention{ font-size:11px; font-weight:400; fill:rgba(246,243,236,.55); }
+
+/* Le dépliant des prix, sous la planche. */
+.tarifs-vetement{ max-width:none; margin-top:var(--s3); }
+.tarifs-vetement details{ border-top:1px solid var(--papier); }
+.tarifs-vetement summary{
+  cursor:pointer; list-style:none; padding:16px 0; min-height:44px;
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  font-size:11px; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--or);
+}
+.tarifs-vetement summary::-webkit-details-marker{ display:none; }
+.tarifs-vetement summary::after{
+  content:""; width:9px; height:9px; flex:none;
+  border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor;
+  transform:rotate(45deg) translate(-2px,-2px); transition:transform var(--transition);
+}
+.tarifs-vetement details[open] summary::after{ transform:rotate(-135deg) translate(-2px,-2px); }
 
 /* ============================================================================
    LA GAMME NUMÉROTÉE DES MÉTIERS
@@ -382,20 +460,6 @@ h4{ font-size:var(--t-l); }
   display:grid; grid-template-columns:1.12fr 1fr; gap:1px;
   background:var(--papier); border:1px solid var(--papier); margin-top:var(--s5);
 }
-.metier{ background:var(--blanc); padding:var(--s4) var(--s3); display:flex; flex-direction:column; position:relative; transition:background var(--transition); }
-.metier:hover{ background:#FCFBF8; }
-.metier h3{ margin-bottom:10px; }
-.metier p{ font-size:15px; color:rgba(35,40,37,.68); margin:0 0 var(--s3); flex:1; }
-.metier .lien{ font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--or); display:inline-flex; align-items:center; gap:8px; }
-.metier .lien svg{ width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:1.6; transition:transform var(--transition); }
-.metier:hover .lien svg{ transform:translateX(5px); }
-.metier.vedette{ grid-row:span 3; justify-content:flex-end; padding:var(--s5) var(--s4); background:linear-gradient(168deg,#F1F5F0,var(--blanc) 62%); }
-.metier.vedette h3{ font-size:var(--t-2xl); }
-.metier.vedette p{ font-size:var(--t-m); max-width:34ch; flex:none; }
-.metier.vedette .sceau-carte{ width:88px; margin-bottom:var(--s3); color:var(--or); }
-.metier.ligne{ flex-direction:row; align-items:flex-start; gap:var(--s3); }
-.metier.ligne .picto{ width:34px; height:34px; stroke:var(--or); fill:none; stroke-width:1.15; flex:none; }
-.metier.ligne h3{ font-size:var(--t-l); }
 .etiquette{
   position:absolute; top:var(--s4); right:var(--s4);
   font-size:9px; letter-spacing:.2em; text-transform:uppercase;
@@ -449,13 +513,8 @@ h4{ font-size:var(--t-l); }
   background:var(--blanc); display:grid; place-items:center; position:relative; overflow:hidden;
 }
 .plan .epingle{ text-align:center; padding:var(--s3); }
-.plan .epingle svg{ width:34px; height:34px; stroke:var(--or); fill:none; stroke-width:1.2; margin:0 auto 12px; }
 .plan .epingle b{ font-family:var(--serif); font-size:var(--t-l); font-weight:600; display:block; color:var(--vert); }
 .plan .epingle span{ font-size:12.5px; color:var(--acier); }
-.plan .a-fournir{
-  position:absolute; bottom:12px; left:0; right:0; text-align:center;
-  font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--papier);
-}
 .coordonnees{ display:grid; gap:var(--s2); margin-top:var(--s4); }
 .coordonnees a{ display:flex; align-items:center; gap:14px; font-size:16px; min-height:44px; transition:color var(--transition); }
 .coordonnees a:hover{ color:var(--or); }
@@ -482,7 +541,6 @@ h4{ font-size:var(--t-l); }
 
 @media (max-width:860px){
   .grille-metiers{ grid-template-columns:1fr; }
-  .metier.vedette{ grid-row:auto; padding:var(--s4) var(--s3); }
   .duo,.duo.large-gauche{ grid-template-columns:1fr; }
   .bandeau-infos dl{ grid-template-columns:1fr; }
   .bandeau-infos dl > div{ border-left:0; border-top:1px solid var(--papier); padding-left:0; padding-right:0; }
@@ -511,7 +569,6 @@ h4{ font-size:var(--t-l); }
 .onglet-vetement[aria-pressed="true"]{
   background:var(--vert); border-color:var(--vert); color:var(--ivoire);
 }
-.tarifs-vetement{ max-width:720px; }
 .tarifs-vetement .tarif-bloc{ margin-bottom:0; }
 
 /* ============================================================================
@@ -520,7 +577,6 @@ h4{ font-size:var(--t-l); }
    on rate le lien une fois sur trois sur un téléphone.
    ============================================================================ */
 .marque{ min-height:44px; }
-.metier .lien{ min-height:44px; align-items:center; margin-top:auto; }
 .pied a{ display:inline-flex; align-items:center; min-height:44px; }
 .pied .mentions a{ min-height:0; }
 .sommaire a,.onglet-vetement,.coordonnees a{ min-height:44px; }
@@ -555,10 +611,6 @@ h4{ font-size:var(--t-l); }
   display:flex; flex-direction:column; transition:background var(--transition);
 }
 .grille-services article:hover{ background:#FCFBF8; }
-.grille-services .picto{
-  width:30px; height:30px; stroke:var(--or); fill:none; stroke-width:1.15;
-  margin-bottom:var(--s2); flex:none;
-}
 .grille-services h3{ font-size:var(--t-l); margin-bottom:10px; }
 .grille-services p{ font-size:15px; color:rgba(35,40,37,.68); margin:0; }
 
@@ -584,37 +636,9 @@ h4{ font-size:var(--t-l); }
 }
 
 /* ============================================================================
-   L'ENSEIGNE — le grand bandeau vert de la page d'accueil
-   ----------------------------------------------------------------------------
-   Composition « la plaque » : le nom sur une seule ligne, calibré pour
-   occuper toute la largeur, comme une plaque de devanture.
-   Le nom est dessiné en SVG et mesuré après rendu (voir assets/site.js) :
-   il ne peut donc jamais être rogné, quel que soit l'écran.
+   LA PLAQUE DU NOM — le nom en or, dessiné en SVG et mesuré après rendu
+   (voir assets/site.js) : il ne peut donc jamais être rogné.
    ============================================================================ */
-.enseigne{
-  background:var(--vert-nuit); color:var(--sur-nuit);
-  position:relative; isolation:isolate; overflow:hidden;
-}
-.enseigne::before{
-  content:""; position:absolute; inset:0; z-index:-2;
-  background:
-    radial-gradient(115% 78% at 50% -6%, rgba(15,90,50,.42), transparent 62%),
-    radial-gradient(88% 58% at 88% 106%, rgba(201,162,77,.14), transparent 60%);
-}
-.enseigne::after{   /* le grain, sinon l'aplat sombre paraît plat */
-  content:""; position:absolute; inset:0; z-index:-1; opacity:.16; pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
-}
-.enseigne .dedans{
-  max-width:var(--largeur-max); margin-inline:auto;
-  padding:clamp(48px,7.5vw,92px) var(--marge-page);
-  text-align:center;
-}
-.enseigne .filet{ max-width:min(560px,80%); margin:0 auto clamp(22px,3vw,30px); }
-.enseigne .filet::before,.enseigne .filet::after{
-  background:linear-gradient(90deg,transparent,var(--or-clair),transparent);
-}
-.enseigne .filet i{ background:var(--or-clair); }
 
 /* Le nom est une image : ce texte le double pour les lecteurs d ecran
    et pour Google, sans s afficher. */
@@ -625,7 +649,7 @@ h4{ font-size:var(--t-l); }
 .nom-enseigne{ margin:0; font-size:inherit; font-weight:inherit; }
 .plaque{ display:block; }
 .plaque svg{ width:100%; height:auto; display:block; }
-.plaque text{ font-family:var(--serif); fill:url(#orfevre); }
+.plaque text{ font-family:var(--logotype); fill:url(#orfevre); }
 /* Une seule ligne sur grand ecran, deux lignes sur petit :
    sinon le nom deviendrait minuscule sur un telephone. */
 .plaque.deux-lignes{ display:none; }
@@ -635,35 +659,6 @@ h4{ font-size:var(--t-l); }
   .plaque.une-ligne{ display:none; }
   .plaque.deux-lignes{ display:block; }
 }
-
-.enseigne .metiers{
-  font-size:clamp(9.5px,1.05vw,11.5px); letter-spacing:.34em;
-  text-transform:uppercase; color:var(--or-clair); margin:clamp(22px,3vw,30px) 0 0;
-}
-.enseigne .lieu{ font-size:13px; color:rgba(246,243,236,.5); margin:12px 0 0; }
-
-/* La barre pratique, au pied de l'enseigne */
-.pratique{
-  position:relative; z-index:1;
-  border-top:1px solid rgba(201,162,77,.26);
-  background:rgba(2,14,8,.4);
-}
-.pratique ul{
-  list-style:none; margin:0 auto; padding:0; max-width:var(--largeur-max);
-  display:grid; grid-template-columns:repeat(3,1fr);
-}
-.pratique li{ padding:20px clamp(18px,4vw,54px); border-left:1px solid rgba(201,162,77,.2); }
-.pratique li:first-child{ border-left:0; }
-.pratique dt{
-  font-size:9.5px; letter-spacing:.24em; text-transform:uppercase;
-  color:var(--or-clair); margin-bottom:7px;
-}
-.pratique dd{ margin:0; font-size:15px; color:rgba(246,243,236,.9); }
-.pratique dd small{ display:block; font-size:12.5px; color:rgba(246,243,236,.5); margin-top:3px; }
-.pratique a{ display:inline-flex; align-items:center; min-height:44px; transition:color var(--transition); }
-.pratique a:hover{ color:var(--or-clair); }
-.pratique .pastille::before{ background:#5FBF8B; box-shadow:0 0 0 0 rgba(95,191,139,.5); }
-.pratique .pastille.ferme::before{ background:#C98A80; animation:none; box-shadow:none; }
 
 /* La phrase de positionnement : présente, mais elle ne prend plus la place du nom */
 .positionnement{
@@ -677,64 +672,6 @@ h4{ font-size:var(--t-l); }
 }
 
 /* ============================================================================
-   LES CARTES DE SERVICE — page d'accueil
-   ----------------------------------------------------------------------------
-   Quatre cartes blanches détourées sur le fond ivoire. Tout est visible
-   d'emblée : le texte, les liens et quatre prix par service. Aucun clic
-   n'est nécessaire pour connaître un ordre de grandeur.
-   ============================================================================ */
-.cartes-services{ padding:clamp(44px,5.5vw,76px) 0; }
-.cartes-services .pile{
-  max-width:var(--largeur-max); margin-inline:auto; padding-inline:var(--marge-page);
-  display:grid; gap:clamp(16px,2vw,22px);
-}
-
-.carte-service{
-  background:var(--blanc); border:1px solid var(--papier); border-radius:3px;
-  padding:clamp(26px,3.4vw,44px);
-  display:grid; grid-template-columns:1fr 1fr; gap:clamp(22px,4vw,56px);
-  align-items:start;
-  transition:border-color var(--transition), box-shadow var(--transition), transform var(--transition);
-}
-.carte-service:hover{
-  border-color:rgba(168,132,47,.45);
-  box-shadow:0 14px 40px rgba(22,36,28,.09);
-  transform:translateY(-2px);
-}
-
-/* Le numéro, en gros chiffre d'or : c'est lui qui donne le rythme
-   d'une carte à l'autre, à la place d'un changement de fond. */
-.carte-service .num{
-  display:block; font-family:var(--serif); font-weight:600;
-  font-size:clamp(30px,3.4vw,42px); line-height:1;
-  color:var(--or); margin-bottom:10px;
-}
-.carte-service h2{ font-size:clamp(23px,2.9vw,32px); font-weight:500; margin:0 0 14px; }
-.carte-service .texte{ margin:0 0 var(--s3); font-size:15.5px; color:rgba(35,40,37,.72); max-width:44ch; }
-.carte-service .liens{ display:flex; flex-wrap:wrap; gap:10px; }
-
-/* Les prix, colonne de droite */
-.carte-service .extrait{ list-style:none; margin:0; padding:0; }
-.carte-service .extrait li{
-  display:flex; align-items:baseline; gap:12px; padding:10px 0;
-  border-bottom:1px dotted var(--papier); font-size:15px;
-}
-.carte-service .extrait li:last-child{ border-bottom:0; }
-.carte-service .extrait li span{ flex:1; }
-.carte-service .extrait li b{
-  font-family:var(--serif); font-size:21px; font-weight:600; color:var(--vert);
-  font-variant-numeric:tabular-nums; white-space:nowrap;
-}
-.carte-service .extrait li em{
-  font-style:normal; font-size:10.5px; letter-spacing:.08em;
-  text-transform:uppercase; color:var(--acier);
-}
-
-@media (max-width:860px){
-  .carte-service{ grid-template-columns:1fr; gap:var(--s3); }
-}
-
-/* ============================================================================
    LA BANDE D'APPEL — pleine largeur, en fin de page d'accueil
    Nom distinct de « .appel », qui est la carte blanche des autres pages :
    deux composants differents ne doivent jamais partager une classe.
@@ -745,12 +682,6 @@ h4{ font-size:var(--t-l); }
 }
 .bande-appel h2{ color:var(--sur-nuit); font-size:clamp(23px,3.1vw,33px); font-weight:500; margin:0 0 14px; }
 .bande-appel p{ max-width:56ch; margin:0 auto var(--s4); color:var(--sur-nuit-doux); }
-
-@media (max-width:860px){
-  .pratique ul{ grid-template-columns:1fr; }
-  .pratique li{ border-left:0; border-top:1px solid rgba(201,162,77,.18); }
-  .pratique li:first-child{ border-top:0; }
-}
 
 /* ============================================================================
    MOUVEMENT RÉDUIT — respecté partout, ce n'est pas une option
@@ -773,4 +704,400 @@ h4{ font-size:var(--t-l); }
   body{ background:#fff; color:#000; font-size:11pt; }
   .sombre{ background:#fff; color:#000; }
   a::after{ content:""; }
+}
+
+
+/* ============================================================================
+   L'EN-TÊTE DE L'ACCUEIL — elle porte le nom
+   ----------------------------------------------------------------------------
+   Sur l'accueil seulement, l'en-tête passe au vert de nuit et reçoit la
+   plaque d'or. Sur ivoire, les reflets clairs du dégradé d'orfèvre
+   disparaîtraient ; sur le vert ils tiennent. Le vert devient alors le fond
+   continu du haut de page, du bandeau jusqu'au mur, et l'ivoire n'appartient
+   plus qu'aux six cartes : le seul endroit clair de l'écran est celui qu'on
+   doit lire. L'en-tête étant collante, le nom ne défile plus.
+   ============================================================================ */
+.entete-nom{
+  background:var(--vert-nuit);
+  border-bottom:1px solid rgba(201,162,77,.28);
+  /* Pas de `position` ici : `.entete` est déjà en `sticky`, qui suffit à
+     ancrer les deux calques et qu'il ne faut surtout pas écraser. */
+  isolation:isolate; overflow:hidden;
+}
+/* Les deux halos et le grain du bandeau du nom, tels que décrits au brief :
+   un vert lumineux qui tombe du haut, un reflet doré au coin bas droit.
+   Sans eux, l'aplat sombre paraît plat. Ils étaient portés par l'ancienne
+   enseigne ; ils suivent le nom dans son nouveau logement. */
+.entete-nom::before{
+  content:""; position:absolute; inset:0; z-index:-2;
+  background:
+    radial-gradient(115% 78% at 50% -6%, rgba(15,90,50,.42), transparent 62%),
+    radial-gradient(88% 58% at 88% 106%, rgba(201,162,77,.14), transparent 60%);
+}
+.entete-nom::after{                   /* le grain */
+  content:""; position:absolute; inset:0; z-index:-1; opacity:.16; pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+.entete-nom .zone{ display:block; padding-block:clamp(18px,2.2vw,28px) 0; }
+.entete-nom .nom{
+  display:flex; align-items:center; justify-content:center;
+  max-width:min(495px,72%); margin:0 auto;
+}
+/* Le titre doit occuper toute la largeur du lien, sinon la plaque se
+   calibre sur son contenu et le nom rétrécit. */
+.entete-nom .nom-enseigne{ width:100%; }
+/* Le filet à losange remplace la simple ligne qui séparait le nom de la
+   navigation : sous un nom de cette taille une hairline pleine largeur
+   paraissait maigre, et le filet est le séparateur de la maison. */
+.entete-nom .filet{
+  max-width:min(230px,40%);
+  margin:clamp(13px,1.7vw,19px) auto clamp(9px,1.1vw,13px);
+}
+.entete-nom .filet::before,.entete-nom .filet::after{
+  background:linear-gradient(90deg,transparent,var(--or-clair),transparent);
+}
+.entete-nom .filet i{ background:var(--or-clair); width:6px; height:6px; }
+.entete-nom .navigation{
+  display:flex; flex-basis:100%; justify-content:center;
+  gap:clamp(16px,2.2vw,32px); margin-top:0; border-top:0;
+}
+.entete-nom .navigation a{ color:rgba(246,243,236,.72); padding:11px 0 14px; }
+.entete-nom .navigation a::after{ background:var(--or-clair); bottom:9px; }
+.entete-nom .navigation a:hover,
+.entete-nom .navigation a[aria-current="page"]{ color:var(--or-clair); }
+.entete-nom .burger span{ background:var(--or-clair); }
+
+@media (max-width:860px){
+  .entete-nom .zone{ display:flex; align-items:center; gap:var(--s3); padding-block:12px; }
+  .entete-nom .nom{ margin:0; max-width:min(260px,64%); }
+  .entete-nom .filet{ display:none; }
+  /* Il faut le redire ici : `.entete-nom .navigation` est plus spécifique que
+     le `.navigation{display:none}` du site, et l'emporterait malgré la media
+     query. La navigation resterait dépliée sur téléphone. */
+  .entete-nom .navigation{ display:none; }
+}
+
+
+/* ============================================================================
+   LA BANDE DE RACCORD — accueil, tout en haut
+   ----------------------------------------------------------------------------
+   Sur l'accueil, le bandeau vert cède la place à une bande ivoire qui porte
+   le LOGO DU SITE : le même balisage `.marque` que les huit pages
+   intérieures, au caractère près. C'est lui qui fait le raccord entre
+   l'accueil et le reste. Le nom d'or, juste en dessous, n'est pas le logo
+   mais l'enseigne de la maison — les deux ne jouent pas le même rôle.
+
+   Trois zones, trois registres : l'identité à gauche, l'heure au centre,
+   l'action à droite. La grille est `1fr auto 1fr`, donc l'état d'ouverture
+   tombe exactement sur l'axe de la page — le même axe que le nom d'or et que
+   la tringle plus bas.
+
+   Les trois groupes se posent sur la MÊME LIGNE DE BASE, celle du nom du
+   logo. Sa ligne « nettoyage · blanchisserie · couture » pend en dessous,
+   sans vis-à-vis : une seule ligne forte traverse la bande, et l'asymétrie
+   du bas devient lisible au lieu d'être subie.
+
+   Aucun losange ici. Les losanges séparaient trois informations collées les
+   unes aux autres ; trois zones distinctes se séparent toutes seules.
+   ============================================================================ */
+.bande-logo{
+  background:var(--ivoire);
+  color:var(--graphite);
+  border-bottom:1px solid var(--papier);
+}
+.bande-logo .zone{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  column-gap:var(--s3);
+  align-items:baseline;
+  /* Sept pixels seulement : la cible tactile de 44 px que le site impose au
+     logo donne déjà sa hauteur à la bande. */
+  padding-block:7px;
+}
+/* Le logo est un conteneur flex. Sans réglage, sa ligne de base serait celle
+   de son premier élément — le bouton, une image, donc son bord bas — et non
+   celle du nom. Le bouton sort de l'alignement par `align-self`, la ligne de
+   base remonte au nom, et le logo s'aligne sur l'état et le numéro.
+   Son `margin-right:auto`, hérité de `.marque`, suffit à le caler à gauche
+   ET à réduire sa boîte au contenu : le clic n'est pas capté dans le vide. */
+.bande-logo .marque{ align-items:baseline; }
+.bande-logo .marque svg{ align-self:center; }
+
+/* La pastille du site est une boîte inline-flex : posée telle quelle dans la
+   grille, sa ligne de base serait celle de son point et non de son texte, et
+   l'état ne s'alignerait pas sur le nom. Le point passe donc en absolu et
+   l'état retrouve une ligne de base de texte. L'animation ne change pas. */
+.bl-etat.pastille{
+  display:inline; position:relative; padding-left:15px; white-space:nowrap;
+  font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+}
+.bl-etat.pastille::before{ position:absolute; left:0; top:.42em; margin:0; }
+
+/* Le téléphone est la seule action de la bande : il porte le fil d'or que le
+   site coud sous ses liens de navigation — ici cousu en permanence. Le
+   chiffre reste vert et non or : l'or sur l'ivoire plafonne à 3,15:1, sous
+   le seuil de 4,5:1 exigé d'un texte de cette taille. */
+.bl-tel{
+  justify-self:end; position:relative;
+  font-size:13.5px; font-weight:600; letter-spacing:.09em; color:var(--vert);
+}
+/* La cible tactile fait bien 44 px, mais hors du flux : un `min-height` sur
+   le lien lui-même en ferait la pièce la plus haute de la bande, qui
+   gagnerait dix pixels de vide. */
+.bl-tel::before{
+  content:""; position:absolute; left:-8px; right:-8px;
+  top:50%; height:44px; transform:translateY(-50%);
+}
+.bl-tel::after{                       /* le fil d'or, cousu en permanence */
+  content:""; position:absolute; left:0; right:0; bottom:-5px; height:1px;
+  background:var(--or); transition:background var(--transition);
+}
+.bl-tel:hover::after{ background:var(--vert); }
+
+/* Le seuil du burger, déjà celui du site : mesurés, le nom (235 px de
+   texte), l'état fermé (216) et le numéro (94) ne tiennent pas dans les
+   339 px d'un iPhone. Le logo garde sa ligne, l'état et le numéro passent
+   dessous. La ligne « nettoyage · blanchisserie · couture » du logo, elle,
+   s'escamote dès 1120 px — la feuille du site s'en charge déjà. */
+@media (max-width:860px){
+  .bande-logo .zone{
+    grid-template-columns:1fr auto;
+    column-gap:11px; row-gap:8px; padding-block:6px;
+  }
+  .bande-logo .marque{ grid-column:1 / 3; }
+  .bl-etat.pastille{
+    grid-column:1; justify-self:start;
+    font-size:10.5px; letter-spacing:.08em; white-space:normal;
+  }
+  .bl-tel{ grid-column:2; font-size:12.5px; }
+}
+
+
+/* ============================================================================
+   « DEPUIS 2006 À VERNIER », SOUS LE NOM D'OR
+   ----------------------------------------------------------------------------
+   C'est l'argument de la maison, pas une légende : aucun concurrent genevois
+   ne peut l'écrire. Il est donc traité au corps d'un texte qu'on lit, en
+   Cinzel — la police du nom juste au-dessus, même voix, une échelle en
+   dessous — et rien ne l'encadre.
+
+   L'ESPACEMENT FAIT TOUT LE TRAVAIL. Posé à égale distance du filet et de la
+   navigation, l'argument se lirait comme la légende du filet. Le filet est
+   donc remonté contre le nom, dont il est l'ornement de clôture, et
+   l'argument reçoit près du triple de cet écart au-dessus de lui : onze
+   pixels au-dessus du filet, vingt-sept en dessous. Il n'appartient plus à
+   l'ornement, il se tient seul.
+   ============================================================================ */
+.entete-nom .filet{ margin-block:clamp(8px,1vw,11px) 0; }
+.entete-depuis{
+  font-family:var(--logotype);
+  font-size:clamp(11.5px,1.05vw,13.5px); font-weight:500; line-height:1;
+  letter-spacing:.34em;
+  text-indent:.34em;                  /* rend au centrage la traîne du dernier D */
+  text-transform:uppercase;
+  color:var(--or-clair);
+  text-align:center;
+  margin:clamp(19px,2.4vw,27px) 0 clamp(13px,1.5vw,18px);
+}
+
+@media (max-width:860px){
+  /* Sur téléphone, l'en-tête redevient une rangée que le nom et le burger se
+     partagent, et le filet est escamoté. L'argument y serait un troisième
+     élément coincé entre les deux : la rangée passe donc en `wrap` et il
+     descend sur sa propre ligne, l'`order` gardant le burger en haut malgré
+     l'ordre du balisage.
+
+     `row-gap:0` est indispensable : la rangée porte `gap:var(--s3)`, et dès
+     qu'elle passe en `wrap` ces 24 px deviennent aussi un écart de RANGÉE —
+     l'argument tomberait 33 px sous le nom au lieu de 9, et l'en-tête
+     gagnerait 24 px pour rien. */
+  .entete-nom .zone{ flex-wrap:wrap; row-gap:0; }
+  .entete-nom .burger{ order:0; }
+  .entete-depuis{
+    order:1; flex-basis:100%; margin:9px 0 0;
+    font-size:10.5px; letter-spacing:.26em; text-indent:.26em;
+  }
+}
+
+
+
+
+/* ============================================================================
+   LA TRINGLE ET LES SIX CARTES — page d'accueil
+   ----------------------------------------------------------------------------
+   LE CALAGE DES CARTES SOUS LES PINCES
+   Les six pinces ont été mesurées dans assets/illustrations/tringle.webp,
+   sur la boîte du contenu (2109 × 76) :
+
+       pince      1       2       3       4       5       6
+       mesuré  11,356  26,837  42,248  57,658  73,044  88,573 %
+
+   Les écarts entre pinces valent 15,481 · 15,411 · 15,410 · 15,386 · 15,529 :
+   0,142 point de dispersion. La grille ci-dessous reprend ces valeurs
+   mesurées, jamais des valeurs idéales — aucune carte n'est placée à la
+   main, et changer ces six nombres suffirait si l'image était régénérée.
+
+   LE POINT D'ACCROCHE est dicté par la platine murale, pas par la mâchoire.
+   La platine descend jusqu'à la ligne 67 sur 76 ; en dessous il ne reste que
+   les six pinces. Un haut de carte plus haut ferait passer la première et la
+   dernière carte SOUS la fixation, et le coin du papier disparaîtrait.
+   ============================================================================ */
+.tr-mur{
+  --vert-mur:#0B2A1E;
+  --or-tr:#C9A24D;
+  --or-encre:#9A7728;
+  --papier-carte:#F4F0E6;
+
+  background:var(--vert-mur); color:var(--sur-nuit);
+  position:relative; isolation:isolate; overflow:hidden;
+  padding:clamp(18px,2.4vw,32px) 0 clamp(46px,5.5vw,84px);
+}
+.tr-mur::before{
+  content:""; position:absolute; inset:0; z-index:-2;
+  background:
+    radial-gradient(120% 80% at 50% -14%, rgba(26,104,66,.40), transparent 62%),
+    radial-gradient(90% 60% at 84% 108%, rgba(201,162,77,.09), transparent 62%);
+}
+.tr-mur::after{                       /* le grain, sinon l'aplat sombre est plat */
+  content:""; position:absolute; inset:0; z-index:-1; opacity:.15; pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+.tr-titre{
+  display:flex; align-items:center; gap:clamp(14px,2vw,26px);
+  max-width:660px; margin:0 auto clamp(14px,1.8vw,22px);
+  padding-inline:var(--marge-page);
+}
+.tr-titre i{ flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(201,162,77,.55),transparent); }
+.tr-titre span{
+  font-size:clamp(9.5px,1vw,11.5px); letter-spacing:.34em; text-transform:uppercase;
+  color:var(--or-tr); white-space:nowrap;
+}
+
+/* Sous 1440 px la tringle ne se coupe pas et ne se redresse pas : elle garde
+   sa largeur et c'est le regard qui glisse le long d'elle. Pinces et cartes
+   défilent ensemble, donc restent alignées. */
+.tr-piste{
+  overflow-x:auto; overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  overscroll-behavior-x:contain;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.tr-piste::-webkit-scrollbar{ display:none; }
+.tr-piste:focus-visible{ outline:2px solid var(--or-tr); outline-offset:-4px; }
+
+/* Les deux voiles disent qu'il reste des cartes de ce côté. */
+.tr-voile{
+  position:absolute; top:0; bottom:0; width:clamp(28px,7vw,64px);
+  pointer-events:none; z-index:3; transition:opacity var(--transition);
+}
+.tr-voile.gauche{ left:0;  background:linear-gradient(90deg,var(--vert-mur),transparent); }
+.tr-voile.droite{ right:0; background:linear-gradient(270deg,var(--vert-mur),transparent); }
+.tr-voile[data-eteint]{ opacity:0; }
+
+.tr-ensemble{ width:1420px; position:relative; }
+.tr-rail{
+  display:block; width:100%; height:auto;
+  /* La tringle passe DEVANT les cartes : sans ça la mâchoire disparaîtrait
+     derrière le papier et les cartes sembleraient posées derrière la barre
+     au lieu d'être pincées par elle. pointer-events est neutralisé, sinon la
+     tringle intercepterait le clic sur le haut de chaque carte. */
+  position:relative; z-index:2; pointer-events:none;
+}
+
+.tr-cartes{
+  position:relative; z-index:1;
+  display:grid;
+  /* Une colonne de marge, puis carte / gouttière en alternance. Carte à
+     14,9 % de la tringle, centrée sur chaque pince mesurée. minmax(0,…) est
+     indispensable : sans lui le contenu pousse les colonnes et les cartes
+     glissent hors des pinces. */
+  grid-template-columns:
+    minmax(0,3.906fr) minmax(0,14.9fr) minmax(0,0.581fr) minmax(0,14.9fr)
+    minmax(0,0.511fr) minmax(0,14.9fr) minmax(0,0.510fr) minmax(0,14.9fr)
+    minmax(0,0.486fr) minmax(0,14.9fr) minmax(0,0.629fr) minmax(0,14.9fr)
+    minmax(0,3.977fr);
+  align-items:stretch;
+  margin-top:-0.375%;          /* la carte remonte jusqu'à la ligne 68 */
+}
+.tr-carte{
+  position:relative; grid-row:1;
+  container-type:inline-size;
+  display:flex; flex-direction:column; align-items:center; text-align:center;
+  background:var(--papier-carte);
+  padding:6.4% 7% 5.4%;
+  scroll-snap-align:center;
+  box-shadow:0 14px 26px -8px rgba(0,0,0,.55);
+  transition:transform var(--transition), box-shadow var(--transition);
+}
+.tr-carte:nth-child(1){ grid-column:2; }
+.tr-carte:nth-child(2){ grid-column:4; }
+.tr-carte:nth-child(3){ grid-column:6; }
+.tr-carte:nth-child(4){ grid-column:8; }
+.tr-carte:nth-child(5){ grid-column:10; }
+.tr-carte:nth-child(6){ grid-column:12; }
+.tr-carte:hover{ transform:translateY(4px); box-shadow:0 18px 30px -8px rgba(0,0,0,.62); }
+.tr-carte::before{                    /* le filet d'or intérieur du papier */
+  content:""; position:absolute; inset:3%;
+  border:1px solid rgba(168,132,47,.42); pointer-events:none;
+}
+
+/* La boîte d'illustration a la même dimension pour les six, l'image est
+   centrée dedans. --vue donne à chaque dessin sa hauteur, en fraction de la
+   largeur utile de la carte : les proportions vont de 0,42 à 1,06, et à
+   largeur égale le costume paraîtrait deux fois plus petit que le fer. Le
+   calage porte donc sur la surface perçue, pas sur une dimension. */
+.tr-vue{
+  height:122cqw; width:100%; flex:none;
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:4cqw;
+}
+.tr-vue img{ display:block; width:auto; max-width:100%; height:calc(var(--vue) * 100cqw); }
+
+.tr-carte h2{
+  margin:0; font-weight:500; line-height:1.16;
+  font-size:clamp(18px,13.5cqw,31px); color:var(--vert); text-wrap:balance;
+}
+.tr-filet{
+  width:34cqw; min-width:40px; height:1px; flex:none;
+  background:linear-gradient(90deg,transparent,var(--or-tr),transparent);
+  margin:5.2cqw 0;
+}
+.tr-carte p{
+  margin:0; font-size:clamp(13px,8.6cqw,18px); line-height:1.5;
+  color:rgba(35,40,37,.74); hyphens:auto;
+}
+.tr-voir{
+  margin-top:auto; padding-top:7cqw;
+  display:inline-flex; align-items:center; gap:3.4cqw;
+  font-size:clamp(11px,6cqw,13px); letter-spacing:.2em; text-transform:uppercase;
+  font-weight:600; color:var(--or-encre);
+}
+.tr-voir i{ width:7cqw; min-width:18px; height:1px; background:currentColor; flex:none; transition:width var(--transition); }
+.tr-carte:hover .tr-voir i{ width:14cqw; }
+
+.tr-points{
+  list-style:none; margin:clamp(18px,2.2vw,28px) auto 0; padding:0;
+  display:flex; justify-content:center; gap:10px;
+}
+.tr-points button{
+  width:26px; height:26px; padding:0; border:0; background:none;
+  display:grid; place-items:center; cursor:pointer;
+}
+.tr-points button::before{
+  content:""; width:7px; height:7px; border-radius:50%;
+  border:1px solid rgba(201,162,77,.6); background:transparent;
+  transition:background var(--transition), transform var(--transition);
+}
+.tr-points button[aria-current="true"]::before{ background:var(--or-tr); transform:scale(1.3); }
+.tr-points button:focus-visible{ outline:2px solid var(--or-tr); outline-offset:1px; border-radius:50%; }
+
+/* Au-dessus de 1440 px tout tient : plus de glissement. Le seuil est choisi
+   sur la largeur de carte — de part et d'autre elle vaut 202 px, la bascule
+   ne se voit pas. */
+@media (min-width:1440px){
+  .tr-piste{ overflow:visible; scroll-snap-type:none; }
+  .tr-ensemble{ width:100%; }
+  .tr-voile{ display:none; }
+  .tr-points{ display:none; }
 }

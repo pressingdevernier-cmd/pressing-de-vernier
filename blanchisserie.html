@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tarifs &#8212; Pressing de Vernier</title>
-<meta name="description" content="Liste de prix compl&#232;te&#160;: nettoyage, blanchisserie, literie, linge de maison, retouches et couture. Prix TTC en francs suisses.">
+<title>Blanchisserie &#8212; Pressing de Vernier</title>
+<meta name="description" content="Linge au kilo, literie, linge de maison et rideaux. Blanchisserie au 201 route de Vernier, Gen&#232;ve.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/polices/polices.css">
 <link rel="stylesheet" href="assets/style.css">
@@ -40,12 +40,12 @@
     </a>
     <nav class="navigation" aria-label="Menu">
         <a href="nettoyage.html">Nettoyage</a>
-        <a href="blanchisserie.html">Blanchisserie</a>
+        <a href="blanchisserie.html" aria-current="page">Blanchisserie</a>
         <a href="repassage.html">Repassage</a>
         <a href="couture.html">Couture</a>
         <a href="cuir.html">Cuir &amp; tapis</a>
         <a href="professionnels.html">Professionnels</a>
-        <a href="tarifs.html" aria-current="page">Tarifs</a>
+        <a href="tarifs.html">Tarifs</a>
         <a href="trouver.html">Nous trouver</a>
     </nav>
     <button class="burger" type="button" aria-expanded="false" aria-controls="menu-mobile" aria-label="Menu">
@@ -59,67 +59,24 @@
     <ul>
       <li><a href="index.html">Accueil</a></li>
       <li><a href="nettoyage.html">Nettoyage</a></li>
-      <li><a href="blanchisserie.html">Blanchisserie</a></li>
+      <li><a href="blanchisserie.html" aria-current="page">Blanchisserie</a></li>
       <li><a href="repassage.html">Repassage</a></li>
       <li><a href="couture.html">Couture</a></li>
       <li><a href="cuir.html">Cuir &amp; tapis</a></li>
       <li><a href="professionnels.html">Professionnels</a></li>
-      <li><a href="tarifs.html" aria-current="page">Tarifs</a></li>
+      <li><a href="tarifs.html">Tarifs</a></li>
       <li><a href="trouver.html">Nous trouver</a></li>
     </ul>
   </nav>
 </div>
 
 <main id="contenu">
+
+<!-- Page en attente de son contenu : titre et navigation seulement. -->
 <section class="section serree millimetre">
-  <div class="zone revele" style="max-width:700px">
-    <p class="sur-titre">Prix en francs suisses</p>
-    <h1>Nos tarifs,<br><span class="accent">clairement affich&#233;s.</span></h1>
-    <p class="chapo">La liste compl&#232;te, article par article. Un prix ferme est indiqu&#233; tel quel. &#171;&#160;D&#232;s&#160;&#187; indique un prix minimum. &#171;&#160;Sur devis&#160;&#187; concerne les pi&#232;ces dont le prix d&#233;pend du travail &#224; faire. Nous tenons &#224; des tarifs justes, annonc&#233;s avant de commencer.</p>
-  </div>
-</section>
-
-<div class="bandeau-infos">
-  <div class="zone">
-    <dl>
-      <div><dt>Aujourd&#8217;hui</dt><dd class="pastille" data-etat-ouverture>&#8212;</dd></div>
-      <div><dt>Adresse</dt><dd data-adresse></dd></div>
-      <div><dt>T&#233;l&#233;phone</dt><dd><a href="tel:+41223416818" data-tel></a></dd></div>
-    </dl>
-  </div>
-</div>
-
-<section class="section serree">
-  <div class="zone">
-    <nav class="sommaire" id="sommaire-tarifs" aria-label="Aller &#224; une famille de tarifs"></nav>
-    <div data-tarifs="tout"></div>
-    <div class="mentions-tarifs" data-mentions></div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="zone duo">
-    <div class="revele">
-      <div class="filet court"><i></i></div>
-      <p class="sur-titre">Nous trouver</p>
-      <h2>201 route <span class="accent">de Vernier</span></h2>
-      <dl class="horaires" data-horaires></dl>
-      <div class="coordonnees">
-        <a href="tel:+41223416818" data-tel><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg></a>
-        <a href="mailto:pressingdevernier@gmail.com" data-email><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg></a>
-      </div>
-    </div>
-    <div class="revele" data-delai="2">
-      <div class="plan">
-        <div class="epingle">
-          <b>Pressing de Vernier</b>
-          <span data-adresse></span>
-        </div>
-      </div>
-      <p style="margin-top:var(--s3)">
-        <a class="bouton plein" data-itineraire href="https://www.openstreetmap.org/directions" target="_blank" rel="noopener">Itin&#233;raire</a>
-      </p>
-    </div>
+  <div class="zone revele" style="max-width:680px">
+    <p class="sur-titre">Blanchisserie</p>
+    <h1>Le linge de la maison,<br><span class="accent">rendu pr&#234;t &#224; ranger.</span></h1>
   </div>
 </section>
 
@@ -164,7 +121,6 @@
 </footer>
 
 <script src="data/etablissement.js"></script>
-<script src="data/tarifs.js"></script>
 <script src="assets/site.js"></script>
 </body>
 </html>

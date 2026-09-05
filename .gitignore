@@ -5,3 +5,6 @@ desktop.ini
 
 # Dossier de travail des maquettes (exploration, pas le site)
 maquette/
+
+# Sorties d'outils de vérification (captures, journaux de navigateur)
+.playwright-mcp/

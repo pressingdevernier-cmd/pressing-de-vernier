@@ -1,98 +1,140 @@
-/* ============================================================
-   POLICES HEBERGEES SUR TON SERVEUR
-   Aucun appel a Google : le site fonctionne meme si Google
-   change quelque chose, et aucun visiteur n est trace.
-   Sous-ensemble latin uniquement — il couvre tout le francais
-   accentue, y compris le oe lie.
-   ============================================================ */
+/* ============================================================================
+   LES POLICES DU SITE — hébergées ici, jamais appelées chez Google
+   ----------------------------------------------------------------------------
+   Aucun appel extérieur : le site fonctionne même si Google change quelque
+   chose, et aucun visiteur n'est tracé.
+
+   Trois familles, en fontes VARIABLES : un seul fichier couvre toutes les
+   graisses, du plus maigre au plus gras. C'est plus léger que quatre fichiers
+   séparés, et cela permet des graisses intermédiaires si le besoin vient.
+
+     Cinzel       le nom de la maison, et rien d'autre
+     Newsreader   les titres de pages et les prix
+     Archivo      le texte courant, la navigation et les mentions
+
+   Newsreader porte en plus un axe de TAILLE OPTIQUE : son dessin s'épaissit
+   de lui-même dans les petits corps et s'affine dans les grands. Le navigateur
+   s'en occupe seul tant qu'on laisse « font-optical-sizing: auto », qui est le
+   comportement par défaut. Ne pas le neutraliser.
+
+   Deux sous-ensembles par fonte :
+     latin      couvre tout le français accentué, œ lié compris
+     latin-ext  les caractères européens au-delà — noms propres étrangers
+   Le navigateur ne télécharge que ce dont la page a besoin.
+   ============================================================================ */
+
+
+/* ── NEWSREADER — les titres ────────────────────────────────────────────── */
 
 @font-face {
-  font-family: 'Cormorant Garamond';
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("newsreader-variable.woff2") format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("newsreader-variable-ext.woff2") format('woff2-variations');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Newsreader';
   font-style: italic;
-  font-weight: 400;
+  font-weight: 200 800;
   font-display: swap;
-  src: url("cormorant-garamond-400-italique.woff2") format('woff2');
+  src: url("newsreader-variable-italique.woff2") format('woff2-variations');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
- 
 }
 
 @font-face {
-  font-family: 'Cormorant Garamond';
+  font-family: 'Newsreader';
   font-style: italic;
-  font-weight: 600;
+  font-weight: 200 800;
   font-display: swap;
-  src: url("cormorant-garamond-600-italique.woff2") format('woff2');
+  src: url("newsreader-variable-italique-ext.woff2") format('woff2-variations');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+
+/* ── ARCHIVO — le texte courant ─────────────────────────────────────────── */
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("archivo-variable.woff2") format('woff2-variations');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
- 
 }
 
 @font-face {
-  font-family: 'Cormorant Garamond';
+  font-family: 'Archivo';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 100 900;
   font-display: swap;
-  src: url("cormorant-garamond-400.woff2") format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
- 
+  src: url("archivo-variable-ext.woff2") format('woff2-variations');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 @font-face {
-  font-family: 'Cormorant Garamond';
-  font-style: normal;
-  font-weight: 500;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 100 900;
   font-display: swap;
-  src: url("cormorant-garamond-500.woff2") format('woff2');
+  src: url("archivo-variable-italique.woff2") format('woff2-variations');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
- 
 }
 
 @font-face {
-  font-family: 'Cormorant Garamond';
-  font-style: normal;
-  font-weight: 600;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 100 900;
   font-display: swap;
-  src: url("cormorant-garamond-600.woff2") format('woff2');
+  src: url("archivo-variable-italique-ext.woff2") format('woff2-variations');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+
+/* ── CINZEL — le nom de la maison, et lui seul ──────────────────────────────
+   Lapidaire romaine, dessinée d'après la pierre gravée. Elle ne sert qu'au
+   logotype : le nom sur le bandeau, dans l'en-tête et sur le sceau. Les
+   titres de pages restent en Newsreader.
+
+   Ses empattements sont fins et pointus. C'est sans conséquence à l'écran et
+   sur une enseigne ; c'est une difficulté réelle en broderie, où le trait le
+   plus fin descend à 0,17 mm pour un nom de 90 mm sur deux lignes. À voir
+   avec le brodeur le moment venu. */
+
+@font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url("cinzel-variable.woff2") format('woff2-variations');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
- 
 }
 
 @font-face {
-  font-family: 'Inter';
+  font-family: 'Cinzel';
   font-style: normal;
-  font-weight: 300;
+  font-weight: 400 900;
   font-display: swap;
-  src: url("inter-300.woff2") format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
- 
+  src: url("cinzel-variable-ext.woff2") format('woff2-variations');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("inter-400.woff2") format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
- 
-}
 
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url("inter-500.woff2") format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
- 
-}
-
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url("inter-600.woff2") format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
- 
-}
-
+/* ============================================================================
+   LES ANCIENNES POLICES — Cormorant Garamond et Inter
+   ----------------------------------------------------------------------------
+   Leurs fichiers .woff2 sont encore dans ce dossier, mais ils ne sont plus
+   déclarés : le site ne les charge plus. Ils seront supprimés une fois la
+   nouvelle typographie validée sur toutes les pages.
+   ============================================================================ */

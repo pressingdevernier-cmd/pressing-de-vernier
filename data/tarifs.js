@@ -123,11 +123,12 @@ const TARIFS = [
     fr: "Blanchisserie — Linge au kilo",
     en: "Laundry — By the kilo",
     note: {
-      fr: "Le prix dépend de la formule choisie — lavage seul, lavage et pliage, ou lavage, repassage et pliage. Nous en convenons avec vous au dépôt.",
-      en: "The price depends on the option you choose — washing only, washing and folding, or washing, ironing and folding. We agree it with you when you drop the laundry off."
+      fr: "Deux formules, au poids. Le linge est pesé au dépôt.",
+      en: "Two options, charged by weight. The laundry is weighed when you drop it off."
     },
     lignes: [
-      { fr: "Linge courant — selon la formule choisie", en: "Everyday laundry — depending on the option chosen", prix: 4, des: true, unite: { fr: "le kg", en: "per kg" } },
+      { fr: "Lavage, séchage et pliage",              en: "Washing, drying and folding",            prix: 6,  unite: { fr: "le kg", en: "per kg" } },
+      { fr: "Lavage, séchage, repassage et pliage",   en: "Washing, drying, ironing and folding",   prix: 12, unite: { fr: "le kg", en: "per kg" } },
       { fr: "Repassage seul — linge apporté déjà lavé",    en: "Ironing only — laundry brought in already washed", devis: true }
     ]
   },
