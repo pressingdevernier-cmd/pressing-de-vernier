@@ -17,6 +17,12 @@
   --vert-nuit:     #04180F;   /* fond des bandeaux sombres         */
   --or:            #A8842F;   /* or sur fond clair                 */
   --or-clair:      #C9A24D;   /* or sur fond sombre                */
+  /* L'or du PETIT TEXTE sur fond clair. Ce n'est pas une couleur de plus
+     dans la palette : c'est le seul or assez sombre pour tenir les 4,5:1
+     qu'exige un texte de 11 px sur l'ivoire. L'or du site y plafonne à
+     3,15:1 et l'or clair à 2,16:1 — tous deux restent justes pour un grand
+     texte, un filet ou un aplat, jamais pour une légende. */
+  --or-grave:      #82631F;   /* 5,05:1 sur ivoire                 */
   --acier:         #8A979B;   /* gris froid — légendes, cotes      */
   --blanc:         #FFFFFF;
 
@@ -942,35 +948,52 @@ h4{ font-size:var(--t-l); }
    les six pinces. Un haut de carte plus haut ferait passer la première et la
    dernière carte SOUS la fixation, et le coin du papier disparaîtrait.
    ============================================================================ */
-.tr-mur{
-  --vert-mur:#0B2A1E;
-  --or-tr:#C9A24D;
-  --or-encre:#9A7728;
-  --papier-carte:#F4F0E6;
+/* LE FOND DU BLOC EST IVOIRE, LES CARTES SONT VERTES.
+   ----------------------------------------------------------------------------
+   C'était l'inverse. Six rectangles de papier ivoire sur un mur vert : les
+   cartes ne se détachaient que parce qu'elles étaient claires, et le vert
+   occupait la moitié de l'écran sans rien porter.
 
-  background:var(--vert-mur); color:var(--sur-nuit);
+   Mesuré, l'échange est net dans les deux sens :
+     - le trait des six dessins est un or CLAIR (#BB8419 à #D1A553). Sur le
+       papier ivoire il tenait 1,43:1 de moyenne ; sur la plaque verte il
+       tient 2,33:1. Les dessins gagnent × 1,62.
+     - la carte elle-même passe de 1,04:1 contre son fond (vert sur vert,
+       après le premier essai) à 14,45:1 (vert sur ivoire).
+
+   Le vert n'apparaît plus que DEUX fois dans la page, et les deux fois il
+   porte de l'or : la plaque du nom, et les six cartes. C'est le même objet à
+   deux échelles. Rien d'autre n'est vert, donc le vert veut dire quelque
+   chose.
+
+   Ni dégradé ni grain ici : ces deux effets n'existaient que pour empêcher un
+   aplat sombre de paraître mort. Un ivoire n'a pas ce défaut, c'est déjà la
+   couleur du reste de la page. Ils restent sur la plaque du nom, qui en a
+   besoin.
+   ============================================================================ */
+.tr-mur{
+  /* L'or de la carte, sur son vert : le même que sur la plaque du nom. */
+  --or-tr:var(--or-clair);
+  /* La carte n'est pas un aplat. Le bord haut prend la lumière, le bas
+     s'enfonce : sans ce dégradé la plaque paraît découpée dans du carton. */
+  --carte-haut:#0C2C21;
+  --carte-bas:#051C13;
+
+  background:var(--ivoire); color:var(--graphite);
   position:relative; isolation:isolate; overflow:hidden;
   padding:clamp(18px,2.4vw,32px) 0 clamp(46px,5.5vw,84px);
-}
-.tr-mur::before{
-  content:""; position:absolute; inset:0; z-index:-2;
-  background:
-    radial-gradient(120% 80% at 50% -14%, rgba(26,104,66,.40), transparent 62%),
-    radial-gradient(90% 60% at 84% 108%, rgba(201,162,77,.09), transparent 62%);
-}
-.tr-mur::after{                       /* le grain, sinon l'aplat sombre est plat */
-  content:""; position:absolute; inset:0; z-index:-1; opacity:.15; pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
 }
 .tr-titre{
   display:flex; align-items:center; gap:clamp(14px,2vw,26px);
   max-width:660px; margin:0 auto clamp(14px,1.8vw,22px);
   padding-inline:var(--marge-page);
 }
-.tr-titre i{ flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(201,162,77,.55),transparent); }
+.tr-titre i{ flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(130,99,31,.5),transparent); }
+/* L'or clair tombait à 2,16:1 sur l'ivoire, moins de la moitié du seuil.
+   L'or gravé tient 5,05:1 — voir le jeton dans « :root ». */
 .tr-titre span{
   font-size:clamp(9.5px,1vw,11.5px); letter-spacing:.34em; text-transform:uppercase;
-  color:var(--or-tr); white-space:nowrap;
+  color:var(--or-grave); white-space:nowrap;
 }
 
 /* LA TRINGLE NE GLISSE PLUS. Elle mesurait 1420 px et débordait de l'écran :
@@ -1011,9 +1034,12 @@ h4{ font-size:var(--t-l); }
   position:relative; grid-row:1;
   container-type:inline-size;
   display:flex; flex-direction:column; align-items:center; text-align:center;
-  background:var(--papier-carte);
+  background:linear-gradient(180deg,var(--carte-haut),var(--carte-bas));
   padding:6.4% 7% 5.4%;
-  box-shadow:0 14px 26px -8px rgba(0,0,0,.55);
+  /* Une ombre discrète, et teintée de vert de nuit plutôt que noire : sur un
+     fond clair, une ombre noire appuyée fait une salissure sous chaque carte.
+     C'est l'inverse du réglage qu'il fallait quand le mur était sombre. */
+  box-shadow:0 14px 28px -10px rgba(4,24,15,.32);
   transition:transform var(--transition), box-shadow var(--transition);
 }
 .tr-carte:nth-child(1){ grid-column:2; }
@@ -1022,10 +1048,15 @@ h4{ font-size:var(--t-l); }
 .tr-carte:nth-child(4){ grid-column:8; }
 .tr-carte:nth-child(5){ grid-column:10; }
 .tr-carte:nth-child(6){ grid-column:12; }
-.tr-carte:hover{ transform:translateY(4px); box-shadow:0 18px 30px -8px rgba(0,0,0,.62); }
-.tr-carte::before{                    /* le filet d'or intérieur du papier */
+.tr-carte:hover{ transform:translateY(4px); box-shadow:0 18px 32px -10px rgba(4,24,15,.42); }
+/* Le filet d'or reste à l'INTÉRIEUR de la carte, à son retrait d'origine.
+   Sur le fond vert du premier essai, il avait dû monter sur l'arête : c'était
+   la seule chose qui disait où finissait une carte. Sur l'ivoire, une plaque
+   sombre se détache toute seule et le filet redevient ce qu'il était, un
+   ornement. Il passe à l'or clair, comme tout ce qui est posé sur du vert. */
+.tr-carte::before{
   content:""; position:absolute; inset:3%;
-  border:1px solid rgba(168,132,47,.42); pointer-events:none;
+  border:1px solid rgba(201,162,77,.42); pointer-events:none;
 }
 
 /* La boîte d'illustration a la même dimension pour les six, l'image est
@@ -1040,9 +1071,15 @@ h4{ font-size:var(--t-l); }
 }
 .tr-vue img{ display:block; width:auto; max-width:100%; height:calc(var(--vue) * 100cqw); }
 
+/* Le contenu de la carte suit la convention du site pour une surface sombre,
+   celle de `.sombre` : ivoire pour ce qu'on lit, ivoire adouci pour le
+   second plan, or clair pour l'action. Aucun motif nouveau.
+   Titre 14,45:1 · description 8,48:1 · « voir » 6,68:1 — ce dernier était à
+   3,66:1 sur le papier, sous le seuil de 4,5:1 exigé d'un texte de 11 px en
+   gras : le changement de fond corrige un défaut qui existait. */
 .tr-carte h2{
   margin:0; font-weight:500; line-height:1.16;
-  font-size:clamp(18px,13.5cqw,31px); color:var(--vert); text-wrap:balance;
+  font-size:clamp(18px,13.5cqw,31px); color:var(--sur-nuit); text-wrap:balance;
 }
 .tr-filet{
   width:34cqw; min-width:40px; height:1px; flex:none;
@@ -1051,13 +1088,13 @@ h4{ font-size:var(--t-l); }
 }
 .tr-carte p{
   margin:0; font-size:clamp(13px,8.6cqw,18px); line-height:1.5;
-  color:rgba(35,40,37,.74); hyphens:auto;
+  color:var(--sur-nuit-doux); hyphens:auto;
 }
 .tr-voir{
   margin-top:auto; padding-top:7cqw;
   display:inline-flex; align-items:center; gap:3.4cqw;
   font-size:clamp(11px,6cqw,13px); letter-spacing:.2em; text-transform:uppercase;
-  font-weight:600; color:var(--or-encre);
+  font-weight:600; color:var(--or-clair);
 }
 .tr-voir i{ width:7cqw; min-width:18px; height:1px; background:currentColor; flex:none; transition:width var(--transition); }
 .tr-carte:hover .tr-voir i{ width:14cqw; }
@@ -1097,7 +1134,9 @@ h4{ font-size:var(--t-l); }
   background-repeat:no-repeat;
   -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 26%,#000 74%,transparent 100%);
           mask-image:linear-gradient(90deg,transparent 0,#000 26%,#000 74%,transparent 100%);
-  filter:drop-shadow(0 2px 3px rgba(0,0,0,.45));
+  /* Teintée de vert de nuit, comme l'ombre des cartes : sur l'ivoire, une
+     ombre noire sous le laiton le fait paraître sale. */
+  filter:drop-shadow(0 2px 3px rgba(4,24,15,.34));
   pointer-events:none;
 }
 
