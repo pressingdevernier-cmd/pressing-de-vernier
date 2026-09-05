@@ -32,6 +32,14 @@
   --acier-texte:   #5A686C;   /* 5,22:1 sur ivoire                 */
   --blanc:         #FFFFFF;
 
+  /* ---- LA PLAQUE ------------------------------------------------------
+     Le vert des objets qui portent de l'or : les six cartes de la tringle,
+     et l'enseigne en tete des pages de metier. Ce n'est pas un aplat — le
+     bord haut prend la lumiere, le bas s'enfonce ; sans ce degrade la
+     plaque parait decoupee dans du carton.                               */
+  --carte-haut:    #0C2C21;
+  --carte-bas:     #051C13;
+
   /* ---- TEXTES SUR FOND SOMBRE ---------------------------------------- */
   --sur-nuit:      #F6F3EC;
   --sur-nuit-doux: rgba(246,243,236,.74);
@@ -59,6 +67,7 @@
   --t-m:   17px;                        /* texte courant         */
   --t-l:   21px;                        /* chapô, prix           */
   --t-xl:  24px;                        /* titres de carte       */
+  --t-2xl: clamp(26px, 2.9vw, 36px);    /* titres secondaires    */
   --t-3xl: clamp(33px, 4.8vw, 56px);    /* titres de section     */
   --t-4xl: clamp(36px, 5.6vw, 72px);    /* titre de page         */
 
@@ -107,6 +116,20 @@ body{
 img,svg{ max-width:100%; height:auto; display:block; }
 a{ color:inherit; text-decoration:none; }
 button{ font:inherit; cursor:pointer; }
+
+/* UN LIEN DANS UNE PHRASE. Le site enlève le soulignement à tous les liens :
+   c'est juste pour une navigation, un bouton ou une carte, où la place et la
+   forme disent déjà qu'on peut cliquer. Au milieu d'un paragraphe, plus rien
+   ne le dit — un lien sans soulignement y devient un mot ordinaire. Il en
+   reprend donc un, en or gravé, à distance du texte. */
+.lien{
+  color:var(--or-grave);
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+  transition:color var(--transition);
+}
+.lien:hover{ color:var(--vert); }
 
 /* Anneau de focus visible partout : obligatoire pour la navigation clavier */
 :focus-visible{
@@ -774,6 +797,134 @@ h4{ font-size:var(--t-l); }
 }
 
 /* ============================================================================
+   L'ENSEIGNE D'UNE PAGE DE MÉTIER
+   ----------------------------------------------------------------------------
+   Le dessin du métier, en grand, sur la même plaque verte que sa carte de
+   l'accueil. C'est voulu : le visiteur vient de cliquer cette carte, il
+   retrouve exactement l'objet qu'il a touché, agrandi. La carte devient une
+   porte au lieu d'un bouton.
+   ============================================================================ */
+.enseigne-metier{
+  position:relative;
+  background:linear-gradient(180deg,var(--carte-haut),var(--carte-bas));
+  padding:clamp(26px,3.6vw,46px);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 14px 28px -10px rgba(4,24,15,.32);
+}
+.enseigne-metier::before{                 /* le filet d'or, comme sur la carte */
+  content:""; position:absolute; inset:3%;
+  border:1px solid rgba(201,162,77,.42); pointer-events:none;
+}
+.enseigne-metier img{ width:auto; max-width:100%; max-height:clamp(210px,25vw,320px); }
+
+
+/* ============================================================================
+   LA PESÉE — page Blanchisserie
+   ----------------------------------------------------------------------------
+   Le linge courant est le SEUL poste du site facturé au poids. Un tableau de
+   prix n'y répond pas : personne ne sait ce que pèse son sac. La réglette
+   donne l'ordre de grandeur que la grille ne peut pas donner.
+
+   AUCUN MONTANT N'EST ÉCRIT ICI NI DANS LE HTML. Les deux tarifs au kilo sont
+   lus dans data/tarifs.js par le libellé de leur ligne, comme le font les
+   repères des planches à la craie. Un prix se change à un seul endroit.
+   ============================================================================ */
+.pesee{
+  border:1px solid var(--papier); background:var(--blanc);
+  padding:clamp(24px,3vw,38px); margin-top:var(--s4);
+}
+.pesee .reglette{ display:flex; align-items:baseline; gap:var(--s3); flex-wrap:wrap; }
+.pesee label{
+  font-size:10px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--acier-texte); flex:none;
+}
+.pesee output{
+  font-family:var(--serif); font-size:var(--t-2xl); font-weight:600;
+  color:var(--vert); font-variant-numeric:tabular-nums; margin-left:auto;
+}
+.pesee input[type="range"]{
+  flex-basis:100%; width:100%; margin:var(--s2) 0 0;
+  accent-color:var(--vert); height:28px;
+}
+.pesee dl{
+  margin:var(--s4) 0 0; display:grid; grid-template-columns:1fr 1fr;
+  gap:1px; background:var(--papier); border:1px solid var(--papier);
+}
+.pesee dl > div{ background:var(--blanc); padding:var(--s3); }
+.pesee dt{ font-size:14px; color:rgba(35,40,37,.72); margin-bottom:8px; }
+.pesee dd{
+  margin:0; font-family:var(--serif); font-size:var(--t-3xl); font-weight:600;
+  line-height:1; color:var(--vert); font-variant-numeric:tabular-nums;
+}
+.pesee dd small{
+  display:block; font-family:var(--sans); font-size:11px; font-weight:500;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--or-grave);
+  margin-top:10px;
+}
+@media (max-width:620px){
+  .pesee dl{ grid-template-columns:1fr; }
+  .pesee output{ margin-left:0; flex-basis:100%; }
+}
+
+
+/* ============================================================================
+   LES DEUX FINITIONS — page Repassage
+   ----------------------------------------------------------------------------
+   Toute la page tient dans une question : sur cintre, ou plié ? Ce n'est pas
+   une liste de deux éléments, c'est un choix — deux panneaux de même poids,
+   côte à côte, et le prix de chacun.
+   ============================================================================ */
+.finitions{
+  display:grid; grid-template-columns:1fr 1fr; gap:1px;
+  background:var(--papier); border:1px solid var(--papier); margin-top:var(--s5);
+}
+.finitions article{
+  background:var(--blanc); padding:var(--s4) var(--s3);
+  display:flex; flex-direction:column;
+}
+.finitions h3{ font-size:var(--t-xl); margin-bottom:10px; }
+.finitions p{ font-size:15px; color:rgba(35,40,37,.68); margin:0 0 var(--s3); }
+.finitions .prix{
+  margin-top:auto; padding-top:var(--s3); border-top:1px solid var(--papier);
+  font-family:var(--serif); font-size:var(--t-2xl); font-weight:600;
+  color:var(--vert); font-variant-numeric:tabular-nums;
+}
+.finitions .prix span{
+  display:block; font-family:var(--sans); font-size:11px; font-weight:500;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--acier-texte);
+  margin-bottom:6px;
+}
+@media (max-width:620px){ .finitions{ grid-template-columns:1fr; } }
+
+
+/* ============================================================================
+   LE PARCOURS D'UNE PIÈCE — page Cuir, daim, tapis et sacs
+   ----------------------------------------------------------------------------
+   C'est le seul métier du site qui n'a AUCUN prix : les quatre lignes sont
+   sur devis, et la pièce part chez un spécialiste. La page ne peut donc pas
+   montrer une grille — elle montre le chemin qui mène au prix.
+
+   Les numéros sont ici légitimes : ce sont des étapes qui se suivent dans le
+   temps, et leur ordre porte une information. Ailleurs sur le site, aucune
+   liste n'est numérotée.
+   ============================================================================ */
+.parcours{ list-style:none; margin:var(--s5) 0 0; padding:0; counter-reset:etape; }
+.parcours li{
+  counter-increment:etape;
+  display:grid; grid-template-columns:auto 1fr; gap:var(--s3);
+  padding:var(--s3) 0; border-top:1px solid var(--papier);
+}
+.parcours li::before{
+  content:counter(etape,decimal-leading-zero);
+  font-family:var(--serif); font-size:var(--t-xl); font-weight:600;
+  color:var(--or-grave); line-height:1; padding-top:3px;
+  font-variant-numeric:tabular-nums;
+}
+.parcours h3{ font-size:var(--t-l); margin-bottom:6px; }
+.parcours p{ margin:0; font-size:15px; color:rgba(35,40,37,.72); max-width:64ch; }
+
+
+/* ============================================================================
    LA PLAQUE DU NOM — le nom en or, dessiné en SVG et mesuré après rendu
    (voir assets/site.js) : il ne peut donc jamais être rogné.
    ============================================================================ */
@@ -893,11 +1044,6 @@ h4{ font-size:var(--t-l); }
 .tr-mur{
   /* L'or de la carte, sur son vert : le même que sur la plaque du nom. */
   --or-tr:var(--or-clair);
-  /* La carte n'est pas un aplat. Le bord haut prend la lumière, le bas
-     s'enfonce : sans ce dégradé la plaque paraît découpée dans du carton. */
-  --carte-haut:#0C2C21;
-  --carte-bas:#051C13;
-
   background:var(--ivoire); color:var(--graphite);
   position:relative; isolation:isolate; overflow:hidden;
   padding:clamp(18px,2.4vw,32px) 0 clamp(46px,5.5vw,84px);

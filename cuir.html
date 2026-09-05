@@ -122,11 +122,151 @@
 
 <main id="contenu">
 
-<!-- Page en attente de son contenu : titre et navigation seulement. -->
-<section class="section serree millimetre">
-  <div class="zone revele" style="max-width:680px">
-    <p class="sur-titre">Cuir, daim, tapis et sacs</p>
-    <h1>Les pi&#232;ces qui demandent<br><span class="accent">un sp&#233;cialiste.</span></h1>
+<!-- ═══════════════ L'ENSEIGNE DU MÉTIER ═══════════════ -->
+<section class="section millimetre">
+  <div class="zone duo large-gauche">
+    <div class="revele">
+      <p class="sur-titre">Cuir, daim, tapis et sacs</p>
+      <h1>Les pi&#232;ces qui demandent<br><span class="accent">un sp&#233;cialiste.</span></h1>
+      <p class="chapo">Un tapis, un blouson de cuir, un sac de valeur ne se traitent pas comme une chemise. Nous les prenons en charge au magasin, nous les examinons avec vous, et nous les confions &#224; des sp&#233;cialistes.</p>
+    </div>
+    <div class="revele enseigne-metier" data-delai="2">
+      <img src="assets/illustrations/cuir.webp" width="232" height="220"
+           alt="Un tapis roul&#233; et un sac en cuir, dessin&#233;s au trait dor&#233;" decoding="async">
+    </div>
+  </div>
+</section>
+
+<div class="bandeau-infos">
+  <div class="zone">
+    <dl>
+      <div><dt>Aujourd&#8217;hui</dt><dd class="pastille" data-etat-ouverture>&#8212;</dd></div>
+      <div><dt>Adresse</dt><dd data-adresse></dd></div>
+      <div><dt>T&#233;l&#233;phone</dt><dd><a href="tel:+41223416818" data-tel></a></dd></div>
+    </dl>
+  </div>
+</div>
+
+<!-- ═══════════════ LES QUATRE FAMILLES ═══════════════ -->
+<section class="section">
+  <div class="zone">
+    <div class="revele" style="max-width:640px">
+      <div class="filet court"><i></i></div>
+      <p class="sur-titre">Quatre familles</p>
+      <h2>Ce que nous <span class="accent">prenons en charge.</span></h2>
+    </div>
+    <div class="grille-services">
+      <article class="revele">
+        <h3>Les tapis</h3>
+        <p>Tapis d&#8217;Orient, tapis de laine, tapis contemporains. La mati&#232;re, le tissage et l&#8217;&#233;tat des franges d&#233;cident du traitement&#160;; c&#8217;est pourquoi le prix se donne apr&#232;s examen, jamais avant.</p>
+      </article>
+      <article class="revele">
+        <h3>Le cuir</h3>
+        <p>Vestes, blousons, manteaux, jupes et pantalons de cuir. Le cuir se nourrit autant qu&#8217;il se nettoie&#160;: un traitement mal choisi le dess&#232;che d&#233;finitivement.</p>
+      </article>
+      <article class="revele">
+        <h3>Le daim</h3>
+        <p>Le daim et les peaux velours demandent un proc&#233;d&#233; s&#233;par&#233; du cuir lisse, et un rebrossage apr&#232;s traitement pour retrouver leur main.</p>
+      </article>
+      <article class="revele">
+        <h3>Les sacs</h3>
+        <p>Nettoyage et restauration, y compris sur des pi&#232;ces de valeur. Doublures, angles us&#233;s, anses&#160;: montrez-nous le sac, nous vous dirons franchement ce qui est r&#233;alisable.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ LE PARCOURS DE LA PIÈCE ═══════════════
+     C'est le seul métier du site sans aucun prix : les quatre lignes de
+     data/tarifs.js sont sur devis. La page ne peut donc pas montrer une
+     grille — elle montre le chemin qui mène au prix.
+     Les numéros sont légitimes ici : ce sont des étapes qui se suivent dans
+     le temps, et leur ordre porte une information. -->
+<section class="section serree">
+  <div class="zone">
+    <div class="revele" style="max-width:640px">
+      <div class="filet court"><i></i></div>
+      <p class="sur-titre">Comment &#231;a se passe</p>
+      <h2>Le parcours <span class="accent">de votre pi&#232;ce.</span></h2>
+      <p class="chapo">Il n&#8217;y a pas de grille de prix sur cette page, et ce n&#8217;est pas un oubli&#160;: deux tapis de m&#234;me taille ne co&#251;tent pas la m&#234;me chose. Voici ce qui remplace la grille.</p>
+    </div>
+
+    <ol class="parcours revele">
+      <li>
+        <div>
+          <h3>Vous apportez la pi&#232;ce</h3>
+          <p>Au magasin, aux heures d&#8217;ouverture, sans rendez-vous. Un tapis roul&#233;, un sac dans sa housse, un blouson sur le bras&#160;: rien &#224; pr&#233;parer.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Nous l&#8217;examinons avec vous</h3>
+          <p>La mati&#232;re, l&#8217;&#233;tat, les taches, les coutures. Nous vous disons ce qui est r&#233;alisable et ce qui ne l&#8217;est pas &#8212; y compris quand la r&#233;ponse est non.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Nous vous remettons un prix</h3>
+          <p>Un montant ferme, convenu de vive voix avant que quoi que ce soit commence. Vous repartez avec la pi&#232;ce si le prix ne vous convient pas.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>La pi&#232;ce part chez le sp&#233;cialiste</h3>
+          <p>Nous ne bricolons pas ce que nous ne savons pas faire. Chaque famille a son atelier, et nous suivons la pi&#232;ce jusqu&#8217;&#224; son retour au magasin.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="appel revele">
+      <div>
+        <h3>Un doute avant de vous d&#233;placer&#160;?</h3>
+        <p>Appelez-nous et d&#233;crivez la pi&#232;ce&#160;: nous vous dirons si elle rel&#232;ve de nous, et ce qu&#8217;il faut apporter.</p>
+      </div>
+      <a class="bouton plein" href="tel:+41223416818" data-tel></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ LES QUATRE LIGNES, SUR DEVIS ═══════════════
+     Le tableau est construit par assets/site.js à partir de data/tarifs.js.
+     Ses quatre lignes portent toutes « sur devis » : c'est l'information. -->
+<section class="section serree">
+  <div class="zone">
+    <div class="revele" style="max-width:640px">
+      <div class="filet court"><i></i></div>
+      <p class="sur-titre">Dans la liste de prix</p>
+      <h2>Quatre lignes, <span class="accent">quatre devis.</span></h2>
+      <p class="chapo">Voici comment ces prestations apparaissent dans notre liste de prix. La mention est la m&#234;me pour les quatre, et c&#8217;est voulu.</p>
+    </div>
+    <div data-tarifs="entretien-specialise" style="margin-top:var(--s5)"></div>
+    <p><a class="bouton plein" href="tarifs.html">Toute la liste de prix</a></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="zone duo">
+    <div class="revele">
+      <div class="filet court"><i></i></div>
+      <p class="sur-titre">Nous trouver</p>
+      <h2>201 route <span class="accent">de Vernier</span></h2>
+      <dl class="horaires" data-horaires></dl>
+      <div class="coordonnees">
+        <a href="tel:+41223416818" data-tel><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg></a>
+        <a href="mailto:pressingdevernier@gmail.com" data-email><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg></a>
+      </div>
+    </div>
+    <div class="revele" data-delai="2">
+      <div class="plan">
+        <div class="epingle">
+          <b>Pressing de Vernier</b>
+          <span data-adresse></span>
+        </div>
+      </div>
+      <p style="margin-top:var(--s3)">
+        <a class="bouton plein" data-itineraire href="https://www.openstreetmap.org/directions" target="_blank" rel="noopener">Itin&#233;raire</a>
+      </p>
+    </div>
   </div>
 </section>
 
@@ -171,6 +311,7 @@
 </footer>
 
 <script src="data/etablissement.js"></script>
+<script src="data/tarifs.js"></script>
 <script src="assets/site.js"></script>
 </body>
 </html>

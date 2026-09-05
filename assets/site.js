@@ -1,14 +1,16 @@
 /* ============================================================================
    PRESSING DE VERNIER — comportements communs à toutes les pages
    ----------------------------------------------------------------------------
-   Ce fichier fait sept choses :
+   Ce fichier fait neuf choses :
      1. ouvrir et fermer le menu sur téléphone
      2. faire apparaître les blocs quand on descend dans la page
      3. écrire partout les coordonnées et les horaires
      4. afficher « Ouvert » ou « Fermé » selon l'heure qu'il est
      5. construire les tableaux de prix
      6. faire fonctionner le choix du vêtement, sur la page Couture
-     7. donner à Google l'adresse et les horaires du magasin
+     7. calculer la pesée du linge, sur la page Blanchisserie
+     8. poser un prix isolé là où on le cite, hors d'un tableau
+     9. donner à Google l'adresse et les horaires du magasin
 
    Vous n'avez normalement jamais besoin d'y toucher.
      Pour changer un prix    : data/tarifs.js
@@ -328,7 +330,13 @@ function tableauSection(sec, niveau) {
 }
 
 document.querySelectorAll('[data-tarifs]').forEach(conteneur => {
-  if (typeof TARIFS === 'undefined') return;
+  /* Sans data/tarifs.js, le conteneur resterait vide sous un titre qui
+     annonce des prix. Mieux vaut le dire que laisser un trou. */
+  if (typeof TARIFS === 'undefined') {
+    conteneur.innerHTML = '<p class="note-tarif">Les prix sont momentanément '
+      + 'indisponibles. Appelez-nous, nous vous les donnons de vive voix.</p>';
+    return;
+  }
   const demande = conteneur.dataset.tarifs;
   const sections = demande === 'tout'
     ? TARIFS
@@ -606,7 +614,86 @@ if (zoneCartes) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   9 · LE RÉSUMÉ DES HORAIRES, sur une ligne
+   9 · UN PRIX, LU DANS data/tarifs.js PAR SON LIBELLÉ
+   ----------------------------------------------------------------------------
+   Deux pages affichent un montant hors d'un tableau : la pesée de la page
+   Blanchisserie et les deux finitions de la page Repassage. Aucune des deux
+   n'écrit de chiffre — elles citent une ligne par son libellé exact, comme
+   le font les repères des planches à la craie. Un prix se change à un seul
+   endroit, dans data/tarifs.js.
+
+   Si le libellé change là-bas sans être changé ici, la page le dit dans la
+   console plutôt que d'afficher un montant faux ou un blanc.
+   ═══════════════════════════════════════════════════════════════════════════ */
+function ligneDeTarif(idSection, libelle) {
+  if (typeof TARIFS === 'undefined') return null;
+  const sec = TARIFS.find(s => s.id === idSection);
+  const ligne = sec && sec.lignes.find(l => l.fr === libelle);
+  if (!ligne) {
+    console.warn('Aucune ligne de tarif « ' + libelle + ' » dans la section « '
+                 + idSection + ' ». Vérifiez data/tarifs.js.');
+    return null;
+  }
+  return ligne;
+}
+
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   9 bis · LA PESÉE — page Blanchisserie
+   ----------------------------------------------------------------------------
+   Le linge courant est le seul poste facturé au poids. Un tableau n'y répond
+   pas : personne ne sait ce que pèse son sac. La réglette donne l'ordre de
+   grandeur, les deux formules côte à côte.
+   ═══════════════════════════════════════════════════════════════════════════ */
+const pesee = document.querySelector('[data-pesee]');
+if (pesee) {
+  const SANS = ligneDeTarif('blanchisserie-kilo', 'Lavage, séchage et pliage');
+  const AVEC = ligneDeTarif('blanchisserie-kilo', 'Lavage, séchage, repassage et pliage');
+
+  if (!SANS || !AVEC) {
+    /* On retire la SECTION entière, pas la seule réglette : son introduction
+       invite à faire glisser un curseur, et une invitation à manipuler ce qui
+       n'existe plus est pire qu'un manque. */
+    (pesee.closest('[data-pesee-section]') || pesee).remove();
+  } else {
+    const curseur = pesee.querySelector('input[type="range"]');
+    const poids   = pesee.querySelector('[data-poids-lu]');
+    const sans    = pesee.querySelector('[data-sans-repassage]');
+    const avec    = pesee.querySelector('[data-avec-repassage]');
+
+    /* Les trois valeurs sont des <output> : c'est l'élément prévu pour le
+       RÉSULTAT d'un calcul, et son rôle implicite `status` fait annoncer la
+       nouvelle valeur par un lecteur d'écran. Sans ça, seul le poids serait
+       annoncé — et le poids n'est pas ce qu'on est venu chercher. */
+    function peser() {
+      const kg = Number(curseur.value);
+      poids.textContent = kg + ' kg';
+      sans.textContent  = formatPrix(kg * SANS.prix);
+      avec.textContent  = formatPrix(kg * AVEC.prix);
+    }
+    curseur.addEventListener('input', peser);
+    peser();
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   9 ter · LES DEUX FINITIONS — page Repassage
+   ----------------------------------------------------------------------------
+   Sur cintre ou pliée : c'est la question de la page, et les deux prix
+   viennent de la section « Nettoyage — Vêtements », où ils sont écrits.
+   ═══════════════════════════════════════════════════════════════════════════ */
+document.querySelectorAll('[data-prix-de]').forEach(el => {
+  const [section, libelle] = el.dataset.prixDe.split('|');
+  const ligne = ligneDeTarif(section, libelle);
+  if (!ligne) { el.textContent = '—'; return; }
+  el.textContent = (ligne.des ? 'dès ' : '') + formatPrix(ligne.prix);
+});
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   10 · LE RÉSUMÉ DES HORAIRES, sur une ligne
    ═══════════════════════════════════════════════════════════════════════════ */
 document.querySelectorAll('[data-horaires-resume]').forEach(el => {
   const semaine = plagesLisibles(HORAIRES[1]);
