@@ -201,29 +201,72 @@
   </div>
 </section>
 
+<!-- ═══════════════ LES PLANCHES À LA CRAIE ═══════════════
+     Toutes affichées d'emblée, côte à côte. Il y avait des onglets : on ne
+     voyait qu'un vêtement à la fois, et il fallait deviner que les autres
+     existaient derrière un bouton.
+     La liste n'est pas écrite ici : assets/site.js affiche toute pièce qui a
+     à la fois un dessin et une section de prix. -->
 <section class="section">
   <div class="zone">
-    <div class="revele">
+    <div class="revele" style="max-width:700px">
       <div class="filet court"><i></i></div>
       <p class="sur-titre">Tarifs de retouches</p>
-      <h2>Choisissez un v&#234;tement</h2>
-      <p class="chapo">Neuf familles, avec le d&#233;tail des prestations et leur prix. Pour une transformation, une cr&#233;ation ou une broderie, appelez-nous&#160;: le prix d&#233;pend de la pi&#232;ce.</p>
+      <h2>Les prestations les plus demand&#233;es,<br><span class="accent">&#224; l&#8217;endroit qu&#8217;elles concernent.</span></h2>
+      <p class="chapo">Chaque pi&#232;ce porte ses retouches courantes l&#224; o&#249; elles se font&#160;: l&#8217;ourlet sur l&#8217;ourlet, la fermeture sur la fermeture. Trouvez la v&#244;tre, vous aurez l&#8217;ordre de grandeur.</p>
     </div>
-    <div class="onglets-vetements revele">
-        <button type="button" class="onglet-vetement" data-section="retouches-pantalons" aria-pressed="true">Pantalons</button>
-        <button type="button" class="onglet-vetement" data-section="retouches-chemises" aria-pressed="false">Chemises</button>
-        <button type="button" class="onglet-vetement" data-section="retouches-jupes" aria-pressed="false">Jupes</button>
-        <button type="button" class="onglet-vetement" data-section="retouches-robe" aria-pressed="false">Robes</button>
-        <button type="button" class="onglet-vetement" data-section="retouches-soiree" aria-pressed="false">Robes de soir&#233;e</button>
-        <button type="button" class="onglet-vetement" data-section="retouches-vestes" aria-pressed="false">Vestes</button>
-        <button type="button" class="onglet-vetement" data-section="retouches-manteaux" aria-pressed="false">Manteaux</button>
-        <button type="button" class="onglet-vetement" data-section="retouches-pulls" aria-pressed="false">Pulls</button>
-        <button type="button" class="onglet-vetement" data-section="retouches-rideaux" aria-pressed="false">Rideaux</button>
+
+    <div class="planches" data-planches></div>
+
+    <p class="mention-planches">Prix indicatifs. La mati&#232;re, la doublure et l&#8217;&#233;tat de la pi&#232;ce font varier le tarif&#160;; le prix ferme est convenu au d&#233;p&#244;t, avant que le travail commence.</p>
+
+    <div class="appel revele">
+      <div>
+        <h3>Votre pi&#232;ce n&#8217;est pas dessin&#233;e&#160;?</h3>
+        <p>Pantalons, pulls, vestes, robes de soir&#233;e et rideaux ont eux aussi leur grille. Tout y est, article par article.</p>
+      </div>
+      <a class="bouton plein" href="tarifs.html">Toute la grille de retouches</a>
     </div>
-    <div class="planche revele" id="dessin-vetement" data-delai="2"></div>
-    <div class="tarifs-vetement revele" id="tarifs-vetement" data-delai="2"></div>
-    <p style="margin-top:var(--s5)"><a class="bouton vide" href="tarifs.html">Tous les tarifs de couture</a></p>
   </div>
+</section>
+
+<!-- ═══════════════ LE SUR-MESURE ═══════════════
+     Une vraie section, pas trois lignes en bas de page : aucun concurrent
+     genevois ne le propose, et c'est ce qui distingue le plus la maison.
+     Elle n'a pas de grille — le prix se convient de vive voix, après examen
+     de la pièce — et elle amène à l'appel. -->
+<section class="section millimetre">
+  <div class="zone">
+    <div class="revele" style="max-width:720px">
+      <div class="filet court"><i></i></div>
+      <p class="sur-titre">Sur mesure</p>
+      <h2>Ce que peu d&#8217;ateliers<br><span class="accent">acceptent encore de faire.</span></h2>
+      <p class="chapo">Retoucher un v&#234;tement, beaucoup savent le faire. Le reprendre enti&#232;rement, le broder, ou en coudre un depuis votre tissu&#160;: c&#8217;est un autre m&#233;tier, et c&#8217;est celui de notre couturi&#232;re. Il n&#8217;y a pas de grille de prix ici, et ce n&#8217;est pas un oubli&#160;: aucune de ces pi&#232;ces ne ressemble &#224; la pr&#233;c&#233;dente.</p>
+    </div>
+
+    <div class="repertoire revele">
+      <div>
+        <h3>Dans votre tissu</h3>
+        <p>Une chemise ou une robe cousue depuis votre propre &#233;toffe. Vous apportez le tissu, nous prenons les mesures, et la pi&#232;ce est faite pour vous seul. C&#8217;est la demande la plus rare, et celle qui revient le plus souvent quand un tissu a une histoire.</p>
+      </div>
+      <div>
+        <h3>Broderie et patchs</h3>
+        <p>Broderies au fil, pose de patchs, y compris en relief. Une initiale sur un col, un nom sur une blouse de travail, un &#233;cusson sur une veste. &#192; l&#8217;unit&#233; comme en s&#233;rie, pour un particulier comme pour une &#233;quipe.</p>
+      </div>
+      <div>
+        <h3>La transformation compl&#232;te</h3>
+        <p>Reprendre une pi&#232;ce pour lui donner une autre forme, une autre longueur, un autre usage. Un manteau trop long qui devient une veste, une robe de m&#232;re qu&#8217;on remet &#224; la taille de sa fille. Montrez-nous le v&#234;tement&#160;: nous vous dirons ce qu&#8217;il peut devenir.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- L'appel, en pleine largeur : la section du sur-mesure n'a pas de prix,
+     elle a une conversation. -->
+<section class="bande-appel sombre">
+  <h2>Une id&#233;e, une pi&#232;ce, un tissu&#160;?</h2>
+  <p>Le prix d&#8217;une transformation ou d&#8217;une cr&#233;ation se convient de vive voix, apr&#232;s avoir vu la pi&#232;ce. Passez au magasin avec elle, ou appelez-nous pour savoir si l&#8217;id&#233;e tient.</p>
+  <a class="bouton plein" href="tel:+41223416818" data-tel></a>
 </section>
 
 <!-- ==========================================================================

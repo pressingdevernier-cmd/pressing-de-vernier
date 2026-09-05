@@ -619,23 +619,6 @@ h4{ font-size:var(--t-l); }
 }
 .planche text.prix .mention{ font-size:11px; font-weight:400; fill:rgba(246,243,236,.55); }
 
-/* Le dépliant des prix, sous la planche. */
-.tarifs-vetement{ max-width:none; margin-top:var(--s3); }
-.tarifs-vetement details{ border-top:1px solid var(--papier); }
-.tarifs-vetement summary{
-  cursor:pointer; list-style:none; padding:16px 0; min-height:44px;
-  display:flex; align-items:center; justify-content:space-between; gap:14px;
-  font-size:11px; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
-  color:var(--or);
-}
-.tarifs-vetement summary::-webkit-details-marker{ display:none; }
-.tarifs-vetement summary::after{
-  content:""; width:9px; height:9px; flex:none;
-  border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor;
-  transform:rotate(45deg) translate(-2px,-2px); transition:transform var(--transition);
-}
-.tarifs-vetement details[open] summary::after{ transform:rotate(-135deg) translate(-2px,-2px); }
-
 /* ============================================================================
    TABLEAUX DE PRIX
    ============================================================================ */
@@ -716,31 +699,13 @@ h4{ font-size:var(--t-l); }
 }
 
 /* ============================================================================
-   CHOIX DU VÊTEMENT — page Couture
-   ============================================================================ */
-.onglets-vetements{
-  display:flex; flex-wrap:wrap; gap:8px; margin:var(--s3) 0 var(--s5);
-}
-.onglet-vetement{
-  min-height:46px; padding:0 20px; border-radius:100px;
-  font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:500;
-  background:none; border:1px solid var(--papier); color:var(--acier-texte);
-  transition:background var(--transition), border-color var(--transition), color var(--transition);
-}
-.onglet-vetement:hover{ border-color:var(--or); color:var(--or); }
-.onglet-vetement[aria-pressed="true"]{
-  background:var(--vert); border-color:var(--vert); color:var(--ivoire);
-}
-.tarifs-vetement .tarif-bloc{ margin-bottom:0; }
-
-/* ============================================================================
    CIBLES TACTILES
    Tout lien doit offrir au moins 44 px de hauteur au doigt. Sans ça,
    on rate le lien une fois sur trois sur un téléphone.
    ============================================================================ */
 .pied a{ display:inline-flex; align-items:center; min-height:44px; }
 .pied .mentions a{ min-height:0; }
-.sommaire a,.onglet-vetement,.coordonnees a{ min-height:44px; }
+.sommaire a,.coordonnees a{ min-height:44px; }
 /* Le telephone du bandeau : c est le lien le plus clique sur mobile */
 .bandeau-infos a{ display:inline-flex; align-items:center; min-height:44px; }
 
@@ -795,6 +760,114 @@ h4{ font-size:var(--t-l); }
 @media (max-width:620px){
   .appel{ flex-direction:column; align-items:stretch; }
 }
+
+/* ============================================================================
+   LES CINQ PLANCHES, CÔTE À CÔTE — page Retouches et couture
+   ----------------------------------------------------------------------------
+   Plus d'onglets : les pièces sont toutes là, on voit laquelle est la sienne
+   et on y va. Ce qui suit règle le seul vrai problème de cette mise en page.
+
+   LES PLANCHES SONT DESSINÉES POUR LA PLEINE LARGEUR. Leur boîte fait 640
+   unités ; le libellé d'un repère en fait 8,4 et le montant 18. Affichées sur
+   1072 px, le facteur vaut 1,68 et les libellés sortent à 14 px : confortable.
+   Réduites à 236 px — cinq de front dans le conteneur — le facteur tombe à
+   0,37 et le libellé à 3 px. Illisible.
+
+   DEUX COLONNES, ET LES REPÈRES GROSSIS. À 520 px le facteur vaut 0,81 ; les
+   repères sont donc redimensionnés EN UNITÉS DE DESSIN pour ressortir autour
+   de 11 et 20 px. C'est le seul endroit du site où une taille de texte est
+   écrite dans le dessin plutôt que dans la feuille : un SVG met son texte à
+   l'échelle avec le reste, il n'a pas d'autre moyen de compenser.
+   ============================================================================ */
+.planches{
+  display:grid;
+  /* `min(400px,100%)` et non `400px` : sur un ecran de 375 px une piste de
+     400 px deborde, et `overflow-x:hidden` du corps masque le debordement au
+     lieu de le corriger. */
+  grid-template-columns:repeat(auto-fit,minmax(min(400px,100%),1fr));
+  gap:var(--s4) var(--s3); margin-top:var(--s5);
+}
+.planches figure{ margin:0; }
+.planches figcaption{
+  margin-top:12px;
+  font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--or-grave);
+}
+/* La liste de repli, qui remplace les repères quand ils deviennent trop
+   petits. Elle est dans le balisage à toute largeur — même source, deux
+   présentations — et masquée tant que les repères tiennent. */
+.prestations{ display:none; }
+
+/* AU-DESSUS DE 1000 px la grille passe à deux colonnes et chaque planche
+   tombe à environ 500 px : les repères sont grossis en unités de dessin pour
+   ressortir autour de 11 et 20 px. Entre 760 et 1000 px la grille n'a qu'une
+   colonne, la planche reprend toute la largeur, et les tailles d'origine
+   suffisent — c'est pour cette largeur-là qu'elles ont été réglées. */
+@media (min-width:1000px){
+  .planches .planche text.nom{ font-size:13.5px; letter-spacing:.1em; }
+  .planches .planche text.prix{ font-size:25px; }
+  .planches .planche text.prix .mention{ font-size:15px; }
+}
+
+/* SOUS 760 px, AUCUNE TAILLE NE SAUVE LE REPÈRE. La planche fait 640 unités
+   de large ; à 325 px d'affichage le facteur vaut 0,5 et le libellé sort à
+   4 px. Le grossir assez le ferait manger le dessin. Les repères sont donc
+   masqués, le dessin reste — il sert à reconnaître la pièce — et les prix
+   passent en liste, où ils sont enfin lisibles. */
+@media (max-width:760px){
+  .planches .planche .reperes{ display:none; }
+  .planches figcaption{ margin-top:14px; }
+  .prestations{
+    display:block; list-style:none; margin:10px 0 0; padding:0;
+  }
+  .prestations li{
+    display:flex; align-items:baseline; justify-content:space-between; gap:var(--s2);
+    padding:11px 0; border-bottom:1px solid var(--papier);
+    font-size:15px;
+  }
+  .prestations li:last-child{ border-bottom:0; }
+  .prestations span{ color:rgba(35,40,37,.78); }
+  .prestations b{
+    font-family:var(--serif); font-size:19px; font-weight:600; color:var(--vert);
+    white-space:nowrap; font-variant-numeric:tabular-nums;
+  }
+  .prestations b i{
+    font-style:normal; font-family:var(--sans); font-size:11px; font-weight:500;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--acier-texte);
+  }
+}
+
+/* « Prix indicatifs » : la mention doit être là, et discrète. */
+.mention-planches{
+  margin:var(--s3) 0 0; font-size:13px; color:var(--acier-texte); max-width:64ch;
+}
+
+
+/* ============================================================================
+   LE RÉPERTOIRE — le sur-mesure, page Retouches et couture
+   ----------------------------------------------------------------------------
+   Ce que personne d'autre ne propose à Genève. La section n'a pas de grille :
+   le prix se convient de vive voix, après examen de la pièce.
+
+   Des RANGÉES LARGES et non des cartes : trois cartes de plus auraient eu
+   l'air de trois services de plus. Le titre à gauche, ce qu'il recouvre à
+   droite, un filet d'or entre chaque — c'est la mise en page d'un répertoire
+   d'atelier, pas d'un catalogue.
+   ============================================================================ */
+.repertoire{ margin-top:var(--s5); }
+.repertoire > div{
+  display:grid; grid-template-columns:minmax(190px,.85fr) 1.15fr;
+  gap:var(--s3) var(--s4);
+  padding:var(--s4) 0;
+  border-top:1px solid var(--papier);
+}
+.repertoire > div:last-child{ border-bottom:1px solid var(--papier); }
+.repertoire h3{ font-size:var(--t-2xl); font-weight:500; line-height:1.1; }
+.repertoire p{ margin:0; font-size:var(--t-m); line-height:1.6; color:rgba(35,40,37,.76); max-width:58ch; }
+@media (max-width:860px){
+  .repertoire > div{ grid-template-columns:1fr; padding:var(--s3) 0; }
+}
+
 
 /* ============================================================================
    L'ENSEIGNE D'UNE PAGE DE MÉTIER

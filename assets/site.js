@@ -362,66 +362,59 @@ document.querySelectorAll('[data-mentions]').forEach(el => {
 });
 
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   6 · LE CHOIX DU VÊTEMENT — page Couture
-   Les onglets affichent le tableau de retouches correspondant, et la
-   planche à la craie du vêtement choisi. Tous les vêtements ne sont pas
-   encore dessinés : quand la planche manque, la zone se retire et le
-   tableau prend toute la largeur.
-   ═══════════════════════════════════════════════════════════════════════════ */
-const onglets = document.querySelectorAll('.onglet-vetement');
-const zoneVetement = document.getElementById('tarifs-vetement');
+/* ═════════════════════════════════════════════════════════════════════════════
+   6 · LES PLANCHES À LA CRAIE — page Retouches et couture
+   ----------------------------------------------------------------------------
+   Les pièces sont toutes affichées d'emblée, côte à côte. Il y avait des
+   onglets : on ne voyait qu'un vêtement à la fois, et il fallait deviner que
+   les autres existaient derrière un bouton.
 
-if (onglets.length && zoneVetement && typeof TARIFS !== 'undefined') {
+   LA PAGE NE DÉCIDE PAS DE LA LISTE. Elle affiche toute pièce qui a à la fois
+   un dessin dans assets/vetements.js ET une section de prix dans
+   data/tarifs.js — une planche sans prix n'aurait aucun repère à porter. Le
+   jour où le complet reçoit sa section de tarifs, il apparaît ici sans qu'on
+   touche à cette page.
+   ═════════════════════════════════════════════════════════════════════════════ */
+const grillePlanches = document.querySelector('[data-planches]');
 
-  const zoneDessin = document.getElementById('dessin-vetement');
+if (grillePlanches && typeof VETEMENTS !== 'undefined'
+    && typeof dessinVetement === 'function' && typeof TARIFS !== 'undefined') {
 
-  function afficherVetement(idSection) {
-    const sec = TARIFS.find(s => s.id === idSection);
-    if (!sec) return;
+  const dessinees = Object.keys(VETEMENTS)
+    .filter(id => TARIFS.some(s => s.id === id));
 
-    // La planche d'abord. Tous les vêtements ne sont pas dessinés : quand
-    // elle manque, la zone se retire au lieu de rester vide.
-    const dessin = (zoneDessin && typeof dessinVetement === 'function')
-      ? dessinVetement(idSection) : '';
-
-    if (zoneDessin) {
-      zoneDessin.innerHTML = dessin;
-      zoneDessin.hidden = !dessin;
-      if (dessin) {
-        zoneDessin.classList.remove('vu');
-        void zoneDessin.offsetWidth;   // force le navigateur à repartir de zéro
-        zoneDessin.classList.add('vu');
-      }
+  if (!dessinees.length) {
+    grillePlanches.closest('section').remove();
+  } else {
+    /* LES MÊMES PRIX, EN TEXTE. Sous 760 px, un repère posé sur le dessin
+       tombe à quatre pixels : la planche fait 640 unités de large, et à
+       325 px d'affichage le facteur vaut 0,5. Les repères sont donc masqués
+       et remplacés par cette liste, qui lit EXACTEMENT les mêmes points et
+       les mêmes lignes de tarif. Une seule source, deux présentations. */
+    function prestationsEnTexte(id) {
+      const sec = TARIFS.find(s => s.id === id);
+      const points = VETEMENTS[id].points || [];
+      const items = points.map(p => {
+        const ligne = sec.lignes.find(l => l.fr === p.ligne);
+        if (!ligne) return '';
+        const montant = ligne.devis ? 'Sur devis'
+          : (ligne.des ? '<i>dès </i>' : '') + formatPrix(ligne.prix)
+            + (ligne.unite ? '<i> ' + ligne.unite.fr + '</i>' : '');
+        return '<li><span>' + p.court + '</span><b>' + montant + '</b></li>';
+      }).join('');
+      return items ? '<ul class="prestations">' + items + '</ul>' : '';
     }
 
-    // Le tableau des prix. Quand la pièce est dessinée, elle porte déjà les
-    // prestations les plus demandées : la liste complète passe alors derrière
-    // un bouton. Sans planche, elle s'affiche directement.
-    zoneVetement.innerHTML = '';
-    const bloc = tableauSection(sec);
-    bloc.classList.add('vu');          // pas d'attente : le choix doit être instantané
-
-    if (dessin) {
-      const depliant = document.createElement('details');
-      const bouton = document.createElement('summary');
-      bouton.textContent = 'Voir le prix de toutes les retouches';
-      depliant.append(bouton, bloc);
-      zoneVetement.append(depliant);
-    } else {
-      zoneVetement.append(bloc);
-    }
+    grillePlanches.innerHTML = dessinees.map(id => {
+      const nom = VETEMENTS[id].nom;
+      /* La planche porte déjà son `aria-label` : la légende visible n'a pas à
+         être relue une seconde fois par un lecteur d'écran. */
+      return '<figure><div class="planche">' + dessinVetement(id) + '</div>'
+           + '<figcaption aria-hidden="true">' + nom + '</figcaption>'
+           + prestationsEnTexte(id) + '</figure>';
+    }).join('');
+    revelerDans(grillePlanches);
   }
-
-  onglets.forEach(o => {
-    o.addEventListener('click', () => {
-      onglets.forEach(x => x.setAttribute('aria-pressed', 'false'));
-      o.setAttribute('aria-pressed', 'true');
-      afficherVetement(o.dataset.section);
-    });
-  });
-
-  afficherVetement(onglets[0].dataset.section);
 }
 
 /* Le sommaire de la page Tarifs, construit sur les sections réellement là */
