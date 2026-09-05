@@ -72,10 +72,10 @@ body{ margin:0; background:#DED8C8; color:var(--graphite); font-family:var(--ui)
 
 <header class="tete">
   <div class="dedans">
-    <h1>Le site apr&egrave;s les quatre &eacute;tapes</h1>
-    <p>Cette page ne reconstruit rien : elle charge <code>index.html</code> et
-       <code>tarifs.html</code>, les vrais fichiers, dans des cadres de largeurs diff&eacute;rentes.
-       Chaque cadre se fait d&eacute;filer &agrave; la souris comme au doigt.</p>
+    <h1>Le site apr&egrave;s les sept &eacute;tapes</h1>
+    <p>Cette page ne reconstruit rien : elle charge les vrais fichiers du site
+       dans des cadres de largeurs diff&eacute;rentes. Chaque cadre se fait d&eacute;filer &agrave; la souris
+       comme au doigt.</p>
     <p><b>Si les cadres restent blancs</b>, c'est que votre navigateur refuse d'imbriquer un fichier
        local dans un autre. Ouvrez alors directement <code>index.html</code> et r&eacute;tr&eacute;cissez la
        fen&ecirc;tre : tout est dans le site lui-m&ecirc;me, cette page ne fait que le montrer &agrave; plusieurs
@@ -168,6 +168,114 @@ body{ margin:0; background:#DED8C8; color:var(--graphite); font-family:var(--ui)
         <tr><td>Menu au clavier</td><td class="oui">Oui</td>
             <td class="note">Ouverture, &Eacute;chap, retour du focus au bouton, page arri&egrave;re
                 rendue inerte, verrou lev&eacute; si la fen&ecirc;tre s'&eacute;largit.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="dedans">
+    <span class="numero">Section 3</span>
+    <h2>Les quatre pages construites, <em>chacune son id&eacute;e</em></h2>
+    <p class="propos">Trois pages &eacute;taient vides, une quatri&egrave;me tenait sur des onglets. Le mod&egrave;le
+      est commun &mdash; un objet visuel fort, quelques prix, un acc&egrave;s &agrave; la grille &mdash; mais
+      l'objet change avec le m&eacute;tier : les planches &agrave; la craie ne se transposent pas &agrave; un kilo
+      de linge. <b>Aucun prix n'est &eacute;crit dans ces pages</b> ; tous sont lus dans
+      <code>data/tarifs.js</code>.</p>
+    <div class="banc">
+      <div class="poste">
+        <h3>375 px <span>&mdash; Blanchisserie</span></h3>
+        <div class="cadre" style="width:375px;height:660px">
+          <iframe src="../blanchisserie.html" width="375" height="660"
+                  title="Blanchisserie en 375 px"></iframe>
+        </div>
+        <p class="reglette">L'objet : <b>la pes&eacute;e</b> &middot; le linge se compte au kilo</p>
+      </div>
+      <div class="poste">
+        <h3>375 px <span>&mdash; Repassage</span></h3>
+        <div class="cadre" style="width:375px;height:660px">
+          <iframe src="../repassage.html" width="375" height="660"
+                  title="Repassage en 375 px"></iframe>
+        </div>
+        <p class="reglette">L'objet : <b>trois finitions</b> &middot; le seul choix du client</p>
+      </div>
+      <div class="poste">
+        <h3>375 px <span>&mdash; Cuir</span></h3>
+        <div class="cadre" style="width:375px;height:660px">
+          <iframe src="../cuir.html" width="375" height="660" title="Cuir en 375 px"></iframe>
+        </div>
+        <p class="reglette">L'objet : <b>le parcours</b> &middot; examen, devis, traitement, remise</p>
+      </div>
+    </div>
+
+    <div class="banc" style="margin-top:26px">
+      <div class="poste">
+        <h3>1280 px <span>&mdash; Retouches et couture</span></h3>
+        <div class="cadre" style="width:640px;height:700px">
+          <iframe src="../couture.html" width="1280" height="1400" title="Couture en 1280 px"
+                  class="reduit" style="transform:scale(.5)"></iframe>
+        </div>
+        <p class="reglette">Les planches c&ocirc;te &agrave; c&ocirc;te, deux par ligne &middot; r&eacute;duit &times;0,5</p>
+      </div>
+      <div class="poste">
+        <h3>375 px <span>&mdash; Retouches et couture</span></h3>
+        <div class="cadre" style="width:375px;height:700px">
+          <iframe src="../couture.html" width="375" height="700" title="Couture en 375 px"></iframe>
+        </div>
+        <p class="reglette">Une planche par ligne ; les rep&egrave;res chiffr&eacute;s c&egrave;dent la place
+          &agrave; une liste lisible</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="dedans">
+    <span class="numero">Section 4</span>
+    <h2>La page Tarifs, <em>parcourable</em></h2>
+    <p class="propos">Elle faisait plus de douze mille pixels d'un seul tenant, pr&eacute;c&eacute;d&eacute;s de
+      dix-sept ancres. Les dix-sept sont devenues <b>quatre familles</b>, une recherche traverse
+      les 139 prestations, et une barre coll&eacute;e annonce la famille qu'on lit. Tapez
+      &laquo;&nbsp;chemise&nbsp;&raquo; dans le champ du cadre : neuf lignes, dans deux familles &agrave;
+      la fois.</p>
+    <div class="banc">
+      <div class="poste">
+        <h3>1280 px <span>&mdash; le regroupement</span></h3>
+        <div class="cadre" style="width:640px;height:700px">
+          <iframe src="../tarifs.html" width="1280" height="1400" title="Tarifs regroup&eacute;s"
+                  class="reduit" style="transform:scale(.5)"></iframe>
+        </div>
+        <p class="reglette">Quatre ancres au lieu de dix-sept &middot; r&eacute;duit &times;0,5</p>
+      </div>
+      <div class="poste">
+        <h3>375 px <span>&mdash; la recherche</span></h3>
+        <div class="cadre" style="width:375px;height:700px">
+          <iframe src="../tarifs.html" width="375" height="700" title="Recherche des tarifs"></iframe>
+        </div>
+        <p class="reglette">La barre reste sous la plaque du nom &middot; le compteur suit la saisie</p>
+      </div>
+    </div>
+
+    <table class="tableau">
+      <thead><tr><th>Contr&ocirc;le</th><th>R&eacute;sultat</th><th>Relev&eacute;</th></tr></thead>
+      <tbody>
+        <tr><td>Sauts vers les quatre familles</td><td class="oui">4 sur 4</td>
+            <td class="note">La cible se pose &agrave; <span class="chiffre">195&nbsp;px</span>, soit
+                18&nbsp;px sous la barre, en 375 comme en 1280&nbsp;px.</td></tr>
+        <tr><td>Rep&egrave;re en cours de d&eacute;filement</td><td class="oui">6 sur 6</td>
+            <td class="note">Six paliers de 0 &agrave; 12&nbsp;530&nbsp;px.</td></tr>
+        <tr><td>Recherche</td><td class="oui">Oui</td>
+            <td class="note">&laquo;&nbsp;chemise&nbsp;&raquo; <span class="chiffre">9</span>,
+                &laquo;&nbsp;manteau&nbsp;&raquo; <span class="chiffre">14</span>,
+                &laquo;&nbsp;tapis&nbsp;&raquo; <span class="chiffre">2</span>, champ vide
+                <span class="chiffre">139</span>. Accents, apostrophes et m&sup2; ignor&eacute;s.</td></tr>
+        <tr><td>Prix &eacute;crits en dur dans les quatre pages</td><td class="oui">Aucun</td>
+            <td class="note">Tous lus dans <code>data/tarifs.js</code> par libell&eacute;.</td></tr>
+        <tr><td>Audit d'accessibilit&eacute;</td><td class="oui">0 violation</td>
+            <td class="note">Les neuf pages repass&eacute;es apr&egrave;s les &eacute;tapes 5 &agrave; 7.</td></tr>
+        <tr><td>Ouverture par double-clic, sans serveur</td><td class="oui">Oui</td>
+            <td class="note">Aucun <code>fetch</code>, aucun module&nbsp;ES : neuf pages en
+                <code>&lt;script src&gt;</code> classiques.</td></tr>
       </tbody>
     </table>
   </div>

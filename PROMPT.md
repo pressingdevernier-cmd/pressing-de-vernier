@@ -87,16 +87,27 @@ Chaque page suit le modèle de la page Retouches :
 Ce n'est pas un catalogue : c'est une entrée en matière qui donne un ordre de
 grandeur et laisse la porte ouverte au détail.
 
+**L'objet visuel change avec le métier.** Le modèle est commun, la trouvaille
+ne l'est pas : les planches à la craie ne se transposent pas à un kilo de
+linge ni à un tapis. La blanchisserie montre une **pesée**, parce que le linge
+se compte au kilo et non à la pièce. Le repassage montre **trois finitions**
+côte à côte, le seul choix que le client ait réellement à faire. Le cuir
+montre un **parcours** en quatre temps — examen, devis, traitement, remise —
+parce que ce métier se vend sur la confiance dans le processus, pas sur un
+prix affiché. Chercher l'idée propre à chaque métier fait partie du modèle.
+
 ### La page Tarifs
 
 Elle devient une **annexe**, pas la porte d'entrée. On l'ouvre en sachant déjà
 ce qu'on cherche — un prix précis, une ligne particulière. Elle n'a plus à
 porter la découverte du site : les pages de métier s'en chargent.
 
-À réorganiser. Mesuré le 1ᵉʳ septembre 2026, sur un écran de 241 px de large :
-la page fait **15 402 px de haut** — quarante écrans — pour **17 sections**,
-précédées d'un sommaire de 17 ancres. Aucun palier, aucun repère en cours de
-défilement.
+Réorganisée le 6 septembre 2026. Elle faisait **15 402 px de haut** pour
+**17 sections** précédées d'un sommaire de 17 ancres, sans un palier. Les
+dix-sept ancres sont devenues **quatre familles**, une recherche traverse les
+139 prestations, et une barre collante annonce en permanence la famille qu'on
+lit. Le fonctionnement est décrit en section 8, « La page Tarifs se range
+toute seule ».
 
 ### La page Retouches et couture
 
@@ -835,6 +846,37 @@ s'écrivent en minutes depuis minuit (`8h00 → 480`), chaque journée étant un
 liste de plages, ce qui permet de représenter la pause de midi et de calculer
 l'état d'ouverture.
 
+### La page Tarifs se range toute seule
+
+Cette page porte les 139 prestations. Elle n'est pas la porte d'entrée du
+site : on l'ouvre en sachant à peu près ce qu'on cherche. Trois dispositifs
+la rendent parcourable.
+
+**Quatre familles au lieu de dix-sept ancres.** Les sections de
+`data/tarifs.js` se rangent sous les quatre métiers d'après le **préfixe de
+leur identifiant** : `nettoyage-…` va sous Nettoyage, `retouches-…` et
+`couture-…` sous Retouches et couture, et ainsi de suite. Rien n'est écrit à
+la main. Conséquence pratique pour le propriétaire : **ajouter une section
+dans `data/tarifs.js` la range automatiquement**, à condition de respecter le
+préfixe. Une section dont le préfixe n'est prévu nulle part n'est jamais
+perdue — elle atterrit dans une famille « Autres prestations », visible et
+corrigeable, plutôt que de disparaître de la page.
+
+**Une recherche.** C'est elle qui remplace vraiment le sommaire. Elle ignore
+les accents, la casse, les ligatures, la forme de l'apostrophe et l'exposant
+du m² — tous rencontrés dans les données réelles. Elle indexe aussi **le titre
+de la section**, pas seulement les lignes : sans cela, chercher « chemise » ne
+trouvait aucune des cinq retouches de chemise, qui s'appellent « Retourner
+col » ou « Ajuster manches », et le visiteur en concluait que la prestation
+n'existe pas.
+
+**Un repère.** Une barre reste collée sous la navigation et annonce la famille
+qu'on est en train de lire, avec le nombre de prestations affichées.
+
+Si `data/tarifs.js` venait à manquer ou à être vidé, la page ne montre ni
+ancres vides ni champ inerte : elle dit que les prix sont momentanément
+indisponibles et invite à appeler.
+
 **Comment ces fichiers sont chargés.** Par des balises `<script src="…">`
 classiques, placées avant `assets/site.js`, qui posent des variables globales
 (`ETABLISSEMENT`, `HORAIRES`, `JOURS`, `TARIFS`). Jamais par `import`, jamais
@@ -924,11 +966,20 @@ ont été tranchés. Ce qui suit est du travail à faire.
 
 ### Ce qui reste
 
-- **La page Retouches ne suit pas encore la section 3.** Elle doit afficher
-  les cinq planches côte à côte, sans onglets. Le code utilise toujours des
-  onglets, et seules quatre familles sur neuf ont une planche : chemises,
-  jupes, robes et manteaux. Le complet est dessiné mais n'a pas d'onglet —
-  `data/tarifs.js` n'a pas de section « complet ».
+- **Il manque la cinquième planche.** La page affiche désormais ses planches
+  côte à côte, sans onglets — mais elles sont **quatre** : chemises, jupes,
+  robes, manteaux. Le complet est dessiné dans `assets/vetements.js`
+  (`VETEMENT_COMPLET`) et n'est affiché nulle part, faute de section
+  « complet » dans `data/tarifs.js` : une planche sans prix n'aurait rien à
+  montrer, et inventer les prix est exclu. Deux issues, au choix du
+  propriétaire : ajouter la section de tarifs, ou renoncer à cette planche.
+  Les cinq dessins doivent de toute façon être refaits en images ; la
+  structure de la page, elle, ne bougera pas.
+
+  Neuf familles de retouches sur dix ont une ligne de tarifs mais pas de
+  planche — pantalons, pulls, vestes, robes de soirée, rideaux. C'est voulu :
+  les planches sont un échantillon parlant, pas un catalogue. La grille
+  complète est à un bouton de distance.
 
 - **Le linge blanc a disparu des dessins.** Depuis que les cartes sont vertes,
   le costume, la chemise sous le fer et la veste de cuisinier sont des pièces
@@ -952,10 +1003,18 @@ ont été tranchés. Ce qui suit est du travail à faire.
   `.tr-vue{ height:66cqw }` dans la media query des petits écrans.
 
 - **L'échelle de tailles n'est pas tenue.** `assets/style.css` compte
-  **34 tailles écrites en dur** contre **14 appels aux jetons `--t-*`**, avec
-  des corps descendant à **8 px** alors que le plancher déclaré est 12 px.
-  C'était 50 contre 16 le 1ᵉʳ septembre 2026 : le ménage a commencé, il n'est
-  pas fini.
+  **58 tailles écrites en dur** contre **25 appels aux jetons `--t-*`**. Les
+  nombres ont monté avec les quatre pages construites en septembre, mais la
+  proportion n'a pas bougé : 71 % en dur le 1ᵉʳ septembre 2026, 70 % le 6.
+  Le ménage a commencé, il n'est pas fini.
+
+  Vingt et une déclarations descendent sous le plancher déclaré de 12 px. La
+  moitié sont des **petites capitales espacées** — `.sur-titre`, `.bouton`,
+  `.navigation a`, l'en-tête des tableaux de prix, le repère de la page
+  Tarifs — où 10 px en capitales avec un interlettrage de 0,1 em se lisent
+  comme 13 px en bas de casse : le plancher a été écrit pour du texte courant
+  et ne s'applique pas tel quel à ces libellés. Restent quelques vrais cas à
+  regarder, au premier rang desquels `.marque .mots span`, à **8 px**.
 
 - **Cinzel et la broderie.** Le logotype est arrêté, mais Cinzel est la police
   la moins brodable des huit comparées : mesuré sur `test/logotype.html`, son
@@ -972,6 +1031,24 @@ ont été tranchés. Ce qui suit est du travail à faire.
 
 Gardé ici pour que personne ne rouvre un dossier clos, et pour que les mesures
 ne soient pas à refaire.
+
+- **Trois pages étaient vides : Blanchisserie, Repassage, Cuir.** Chacune a
+  désormais son objet propre, parce que les planches à la craie ne se
+  transposent pas à un kilo de linge. La blanchisserie montre **une pesée** :
+  ce que pèse un sac de linge courant et ce qu'il coûte — le linge se compte
+  au kilo, pas à la pièce. Le repassage montre **trois finitions** côte à
+  côte : le seul choix que le client ait réellement à faire dans ce métier.
+  Le cuir montre **un parcours** en quatre temps, examen, devis, traitement,
+  remise : ce métier se vend sur la confiance dans le processus, pas sur un
+  prix affiché. Aucun montant n'est écrit dans ces pages ; tous sont lus dans
+  `data/tarifs.js` par libellé, et un libellé renommé dans les données émet un
+  avertissement en console au lieu de disparaître sans bruit.
+
+- **La page Tarifs faisait plus de douze mille pixels d'un seul tenant**,
+  précédés d'un sommaire de dix-sept ancres. Trois dispositifs la rendent
+  parcourable, décrits en section 8 : quatre familles déduites du préfixe des
+  identifiants, une recherche sur les 139 prestations, et une barre collante
+  qui annonce la famille courante. Les dix-sept ancres sont devenues quatre.
 
 - **Le bouton d'appel de l'accueil était invisible** — `#04321E` sur `#04180F`,
   **1,30:1**. Il est en or clair sur le vert de nuit : **7,66:1**.
