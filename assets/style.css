@@ -605,28 +605,6 @@ h4{ font-size:var(--t-l); }
 .tarifs-vetement details[open] summary::after{ transform:rotate(-135deg) translate(-2px,-2px); }
 
 /* ============================================================================
-   LA GAMME NUMÉROTÉE DES MÉTIERS
-   ============================================================================ */
-.gamme{ list-style:none; margin:var(--s4) 0 0; padding:0; max-width:440px; }
-.gamme li{ display:flex; align-items:baseline; gap:16px; padding:12px 0; border-bottom:1px solid var(--papier); }
-.gamme b{ font-size:9.5px; letter-spacing:.18em; color:var(--acier); font-weight:500; min-width:24px; }
-.gamme span{ font-family:var(--serif); font-size:22px; font-weight:500; flex:1; color:var(--vert); }
-.gamme em{ font-style:normal; font-size:12px; color:var(--acier); letter-spacing:.04em; white-space:nowrap; }
-
-/* ============================================================================
-   CARTES DE MÉTIER
-   ============================================================================ */
-.grille-metiers{
-  display:grid; grid-template-columns:1.12fr 1fr; gap:1px;
-  background:var(--papier); border:1px solid var(--papier); margin-top:var(--s5);
-}
-.etiquette{
-  position:absolute; top:var(--s4); right:var(--s4);
-  font-size:9px; letter-spacing:.2em; text-transform:uppercase;
-  color:var(--blanc); background:var(--or); padding:5px 10px; border-radius:2px;
-}
-
-/* ============================================================================
    TABLEAUX DE PRIX
    ============================================================================ */
 .tarif-bloc{ margin-bottom:var(--s5); break-inside:avoid; }
@@ -694,13 +672,7 @@ h4{ font-size:var(--t-l); }
 .centre .chapo{ margin-inline:auto; }
 .centre .filet{ max-width:330px; margin-inline:auto; }
 
-/* Les trois chiffres */
-.chiffres{ list-style:none; margin:var(--s5) auto 0; padding:0; display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s3); max-width:660px; }
-.chiffres b{ display:block; font-family:var(--serif); font-weight:600; font-size:var(--t-3xl); line-height:1; color:var(--or-clair); }
-.chiffres span{ display:block; margin-top:10px; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase; color:var(--sur-nuit-doux); }
-
 @media (max-width:860px){
-  .grille-metiers{ grid-template-columns:1fr; }
   .duo,.duo.large-gauche{ grid-template-columns:1fr; }
   .bandeau-infos dl{ grid-template-columns:1fr; }
   .bandeau-infos dl > div{ border-left:0; border-top:1px solid var(--papier); padding-left:0; padding-right:0; }
@@ -709,8 +681,6 @@ h4{ font-size:var(--t-l); }
 @media (max-width:620px){
   .tarif-table tbody th{ font-size:14px; padding-right:10px; }
   .tarif-table b{ font-size:18px; }
-  .chiffres{ gap:var(--s2); }
-  .chiffres b{ font-size:var(--t-2xl); }
 }
 
 /* ============================================================================

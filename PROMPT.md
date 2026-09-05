@@ -448,10 +448,20 @@ Relevée sur le logo de la maison. Ce sont les valeurs exactes à employer.
 | Vert nuit — fonds sombres | `#04180F` |
 | Or sur fond clair | `#A8842F` |
 | Or sur fond sombre | `#C9A24D` |
-| Acier — légendes, cotes, mentions | `#8A979B` |
+| Acier — filets, bordures | `#8A979B` |
+| Acier de texte — légendes, liens, mentions | `#5A686C` |
+| Or gravé — petit texte sur fond clair | `#82631F` |
 | Blanc | `#FFFFFF` |
 | Texte sur fond sombre | `#F6F3EC` |
 | Texte secondaire sur fond sombre | `rgba(246,243,236,.74)` |
+
+**Deux ors et deux gris, et ce n'est pas une coquetterie.** L'or du site
+(`#A8842F`) tient 3,15:1 sur l'ivoire et l'acier 2,71:1 : justes pour un
+filet, un aplat ou un grand titre, très en dessous des 4,5:1 qu'exige un mot
+qu'on doit lire. Chaque fois qu'un petit texte est en jeu — une légende, un
+lien, une unité dans un tableau — c'est l'or gravé ou l'acier de texte qu'il
+faut, jamais les deux premiers. La règle se vérifie en une mesure ; ne pas la
+rouvrir sans en refaire une.
 
 ### La typographie
 
@@ -602,63 +612,167 @@ les deux mots ramenés à la même hauteur de lettre pour rester équilibrés.
 Un titre `<h1>` masqué visuellement double ce nom pour les lecteurs d'écran
 et pour les moteurs de recherche.
 
-Ce traitement — l'aplat vert nuit, les deux halos et le grain — est réservé au
-bandeau du nom. Il ne se réemploie pas ailleurs comme fond décoratif.
+Ce traitement — l'aplat vert nuit, les deux halos et le grain — est réservé à
+la plaque du nom, dans l'en-tête. Il ne se réemploie nulle part ailleurs, pas
+même sur le bloc de la tringle, qui est un ivoire plat.
 
-### Le bandeau vert de service
+Le nom vit dans l'en-tête et y reste sur les neuf pages. Il est un `h1` sur
+l'accueil, où il est le titre de la page, et un `p` ailleurs, où la page a
+déjà le sien : une bannière répétée neuf fois ne doit pas occuper le premier
+niveau de titre de chaque page.
 
-Une bande pleine, vert profond, texte ivoire en capitales espacées, avec des
-losanges d'or clair en séparateurs. Elle porte trois informations :
-l'ancienneté, l'état d'ouverture calculé à l'heure réelle, et le téléphone
-cliquable en or.
+### L'en-tête, identique sur les neuf pages
 
-```
-Depuis 2006 à Vernier  ◆  Ouvert · jusqu'à 18h30  ◆  022 341 68 18
-```
+L'en-tête est du **mobilier** : le même balisage, le même ordre, les mêmes
+places sur les neuf pages. Ce qui varie, c'est ce qui vient après lui.
+
+Trois bandes :
+
+| | Bande | Fond | Ce qu'elle porte |
+|---|---|---|---|
+| 1 | La bande du logo | ivoire | le bouton et le nom composé à gauche, l'ancienneté et l'état d'ouverture au centre, le téléphone à droite |
+| 2 | La plaque du nom | vert nuit | le nom en or et son filet à losange |
+| 3 | La navigation | ivoire | les huit entrées, centrées |
+
+**Deux choses seulement changent d'une page à l'autre**, et elles le doivent :
+l'entrée de menu marquée `aria-current`, et la balise du nom — `h1` sur
+l'accueil, où le nom EST le titre de la page, `p` ailleurs, où la page a déjà
+le sien. Tout le reste est identique au caractère près.
+
+Tout est calé sur le conteneur de **1180 px**, comme le pied de page et comme
+la tringle. Mesuré à 1280 px : le logo commence à 94, le téléphone finit à
+1171, et l'état d'ouverture tombe sur l'axe de la page.
+
+**Ce qui est collant, et pourquoi seulement ça.** La bande 3, et rien
+d'autre : 52 px. À l'arrivée l'en-tête dit qui nous sommes ; en cours de
+lecture il ne doit plus que mener quelque part. Coller les trois bandes, ce
+serait garder 231 px à l'écran en permanence — un quart d'un portable.
+
+La navigation est donc écrite **hors du `<header>`** : une bande collante
+enfermée dans un conteneur court se décolle avec lui dès qu'il sort de
+l'écran. Un `<nav>` est un repère de navigation à part entière.
+
+**Sur téléphone**, la navigation se replie derrière le bouton du menu. C'est
+alors la plaque qui reste collée en haut, sinon le menu cesserait d'être
+atteignable une fois la page défilée. En dessous de 620 px le logo sort de la
+bande : mesuré à 375 px, le bouton, l'état dans sa formulation la plus longue
+et le numéro font exactement la largeur disponible. C'est le logo qui cède —
+le nom est écrit soixante pixels plus bas, en or, dix fois plus gros.
 
 ```css
-background: #04321E;
-color: #F6F3EC;
-font-size: 11.5px;
-letter-spacing: .12em;
-text-transform: uppercase;
-min-height: 48px;
-/* le losange séparateur */
-i { width:5px; height:5px; background:#C9A24D; transform:rotate(45deg); }
-/* le téléphone */
-a { color:#C9A24D; font-weight:500; min-height:44px; }
+/* la bande du logo */
+.ent-logo{ background:#F6F3EC; border-bottom:1px solid #EAE5D9; }
+.ent-logo .zone{ display:grid; grid-template-columns:1fr auto 1fr;
+                 align-items:center; min-height:60px; }
+/* la navigation, seule collante */
+.ent-nav{ position:sticky; top:0; z-index:60; background:#F6F3EC; }
 ```
 
-### Les cartes de service
+### La répartition du vert et de l'ivoire
 
-Les six métiers présentés en cartes blanches détourées sur le fond ivoire.
-Chaque carte porte un grand chiffre d'or qui donne le rythme, un titre, un
-court texte, quelques prix d'exemple en colonne, et le lien vers la page du
-métier — de sorte qu'aucun clic ne soit nécessaire pour connaître un ordre de
-grandeur, et qu'un seul suffise pour aller au détail.
+**Le vert n'apparaît que deux fois dans la page, et les deux fois il porte de
+l'or** : la plaque du nom, et les six cartes de métier. C'est le même objet à
+deux échelles. Rien d'autre n'est vert — donc le vert veut dire quelque chose.
 
-```css
-.carte-service{
-  background:#FFFFFF; border:1px solid #EAE5D9; border-radius:3px;
-  padding:clamp(26px,3.4vw,44px);
-  display:grid; grid-template-columns:1fr 1fr; gap:clamp(22px,4vw,56px);
-  align-items:start;
-}
-.carte-service:hover{
-  border-color:rgba(168,132,47,.45);
-  box-shadow:0 14px 40px rgba(22,36,28,.09);
-  transform:translateY(-2px);
-}
-.carte-service .num{                 /* le grand chiffre d'or */
-  font-family:var(--serif); font-weight:600;
-  font-size:clamp(30px,3.4vw,42px); color:#A8842F;
-}
-.carte-service .extrait li b{        /* le prix */
-  font-family:var(--serif); font-size:21px; font-weight:600; color:#04321E;
-  font-variant-numeric:tabular-nums;
-}
-@media (max-width:860px){ .carte-service{ grid-template-columns:1fr; } }
+Tout le reste est ivoire : la bande du logo, la navigation, le fond du bloc de
+la tringle, et tout ce qui vient dessous.
+
+Le traitement du vert — l'aplat de nuit, les deux halos, le grain — est
+**réservé à la plaque du nom**. Le bloc de la tringle est un ivoire plat :
+halos et grain n'existaient que pour empêcher un aplat sombre de paraître
+mort, et un ivoire n'a pas ce défaut.
+
+Trois mesures ont décidé de cette répartition, et il ne faut pas les refaire :
+
+- **le trait des six dessins est un or clair** (`#BB8419` à `#D1A553`, relevé
+  pixel par pixel dans les fichiers). Sur le papier ivoire des anciennes
+  cartes il tenait 1,43:1 de moyenne ; sur la plaque verte il tient 2,33:1.
+  Les dessins gagnent × 1,62 — le papier les a toujours mal servis.
+- **la carte sur son fond** passe de 1,04:1 (vert sur vert) à 14,45:1 (vert
+  sur ivoire).
+- **la tringle de laiton ne perd rien sur l'ivoire.** Contrairement aux
+  dessins qui sont un lavis, elle est pleine à 80 % : contraste médian 3,19:1
+  sur ivoire contre 2,90 sur vert. Ce qu'elle perd, ce sont ses reflets —
+  17 % du laiton, qui tombent à 1,21:1 et deviennent invisibles. Elle passe de
+  laiton poli à laiton satiné, et c'est un gain : sur le vert elle brillait
+  plus fort que les cartes qu'elle porte.
+
+  **Ne pas l'assombrir en CSS.** `brightness(.86)` monte bien le contraste
+  moyen de 4,33 à 5,33:1, mais les reflets ne remontent qu'à 1,65:1, toujours
+  sous le seuil du visible : on paie la couleur de la barre entière sans rien
+  récupérer.
+
+### La tringle et les six cartes
+
+Sur l'accueil, les six métiers sont **six cartes suspendues aux pinces d'une
+tringle de laiton**. La tringle est une image ; les cartes sont construites
+par `assets/site.js` et se calent sur les pinces mesurées dans le fichier.
+Aucun texte de métier n'est écrit dans le HTML.
+
+Les six pinces ont été relevées dans `assets/illustrations/tringle.webp`, sur
+la boîte du contenu (2109 × 76) :
+
 ```
+pince      1       2       3       4       5       6
+mesuré  11,356  26,837  42,248  57,658  73,044  88,573 %
+```
+
+La grille des cartes reprend ces valeurs mesurées, jamais des valeurs idéales.
+Changer ces six nombres suffirait si l'image était régénérée.
+
+**Le point d'accroche** est dicté par la platine murale, pas par la mâchoire.
+La platine descend jusqu'à la ligne 67 sur 76 ; un haut de carte plus haut
+ferait passer la première et la dernière carte sous la fixation.
+
+**La carte est une plaque verte**, pas du papier : dégradé `#0C2C21` vers
+`#051C13` — un dégradé et non un aplat, pour que le bord haut reçoive la
+lumière —, filet d'or intérieur à 3 % de retrait, ombre portée teintée de vert
+de nuit à 32 %. Sur un fond clair, une ombre noire appuyée fait une salissure.
+
+Le contenu suit la convention du site pour une surface sombre : ivoire pour le
+titre (14,45:1), ivoire adouci pour la description (8,48:1), or clair pour le
+« voir » (6,68:1).
+
+### Les six métiers sur téléphone
+
+**La tringle disparaît sous 1200 px, et chaque carte porte alors sa propre
+pince.** Le seuil n'est pas un chiffre rond : la tringle mesure 1180 px — la
+largeur du conteneur — et ne peut pas rétrécir, ses six pinces étant à des
+positions fixes de l'image. En dessous elle ne tient plus dans l'écran.
+Il est écrit `max-width:1199.98px` : un écran mesuré 1199,5 px ne serait
+attrapé ni par `1199px` ni par `min-width:1200px`, et la tringle
+réapparaîtrait pour un demi-pixel.
+
+**Le concept de la tringle ne se transpose pas, la pince oui.** Une tringle
+veut dire des pièces accrochées côte à côte le long d'une barre : tout son
+sens est dans l'étendue latérale, et un téléphone n'en a pas. La pince, elle,
+dit « ceci a été accroché » et n'a besoin d'aucune largeur. Elle n'est pas une
+image nouvelle : c'est la pince n°2 de la tringle, découpée en CSS —
+`background-position` sur `x 517 → 616, y 16 → 76`, avec un masque qui estompe
+les deux bouts de barre.
+
+Les six cartes s'empilent : une colonne sur téléphone, deux sur tablette,
+trois jusqu'au seuil — la grille `auto-fit` que le site emploie déjà pour ses
+listes d'éléments de même poids.
+
+**Le rythme est tenu par la pince, pas par l'écart.** Elle déborde de 38 px
+au-dessus de sa carte ; l'écart entre deux cartes vaut 62 px, dont 24 d'air
+au-dessus d'elle. Ces 24 px sont la seule valeur qui compte : c'est le blanc
+qui sépare une pince du bas de la carte précédente, et il décide si la colonne
+se lit comme six objets suspendus ou comme un ruban continu.
+
+**Ce qui a été écarté**, mesuré sur maquette avant de trancher :
+
+| Mise en page | Bloc | Écrans | Dessin | Métiers vus |
+|---|---|---|---|---|
+| Glissement latéral (l'ancien) | 662 px | 0,9 | 249 px | **1 sur 6** |
+| Deux colonnes avec description | 1 205 px | 1,6 | 152 px | 6 sur 6 |
+| Deux colonnes sans description | 982 px | 1,3 | 168 px | 6 sur 6 |
+| **La pile pleine largeur** (retenu) | 3 084 px | 4,0 | 184 px | 6 sur 6 |
+
+Le glissement latéral est écarté : il cachait cinq métiers sur six derrière un
+geste que rien n'annonçait, et « Retouches et couture » — ce qui distingue la
+maison d'un pressing ordinaire — demandait quatre glissements.
 
 ### L'état d'ouverture, calculé
 
@@ -675,10 +789,15 @@ partir des horaires, en tenant compte de la pause de midi :
 couture et le sceau. Ils identifient la maison ; ils ne forment pas un
 système décoratif et ne se déclinent pas.
 
+**Six dessins, un par métier**, plus la tringle : des illustrations au trait
+doré, dessinées, en fichiers `.webp` à fond transparent. Ce ne sont pas des
+icônes — ce sont des objets du métier, montrés. Elles vivent dans les cartes
+de l'accueil et nulle part ailleurs.
+
 **Aucun autre pictogramme, icône ou motif géométrique en SVG.** Pas d'icônes
-pour les services, pas de motifs de fond, pas d'illustrations construites,
-pas de planches géométriques en remplacement d'une image. Un service se
-nomme et se décrit ; il ne se symbolise pas.
+pour les services, pas de motifs de fond, pas de planches géométriques en
+remplacement d'une image. Un service se nomme, se décrit et se montre ; il ne
+se symbolise pas.
 
 Le filet d'or, les losanges et les capitales espacées restent, mais comme
 **détails de mise en page** : séparateurs, bandeau de service, sceau. Ce sont
@@ -803,49 +922,85 @@ Windows avec PowerShell 5.1.
 Rien n'attend plus de décision du propriétaire : tous les points en suspens
 ont été tranchés. Ce qui suit est du travail à faire.
 
-- **Le bouton d'appel de l'accueil est invisible.** Fond `#04321E` sur
-  `#04180F` : contraste **1,30:1**. C'est l'action principale du site, et elle
-  se confond avec son fond.
-- **Le téléphone est sous le pli sur mobile, à l'accueil.** Mesuré le 1ᵉʳ
-  septembre 2026 sur un écran de 241 × 563 px : le premier lien d'appel est à
-  **659 px du haut**, contre **34 px** sur les autres pages. La section 2 exige
-  qu'il soit atteignable sans faire défiler — l'accueil est la seule page qui
-  ne le respecte pas.
-- **Deux couleurs de texte sont sous le seuil de lisibilité.** L'or `#A8842F`
-  à **3,15:1** et l'acier `#8A979B` à **2,71:1** sur ivoire, là où 4,5:1 est
-  requis pour du petit texte. L'acier sert notamment à des liens.
-- **Les coordonnées sont répétées deux fois en bas de chaque page.**
-- **L'échelle de tailles n'est pas tenue.** `assets/style.css` compte
-  **50 tailles écrites en dur** contre **16 appels aux jetons `--t-*`**, avec
-  des corps descendant à **8 px** alors que le plancher déclaré est 12 px.
-  Relevé le 1ᵉʳ septembre 2026.
+### Ce qui reste
+
 - **La page Retouches ne suit pas encore la section 3.** Elle doit afficher
   les cinq planches côte à côte, sans onglets. Le code utilise toujours des
   onglets, et seules quatre familles sur neuf ont une planche : chemises,
   jupes, robes et manteaux. Le complet est dessiné mais n'a pas d'onglet —
   `data/tarifs.js` n'a pas de section « complet ».
+
+- **Le linge blanc a disparu des dessins.** Depuis que les cartes sont vertes,
+  le costume, la chemise sous le fer et la veste de cuisinier sont des pièces
+  SOMBRES cernées d'or : c'était le papier qu'on voyait à travers le trait qui
+  les faisait claires. Un pressing vend du linge propre. Pour le récupérer, il
+  faut ajouter un aplat clair à l'intérieur des pièces textiles dans les six
+  dessins : c'est un travail de dessin, pas de CSS.
+
+- **La pince des cartes sur petit écran est un découpage, pas une image.**
+  Elle est prise dans `tringle.webp` et affichée à 1,15 fois sa résolution :
+  légèrement molle sur un écran à forte densité. Une image dédiée serait plus
+  nette. Ce qu'il faudrait : la pince seule, de trois quarts face, **anneau
+  fermé et vide** — on doit voir le fond à travers —, mâchoire vue de face et
+  bien horizontale, fond transparent, **240 × 300 px**, laiton de la tringle
+  (encre moyenne `#A7803E`), éclairage venant du haut, sans marge. Ce n'est pas
+  urgent : le rendu actuel tient.
+
+- **L'accueil sur téléphone fait environ quatre écrans pour ses seules six
+  cartes.** C'est le prix assumé de cartes grandes et de dessins qui respirent.
+  Si cela paraît trop à l'usage, le réglage tient en une ligne :
+  `.tr-vue{ height:66cqw }` dans la media query des petits écrans.
+
+- **L'échelle de tailles n'est pas tenue.** `assets/style.css` compte
+  **34 tailles écrites en dur** contre **14 appels aux jetons `--t-*`**, avec
+  des corps descendant à **8 px** alors que le plancher déclaré est 12 px.
+  C'était 50 contre 16 le 1ᵉʳ septembre 2026 : le ménage a commencé, il n'est
+  pas fini.
+
 - **Cinzel et la broderie.** Le logotype est arrêté, mais Cinzel est la police
   la moins brodable des huit comparées : mesuré sur `test/logotype.html`, son
   trait le plus fin descend à **0,17 mm** pour un nom de 90 mm sur deux lignes,
   contre 1,04 mm pour une réglette. À l'écran et sur une enseigne, aucune
   conséquence. Au fil, il faudra soit broder plus grand, soit accepter que le
   brodeur redessine les empattements. À trancher avec lui avant de commander.
-- **Le contraste des illustrations dans les cartes de l'accueil — décidé, on
-  n'y touche pas.** Le trait doré mesuré dans les six fichiers vaut `#C08C2D` ;
-  sur le papier `#F4F0E6` des cartes, cela donne **2,62:1**, sous le seuil de
-  3:1 que WCAG demande pour un graphique porteur de sens. Les illustrations
-  sont **décoratives** : le titre et la description placés immédiatement en
-  dessous portent l'information et sont, eux, parfaitement lisibles. Décision
-  du 3 septembre 2026, après avoir mesuré quatre traitements et les avoir tous
-  écartés — assombrir le trait de 22 % (4,09:1), aviver le papier et assombrir
-  le trait (3,83:1), un cartouche clair derrière l'illustration (4,27:1), un or
-  franc (5,10:1) : aucun ne valait la perte d'éclat des dessins.
-  Pour qui rouvrirait le sujet, deux mesures à ne pas refaire : **densifier le
-  papier est contre-productif**, l'or étant plus sombre que lui (luminance
-  0,302 contre 0,873) — un papier à `#E7DCC0` fait tomber le contraste à
-  2,19:1 ; et **même le blanc pur plafonne à 2,99:1**. Le fond seul ne peut
-  pas atteindre le seuil, il faudrait assombrir le trait.
 
 - **Fournir les photographies de la page Galerie.** Avant/après de l'atelier,
   et l'illustration du plan d'accès. Tant qu'elles n'existent pas, la Galerie
   n'est pas publiée : le reste du site est complet sans elles.
+
+### Ce qui est réglé
+
+Gardé ici pour que personne ne rouvre un dossier clos, et pour que les mesures
+ne soient pas à refaire.
+
+- **Le bouton d'appel de l'accueil était invisible** — `#04321E` sur `#04180F`,
+  **1,30:1**. Il est en or clair sur le vert de nuit : **7,66:1**.
+
+- **Le téléphone était sous le pli sur mobile, à l'accueil.** Il finit
+  maintenant à **40 px** du haut, sur les neuf pages, grâce à l'en-tête
+  unifié.
+
+- **Deux couleurs de texte étaient sous le seuil.** Deux jetons de TEXTE ont
+  été ajoutés — `--or-grave` et `--acier-texte` — sans toucher à la palette,
+  qui garde ses valeurs pour les filets et les aplats. Les neuf pages passent
+  désormais l'audit d'accessibilité sans une seule violation, contre 28 sur la
+  seule page Tarifs.
+
+- **Le contraste des illustrations dans les cartes.** C'était le défaut le plus
+  documenté du dossier, et le changement de fond l'a effacé : le trait `#C08C2D`
+  passe de **2,62:1** sur le papier ivoire à **5,36:1** sur la plaque verte,
+  bien au-dessus du seuil de 3:1. Quatre traitements avaient été mesurés puis
+  écartés le 3 septembre 2026 — assombrir le trait, aviver le papier, un
+  cartouche clair, un or franc — parce qu'aucun ne valait la perte d'éclat des
+  dessins. Aucun n'était nécessaire : il fallait changer le fond, pas le trait.
+
+- **Les six métiers étaient invisibles sur téléphone.** Le bloc glissait
+  latéralement et montrait **1,7 carte sur six** à 375 px. Voir « Les six
+  métiers sur téléphone », en section 7.
+
+- **L'en-tête différait entre l'accueil et les huit autres pages**, sur onze
+  points. Voir « L'en-tête, identique sur les neuf pages », en section 7.
+
+- **Les coordonnées étaient répétées deux fois en bas de chaque page.** Il
+  n'en reste qu'une occurrence par page dans le pied ; le second bloc, sur la
+  page Nous trouver, est un rappel d'action assumé et non un doublon.
