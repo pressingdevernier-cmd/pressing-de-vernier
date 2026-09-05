@@ -534,6 +534,7 @@ if (zoneCartes) {
      de suite. Les quatre autres attendent d'approcher de l'écran. */
   zoneCartes.innerHTML = METIERS.map((m, i) =>
       '<a class="tr-carte" href="' + m.page + '" style="--vue:' + m.vue + '">'
+    +   '<span class="tr-pince" aria-hidden="true"></span>'
     +   '<span class="tr-vue">'
     +     '<img src="assets/illustrations/' + m.cle + '.webp" width="' + m.l + '" height="' + m.h + '"'
     +          ' alt="' + m.alt + '"' + (i < 2 ? '' : ' loading="lazy"') + ' decoding="async">'
@@ -544,63 +545,6 @@ if (zoneCartes) {
     +   '<span class="tr-voir"><i></i>Voir</span>'
     + '</a>').join('');
 
-  const zonePoints = document.getElementById('points-metiers');
-  zonePoints.innerHTML = METIERS.map((m, i) =>
-      '<li><button type="button" data-va="' + i + '" aria-current="' + (i === 0) + '">'
-    +   '<span class="lecture-seule">' + m.titre + '</span></button></li>').join('');
-
-
-  /* ───────────────────────────────────────────────────────────────────────────
-     LE GLISSEMENT
-     Sous 1440 px la tringle ne se coupe pas et ne se redresse pas : c'est le
-     regard qui la parcourt. Pinces et cartes défilent ensemble, donc restent
-     alignées.
-     ─────────────────────────────────────────────────────────────────────────── */
-  const piste  = document.getElementById('tringle');
-  const cartes = [...zoneCartes.querySelectorAll('.tr-carte')];
-  const points = [...zonePoints.querySelectorAll('button')];
-  const voileG = document.querySelector('.tr-voile.gauche');
-  const voileD = document.querySelector('.tr-voile.droite');
-
-  points.forEach(b => b.addEventListener('click', () => {
-    cartes[+b.dataset.va].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-  }));
-
-  /* La carte la plus proche du centre de la piste est la carte courante. */
-  function suivreLaTringle() {
-    const p = piste.getBoundingClientRect();
-    const centre = p.left + p.width / 2;
-    let proche = 0, ecart = Infinity;
-    cartes.forEach((c, i) => {
-      const b = c.getBoundingClientRect();
-      const d = Math.abs(b.left + b.width / 2 - centre);
-      if (d < ecart) { ecart = d; proche = i; }
-    });
-    points.forEach((b, i) => b.setAttribute('aria-current', String(i === proche)));
-
-    /* Le voile dit « il reste des cartes de ce côté ». On ne peut pas le
-       déduire de scrollLeft : l'aimant recentre la première et la dernière
-       carte, si bien que la piste n'atteint jamais ses extrêmes. On regarde
-       donc si la première et la dernière carte sont entièrement visibles. */
-    const pre = cartes[0].getBoundingClientRect();
-    const der = cartes[cartes.length - 1].getBoundingClientRect();
-    voileG.toggleAttribute('data-eteint', pre.left >= p.left - 2);
-    voileD.toggleAttribute('data-eteint', der.right <= p.right + 2);
-  }
-
-  piste.addEventListener('scroll', suivreLaTringle, { passive: true });
-  addEventListener('resize', suivreLaTringle);
-  suivreLaTringle();
-
-  /* La tringle n'est pas encore chargée au premier appel : la piste ne connaît
-     donc pas sa largeur, et les deux voiles s'éteindraient à tort. */
-  const rail = document.querySelector('.tr-rail');
-  if (rail.complete) suivreLaTringle();
-  else rail.addEventListener('load', suivreLaTringle, { once: true });
-
-  /* La tabulation amène le focus sur une carte hors champ : le navigateur la
-     fait défiler, il ne reste qu'à remettre les points d'accord. */
-  cartes.forEach(c => c.addEventListener('focus', () => setTimeout(suivreLaTringle, 60)));
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

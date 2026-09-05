@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pressing de Vernier — aperçu du site aux quatre largeurs</title>
+
+<!-- ============================================================================
+     PAGE DE REVUE — NE FAIT PAS PARTIE DU SITE
+     ----------------------------------------------------------------------------
+     Elle ne construit rien : elle charge les VRAIS fichiers du site dans des
+     cadres de largeurs différentes, par des <iframe>. Ce que vous voyez est
+     index.html tel qu'il est sur le disque. Chaque cadre se fait défiler.
+
+     Elle sert à relire le travail sans redimensionner votre navigateur.
+     À supprimer une fois la relecture faite.
+     ============================================================================ -->
+
+<link rel="stylesheet" href="../assets/polices/polices.css">
+<style>
+:root{
+  --ivoire:#F6F3EC; --papier:#EAE5D9; --graphite:#232825;
+  --vert:#04321E; --vert-nuit:#04180F; --or:#A8842F; --or-clair:#C9A24D;
+  --acier:#8A979B; --sur-nuit-doux:rgba(246,243,236,.74);
+  --serif:"Newsreader",Georgia,serif;
+  --ui:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*,*::before,*::after{ box-sizing:border-box; }
+body{ margin:0; background:#DED8C8; color:var(--graphite); font-family:var(--ui); }
+:focus-visible{ outline:2px solid var(--or); outline-offset:3px; }
+
+.tete{ background:var(--vert-nuit); color:var(--ivoire); padding:clamp(26px,3.5vw,44px) clamp(16px,3vw,40px); }
+.tete .dedans{ max-width:1180px; margin-inline:auto; }
+.tete h1{ font-size:12px; font-weight:600; margin:0 0 16px; letter-spacing:.22em; text-transform:uppercase; color:var(--or-clair); }
+.tete p{ margin:0 0 11px; font-size:15px; line-height:1.62; color:var(--sur-nuit-doux); max-width:78ch; }
+.tete p:last-child{ margin-bottom:0; }
+.tete b{ color:var(--ivoire); font-weight:600; }
+.tete code{ font-family:ui-monospace,Consolas,monospace; font-size:13px; color:var(--or-clair); background:rgba(201,162,77,.1); padding:1px 5px; }
+
+.bloc{ padding:clamp(28px,3.5vw,48px) clamp(16px,3vw,40px) clamp(34px,4vw,58px); }
+.bloc:nth-of-type(even){ background:#D6CFBC; }
+.bloc .dedans{ max-width:1180px; margin-inline:auto; }
+.bloc h2{ font-family:var(--serif); font-weight:500; font-size:clamp(23px,2.8vw,31px); margin:0 0 6px; color:var(--vert); }
+.bloc h2 em{ font-style:italic; color:var(--or); }
+.numero{ font-size:11px; font-weight:700; letter-spacing:.22em; color:var(--acier); display:block; margin-bottom:9px; text-transform:uppercase; }
+.propos{ margin:0 0 20px; font-size:15px; line-height:1.62; max-width:82ch; color:rgba(35,40,37,.8); }
+.propos b{ color:var(--vert); font-weight:600; }
+
+.banc{ display:flex; flex-wrap:wrap; gap:24px; align-items:flex-start; }
+.poste h3{ margin:0 0 9px; font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--vert); }
+.poste h3 span{ color:var(--acier); font-weight:500; letter-spacing:.06em; text-transform:none; }
+.cadre{
+  border:1px solid rgba(35,40,37,.2); background:var(--ivoire);
+  box-shadow:0 2px 4px rgba(0,0,0,.1),0 16px 32px -16px rgba(0,0,0,.45);
+  overflow:hidden;
+}
+.cadre iframe{ border:0; display:block; }
+
+/* Les grands cadres sont réduits pour tenir dans la page ; le facteur est
+   annoncé sous chacun, et rien n'est déformé. */
+.reduit{ transform-origin:top left; }
+
+.reglette{ margin-top:8px; font-size:11px; letter-spacing:.05em; color:rgba(35,40,37,.6); }
+.reglette b{ color:var(--vert); font-weight:700; }
+
+.tableau{ width:100%; border-collapse:collapse; margin-top:22px; background:rgba(255,255,255,.5); font-size:13.5px; }
+.tableau th,.tableau td{ padding:9px 13px; text-align:left; border-bottom:1px solid rgba(35,40,37,.14); vertical-align:top; }
+.tableau th{ font-size:9.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--acier); }
+.tableau tbody tr:last-child td{ border-bottom:0; }
+.tableau .note{ color:rgba(35,40,37,.62); font-size:12.5px; }
+.oui{ color:#1E6B42; font-weight:600; }
+</style>
+</head>
+<body>
+
+<header class="tete">
+  <div class="dedans">
+    <h1>&Eacute;tape 1 &mdash; le mobile, appliqu&eacute; au site</h1>
+    <p>Cette page ne reconstruit rien : elle charge <code>index.html</code>, le vrai fichier, dans des
+       cadres de largeurs diff&eacute;rentes. Chaque cadre se fait d&eacute;filer.</p>
+    <p>La tringle est <b>masqu&eacute;e sous 1200&nbsp;px</b>. En dessous, chaque carte porte sa propre pince
+       et les six s'empilent — une colonne sur t&eacute;l&eacute;phone, deux sur tablette, trois sur un &eacute;cran
+       interm&eacute;diaire. Le glissement horizontal, les points de position et les voiles de bord ont
+       &eacute;t&eacute; supprim&eacute;s du code.</p>
+    <p><b>Les couleurs ne sont pas encore chang&eacute;es</b> : c'est l'&eacute;tape 2. Les cartes sont donc encore
+       en papier ivoire sur un mur vert.</p>
+    <p>Si les cadres ci-dessous restent blancs, c'est que votre navigateur refuse d'imbriquer un
+       fichier local dans un autre. Dans ce cas, ouvrez directement
+       <code>index.html</code> et r&eacute;tr&eacute;cissez la fen&ecirc;tre : tout est dans le site lui-m&ecirc;me, cette
+       page ne fait que le montrer &agrave; plusieurs largeurs &agrave; la fois.</p>
+  </div>
+</header>
+
+<section class="bloc">
+  <div class="dedans">
+    <span class="numero">Section 1</span>
+    <h2>Le t&eacute;l&eacute;phone <em>et la tablette</em></h2>
+    <p class="propos">&Agrave; gauche un iPhone (375&nbsp;px), au centre une tablette en portrait
+      (768&nbsp;px), &agrave; droite juste avant la bascule (1100&nbsp;px, r&eacute;duit de moiti&eacute;).</p>
+    <div class="banc">
+      <div class="poste">
+        <h3>375 px <span>&mdash; iPhone</span></h3>
+        <div class="cadre" style="width:375px;height:720px">
+          <iframe src="../index.html" width="375" height="720" title="Accueil en 375 px"></iframe>
+        </div>
+        <p class="reglette">Une colonne &middot; carte <b>325 &times; 458</b> &middot; dessin <b>184&nbsp;px</b></p>
+      </div>
+      <div class="poste">
+        <h3>768 px <span>&mdash; tablette</span></h3>
+        <div class="cadre" style="width:384px;height:720px">
+          <iframe src="../index.html" width="768" height="1440" title="Accueil en 768 px"
+                  class="reduit" style="transform:scale(.5)"></iframe>
+        </div>
+        <p class="reglette">Deux colonnes &middot; carte <b>334 &times; 465</b> &middot; r&eacute;duit &times;0,5</p>
+      </div>
+      <div class="poste">
+        <h3>1100 px <span>&mdash; juste avant la bascule</span></h3>
+        <div class="cadre" style="width:550px;height:720px">
+          <iframe src="../index.html" width="1100" height="1440" title="Accueil en 1100 px"
+                  class="reduit" style="transform:scale(.5)"></iframe>
+        </div>
+        <p class="reglette">Trois colonnes &middot; carte <b>345&nbsp;px</b> &middot; r&eacute;duit &times;0,5</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="dedans">
+    <span class="numero">Section 2</span>
+    <h2>Au-dessus du seuil, <em>la tringle est intacte</em></h2>
+    <p class="propos">1280&nbsp;px, r&eacute;duit de moiti&eacute;. La tringle mesure 1180&nbsp;px, les cartes
+      176, et la pince de carte est masqu&eacute;e : c'est la tringle qui les porte.</p>
+    <div class="banc">
+      <div class="poste">
+        <h3>1280 px <span>&mdash; ordinateur</span></h3>
+        <div class="cadre" style="width:640px;height:560px">
+          <iframe src="../index.html" width="1280" height="1120" title="Accueil en 1280 px"
+                  class="reduit" style="transform:scale(.5)"></iframe>
+        </div>
+        <p class="reglette">Tringle <b>1180&nbsp;px</b> &middot; cartes <b>176&nbsp;px</b> &middot; r&eacute;duit &times;0,5</p>
+      </div>
+      <div class="poste">
+        <h3>375 px <span>&mdash; une page m&eacute;tier, pour contr&ocirc;le</span></h3>
+        <div class="cadre" style="width:375px;height:560px">
+          <iframe src="../nettoyage.html" width="375" height="560" title="Nettoyage en 375 px"></iframe>
+        </div>
+        <p class="reglette">Les huit pages m&eacute;tier n'ont pas de tringle : rien ne devait bouger, rien n'a boug&eacute;.</p>
+      </div>
+    </div>
+    <table class="tableau">
+      <thead><tr><th>Contr&ocirc;le</th><th>R&eacute;sultat</th><th>Relev&eacute;</th></tr></thead>
+      <tbody>
+        <tr><td>Les six cartes atteignables en d&eacute;filant</td><td class="oui">Oui</td>
+            <td class="note">Une colonne, aucun geste lat&eacute;ral. Bloc de 3&nbsp;084&nbsp;px &agrave; 375&nbsp;px de large.</td></tr>
+        <tr><td>T&eacute;l&eacute;phone atteignable sans d&eacute;filer</td><td class="oui">Oui</td>
+            <td class="note">Il finit &agrave; 78&nbsp;px du haut, dans la bande du logo.</td></tr>
+        <tr><td>D&eacute;bordement horizontal</td><td class="oui">Aucun</td>
+            <td class="note">V&eacute;rifi&eacute; &agrave; 375, 768, 1199, 1280 et 1600&nbsp;px.</td></tr>
+        <tr><td>Erreurs dans la console</td><td class="oui">Aucune</td>
+            <td class="note">Le code du glissement est retir&eacute;, plus aucune r&eacute;f&eacute;rence orpheline.</td></tr>
+        <tr><td>&Eacute;cart entre deux cartes</td><td>62&nbsp;px</td>
+            <td class="note">38 pour la pince, 24 d'air au-dessus d'elle.</td></tr>
+        <tr><td>Bascule</td><td>1200&nbsp;px</td>
+            <td class="note">&Eacute;crite <code>max-width:1199.98px</code> : un demi-pixel de zoom ne doit pas
+                faire r&eacute;appara&icirc;tre la tringle.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</body>
+</html>

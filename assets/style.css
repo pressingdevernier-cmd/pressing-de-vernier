@@ -973,29 +973,16 @@ h4{ font-size:var(--t-l); }
   color:var(--or-tr); white-space:nowrap;
 }
 
-/* Sous 1440 px la tringle ne se coupe pas et ne se redresse pas : elle garde
-   sa largeur et c'est le regard qui glisse le long d'elle. Pinces et cartes
-   défilent ensemble, donc restent alignées. */
-.tr-piste{
-  overflow-x:auto; overflow-y:hidden;
-  scroll-snap-type:x mandatory;
-  overscroll-behavior-x:contain;
-  scrollbar-width:none;
-  -webkit-overflow-scrolling:touch;
-}
-.tr-piste::-webkit-scrollbar{ display:none; }
-.tr-piste:focus-visible{ outline:2px solid var(--or-tr); outline-offset:-4px; }
+/* LA TRINGLE NE GLISSE PLUS. Elle mesurait 1420 px et débordait de l'écran :
+   sur un téléphone on voyait 1,7 carte sur six, et les cinq autres étaient
+   derrière un geste que rien n'annonçait. Elle est désormais calée sur le
+   conteneur du site, et sous 1200 px elle cède la place à l'empilement (voir
+   le bloc « LES SIX MÉTIERS SUR PETIT ÉCRAN », plus bas).
 
-/* Les deux voiles disent qu'il reste des cartes de ce côté. */
-.tr-voile{
-  position:absolute; top:0; bottom:0; width:clamp(28px,7vw,64px);
-  pointer-events:none; z-index:3; transition:opacity var(--transition);
-}
-.tr-voile.gauche{ left:0;  background:linear-gradient(90deg,var(--vert-mur),transparent); }
-.tr-voile.droite{ right:0; background:linear-gradient(270deg,var(--vert-mur),transparent); }
-.tr-voile[data-eteint]{ opacity:0; }
-
-.tr-ensemble{ width:1420px; position:relative; }
+   Il n'y a donc plus ni piste défilante, ni voiles de bord, ni points de
+   position : ces trois pièces n'existaient que pour rendre le glissement
+   supportable. */
+.tr-ensemble{ max-width:var(--largeur-max); margin-inline:auto; position:relative; }
 .tr-rail{
   display:block; width:100%; height:auto;
   /* La tringle passe DEVANT les cartes : sans ça la mâchoire disparaîtrait
@@ -1026,7 +1013,6 @@ h4{ font-size:var(--t-l); }
   display:flex; flex-direction:column; align-items:center; text-align:center;
   background:var(--papier-carte);
   padding:6.4% 7% 5.4%;
-  scroll-snap-align:center;
   box-shadow:0 14px 26px -8px rgba(0,0,0,.55);
   transition:transform var(--transition), box-shadow var(--transition);
 }
@@ -1076,28 +1062,107 @@ h4{ font-size:var(--t-l); }
 .tr-voir i{ width:7cqw; min-width:18px; height:1px; background:currentColor; flex:none; transition:width var(--transition); }
 .tr-carte:hover .tr-voir i{ width:14cqw; }
 
-.tr-points{
-  list-style:none; margin:clamp(18px,2.2vw,28px) auto 0; padding:0;
-  display:flex; justify-content:center; gap:10px;
-}
-.tr-points button{
-  width:26px; height:26px; padding:0; border:0; background:none;
-  display:grid; place-items:center; cursor:pointer;
-}
-.tr-points button::before{
-  content:""; width:7px; height:7px; border-radius:50%;
-  border:1px solid rgba(201,162,77,.6); background:transparent;
-  transition:background var(--transition), transform var(--transition);
-}
-.tr-points button[aria-current="true"]::before{ background:var(--or-tr); transform:scale(1.3); }
-.tr-points button:focus-visible{ outline:2px solid var(--or-tr); outline-offset:1px; border-radius:50%; }
+/* ============================================================================
+   LA PINCE DE CARTE — pour l'empilement des petits écrans
+   ----------------------------------------------------------------------------
+   Ce n'est pas une image nouvelle : c'est un morceau de tringle.webp, cadré
+   sur la pince n°2 et ses deux bouts de barre, dont les extrémités
+   s'estompent. Un anneau seul aurait été plus juste, mais il n'existe pas
+   dans le fichier : la barre passe DANS l'anneau, et son intérieur n'a
+   jamais été dessiné. Séparer les deux par la couleur détruit l'anneau —
+   essayé, mesuré, abandonné.
 
-/* Au-dessus de 1440 px tout tient : plus de glissement. Le seuil est choisi
-   sur la largeur de carte — de part et d'autre elle vaut 202 px, la bascule
-   ne se voit pas. */
-@media (min-width:1440px){
-  .tr-piste{ overflow:visible; scroll-snap-type:none; }
-  .tr-ensemble{ width:100%; }
-  .tr-voile{ display:none; }
-  .tr-points{ display:none; }
+   Le cadrage, relevé dans le fichier : x 517 → 616, y 16 → 76.
+   La pince y est centrée (son axe est à x 566,5). Au facteur 0,75 :
+       largeur    99 × 0,75 =  74 px
+       hauteur    60 × 0,75 =  45 px
+       fond      2109 × 0,75 = 1582 px
+       décalage   517 × 0,75 = 388 px  et  16 × 0,75 = 12 px
+
+   74 px et non 106 : au-delà, les deux bouts de barre cessent d'être la
+   ferrure de la pince et deviennent un bout de tringle qui flotte en l'air.
+   Court, on lit une pince ; long, on cherche le mur auquel elle est fixée.
+
+   Le masque efface les deux bouts en fondu. Il est opaque de 26 à 74 %, et
+   la pince occupe 29 à 70 % : elle n'est jamais entamée.
+   ============================================================================ */
+.tr-pince{
+  display:none;                       /* la tringle s'en charge, au-dessus du seuil */
+  position:absolute; left:50%; top:-38px; z-index:4;
+  width:74px; height:45px;
+  transform:translateX(-50%);
+  background-image:url("../assets/illustrations/tringle.webp");
+  background-size:1582px auto;
+  background-position:-388px -12px;
+  background-repeat:no-repeat;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 26%,#000 74%,transparent 100%);
+          mask-image:linear-gradient(90deg,transparent 0,#000 26%,#000 74%,transparent 100%);
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.45));
+  pointer-events:none;
+}
+
+
+/* ============================================================================
+   LES SIX MÉTIERS SUR PETIT ÉCRAN — l'empilement
+   ----------------------------------------------------------------------------
+   LE SEUIL EST 1200 px, ET IL N'EST PAS ARBITRAIRE. La tringle mesure
+   1180 px — la largeur du conteneur du site — et elle ne peut pas rétrécir :
+   ses six pinces sont à des positions fixes de l'image, et les cartes se
+   calent dessus. Sous 1180 px elle ne tient plus dans l'écran. 1200 laisse
+   dix pixels d'air de chaque côté avant la bascule.
+
+   En dessous, la tringle disparaît et chaque carte porte sa propre pince.
+   C'est le bon partage : une tringle veut dire des pièces accrochées CÔTE À
+   CÔTE le long d'une barre, et un petit écran n'a pas d'étendue latérale.
+   La pince, elle, dit « ceci a été accroché » et n'a besoin d'aucune largeur.
+
+   LE RYTHME EST TENU PAR LA PINCE, PAS PAR L'ÉCART. La pince déborde de
+   38 px au-dessus de sa carte. L'écart entre deux cartes vaut 62 px : les
+   38 de la pince, plus 24 d'air au-dessus d'elle. Ces 24 px sont la seule
+   valeur qui compte — c'est le blanc qui sépare une pince du bas de la
+   carte précédente, et c'est lui qui décide si la colonne se lit comme six
+   objets suspendus ou comme un ruban continu. Sous 20 px, la pince paraît
+   accrochée à la carte du dessus.
+   ============================================================================ */
+/* 1199.98 et non 1199 : la largeur d'affichage n'est pas toujours un nombre
+   entier (facteur de zoom, écran à forte densité), et un écran mesuré
+   1199,5 px ne serait attrapé ni par `max-width:1199px` ni par
+   `min-width:1200px`. La tringle réapparaîtrait pour un demi-pixel. */
+@media (max-width:1199.98px){
+  .tr-rail{ display:none; }
+  .tr-ensemble{ max-width:none; }
+
+  /* Une colonne sur téléphone, deux sur tablette, trois au-delà : c'est la
+     grille de `.grille-services`, déjà employée par le site pour une liste
+     d'éléments de même poids. Sans elle, une carte « pleine largeur » sur un
+     écran de 1000 px ferait 920 px de large et son dessin 600 px de haut.
+     Le pas de 280 px est celui sous lequel le texte de la carte cesse d'être
+     lisible. */
+  .tr-cartes{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:62px var(--s3);
+    /* 46 px sous l'intitulé : la première pince en occupe 38. */
+    margin:46px auto 0;
+    max-width:var(--largeur-max);
+    padding-inline:var(--marge-page);
+  }
+  /* Les six colonnes fixes de la tringle n'ont plus cours. Même poids que les
+     règles `:nth-child` du haut de fichier, écrites plus bas : elles gagnent. */
+  .tr-carte:nth-child(n){ grid-column:auto; }
+  .tr-carte{
+    /* `grid-row:auto` est indispensable, et ce n'est pas une précaution : la
+       tringle épingle les six cartes sur la MÊME rangée, `grid-row:1`. Tant
+       que cette ligne tient, l'auto-placement n'a plus le choix que d'aligner
+       les cartes en colonnes — six colonnes de 280 px sur un écran de 375. */
+    grid-row:auto;
+    padding:26px 7% 22px;             /* 26 en haut : la mâchoire mord jusqu'à 6 px */
+  }
+  .tr-pince{ display:block; }
+
+  /* Le dessin respire, sans faire de la carte une affiche : à 339 px de
+     carte, la boîte fait 224 px et le plus haut des six dessins en occupe
+     223. Le calage sur la surface perçue, lui, ne change pas. */
+  .tr-vue{ height:66cqw; margin-bottom:4cqw; }
+  .tr-vue img{ height:calc(var(--vue) * 56cqw); }
 }

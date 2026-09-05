@@ -110,26 +110,29 @@
 
 
 <!-- ═══════════════ LES SIX MÉTIERS ═══════════════
-     Six cartes de papier suspendues aux pinces d'une tringle de laiton.
-     La tringle est une image ; les cartes sont construites par
-     assets/site.js et se calent sur les pinces mesurées dans le fichier.
-     Aucun texte de métier n'est écrit ici. -->
-<section class="tr-mur">
-  <p class="tr-titre"><i></i><span>Les six m&#233;tiers</span><i></i></p>
+     Six cartes suspendues aux pinces d'une tringle de laiton. La tringle est
+     une image ; les cartes sont construites par assets/site.js et se calent
+     sur les pinces mesurées dans le fichier. Aucun texte de métier n'est
+     écrit ici.
 
-  <span class="tr-voile gauche" data-eteint></span>
-  <span class="tr-voile droite"></span>
+     SOUS 1200 px LA TRINGLE DISPARAÎT. Elle mesure 1180 px et ne se réduit
+     pas : ses six pinces sont à des positions fixes de l'image. En dessous,
+     les six cartes s'empilent et chacune porte sa propre pince. Le balisage
+     ne change pas — c'est la feuille de style qui décide, et la tringle est
+     simplement masquée. -->
+<!-- `aria-labelledby` remplace le `role="region"` et son `aria-label`, qui
+     annonçaient un glissement latéral qui n'existe plus. Une `<section>`
+     nommée est déjà un repère de navigation : le lecteur d'écran retrouve
+     « Les six métiers » dans sa liste de repères, sans qu'on lui promette un
+     geste. -->
+<section class="tr-mur" aria-labelledby="titre-metiers">
+  <p class="tr-titre" id="titre-metiers"><i></i><span>Les six m&#233;tiers</span><i></i></p>
 
-  <div class="tr-piste" id="tringle" role="region"
-       aria-label="Les six m&#233;tiers, faites glisser pour les parcourir" tabindex="0">
-    <div class="tr-ensemble">
-      <img class="tr-rail" src="assets/illustrations/tringle.webp"
-           width="2109" height="76" alt="" fetchpriority="high">
-      <div class="tr-cartes" id="cartes-metiers"></div>
-    </div>
+  <div class="tr-ensemble">
+    <img class="tr-rail" src="assets/illustrations/tringle.webp"
+         width="2109" height="76" alt="" fetchpriority="high">
+    <div class="tr-cartes" id="cartes-metiers"></div>
   </div>
-
-  <ol class="tr-points" id="points-metiers"></ol>
 </section>
 
 <!-- La phrase de positionnement, sous la tringle -->
