@@ -1016,6 +1016,33 @@ ont été tranchés. Ce qui suit est du travail à faire.
   et ne s'applique pas tel quel à ces libellés. Restent quelques vrais cas à
   regarder, au premier rang desquels `.marque .mots span`, à **8 px**.
 
+- **Le partage et le référencement attendent une adresse.** Le site n'a pas
+  encore de domaine : pas de `CNAME` dans le dépôt, pas de dépôt distant. Trois
+  choses en dépendent et ne peuvent pas être écrites avant, sous peine
+  d'inventer une adresse fausse — ce qui serait pire que rien :
+
+  1. Les **balises de partage** (Open Graph). Sans elles, un lien envoyé par
+     WhatsApp ou publié sur Facebook s'affiche sans vignette. Elles réclament
+     `og:url` et `og:image`, deux adresses complètes.
+  2. Une **image de partage**, 1200 × 630 px, à fabriquer à partir de la
+     plaque du nom — elle n'existe pas encore.
+  3. Un **`sitemap.xml`** et l'adresse **canonique** de chaque page, qui
+     listent les neuf pages par leur adresse complète.
+
+  Quand le domaine sera choisi, dans cet ordre : créer un fichier nommé
+  `CNAME` à la racine du dépôt, contenant le domaine seul et rien d'autre
+  (par exemple `pressingdevernier.ch`) ; l'annoncer chez le bureau
+  d'enregistrement ; puis revenir écrire ces trois points.
+
+  **La fiche pour Google, elle, ne dépend pas du domaine et fonctionne
+  déjà** : nom, raison sociale, adresse postale, coordonnées géographiques,
+  téléphone, courriel et les onze plages horaires de la semaine sont fournis
+  au format que Google attend, sur l'accueil et sur la page Nous trouver. Ils
+  sont construits à partir de `data/etablissement.js` : un horaire modifié
+  là-bas met la fiche à jour du même geste. C'est ce qui permet à Google
+  d'afficher le magasin, ses horaires et son itinéraire directement dans ses
+  résultats.
+
 - **Cinzel et la broderie.** Le logotype est arrêté, mais Cinzel est la police
   la moins brodable des huit comparées : mesuré sur `test/logotype.html`, son
   trait le plus fin descend à **0,17 mm** pour un nom de 90 mm sur deux lignes,

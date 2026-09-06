@@ -1,17 +1,21 @@
 /* ============================================================================
    PRESSING DE VERNIER — comportements communs à toutes les pages
    ----------------------------------------------------------------------------
-   Ce fichier fait dix choses :
+   Il est decoupe en quatorze sections numerotees, dans cet ordre :
      1. ouvrir et fermer le menu sur téléphone
      2. faire apparaître les blocs quand on descend dans la page
      3. écrire partout les coordonnées et les horaires
      4. afficher « Ouvert » ou « Fermé » selon l'heure qu'il est
      5. construire les tableaux de prix
-     6. afficher les planches a la craie, sur la page Couture
-     7. calculer la pesée du linge, sur la page Blanchisserie
-     8. poser un prix isolé là où on le cite, hors d'un tableau
-     9. ranger, chercher et situer, sur la page Tarifs
-    10. donner à Google l'adresse et les horaires du magasin
+     6. afficher les planches à la craie, sur la page Couture
+     7. ranger, chercher et situer, sur la page Tarifs
+     8. donner à Google l'adresse et les horaires du magasin
+     9. mesurer le nom de l'enseigne et caler son cadre
+    10. dresser les six métiers, sur la page d'accueil
+    11. poser un prix isolé là où on le cite, hors d'un tableau
+    12. calculer la pesée du linge, sur la page Blanchisserie
+    13. comparer les deux finitions, sur la page Repassage
+    14. résumer les horaires sur une ligne
 
    Vous n'avez normalement jamais besoin d'y toucher.
      Pour changer un prix    : data/tarifs.js
@@ -672,7 +676,7 @@ if (groupes && typeof TARIFS !== 'undefined' && TARIFS.length) {
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   7 · LA FICHE POUR GOOGLE
+   8 · LA FICHE POUR GOOGLE
    Adresse, téléphone et horaires, dans le format que Google attend pour
    afficher un commerce directement dans ses résultats. Construite à partir
    de data/etablissement.js : elle ne peut pas se désynchroniser du site.
@@ -701,7 +705,7 @@ if (document.querySelector('[data-fiche-google]')) {
     foundingDate: String(ETABLISSEMENT.depuis),
     telephone: ETABLISSEMENT.telephoneLien,
     email: ETABLISSEMENT.email,
-    url: location.origin + location.pathname.replace(/[^/]*$/, ''),
+
     address: {
       '@type': 'PostalAddress',
       streetAddress: ETABLISSEMENT.rue,
@@ -720,6 +724,14 @@ if (document.querySelector('[data-fiche-google]')) {
     areaServed: ETABLISSEMENT.ville
   };
 
+  /* L'adresse du site n'est ajoutee que si la page est servie par un vrai
+     serveur. Ouverte en double-clic, `location.origin` vaut « null » : la
+     fiche annoncerait « null/ » a Google. Mieux vaut pas d'adresse du tout
+     qu'une fausse. */
+  if (location.protocol === 'http:' || location.protocol === 'https:') {
+    fiche.url = location.origin + location.pathname.replace(/[^/]*$/, '');
+  }
+
   const balise = document.createElement('script');
   balise.type = 'application/ld+json';
   balise.textContent = JSON.stringify(fiche);
@@ -731,7 +743,7 @@ if (document.querySelector('[data-fiche-google]')) {
 revelerDans(document);
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   7 · LE NOM DE L'ENSEIGNE
+   9 · LE NOM DE L'ENSEIGNE
    Le nom est dessiné en SVG, puis MESURÉ, puis son cadre est calé sur la
    mesure. Sans cette étape, un nom trop long pour un cadre fixe se ferait
    rogner — c'est exactement ce qui arrivait avant.
@@ -779,7 +791,7 @@ if (document.querySelector('.plaque')) {
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
-   8 · LES SIX MÉTIERS (page d'accueil)
+   10 · LES SIX MÉTIERS (page d'accueil)
    ----------------------------------------------------------------------------
    Six cartes de papier suspendues aux pinces d'une tringle de laiton. Une
    carte par métier, une page par carte.
@@ -849,7 +861,7 @@ if (zoneCartes) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   9 · UN PRIX, LU DANS data/tarifs.js PAR SON LIBELLÉ
+   11 · UN PRIX, LU DANS data/tarifs.js PAR SON LIBELLÉ
    ----------------------------------------------------------------------------
    Deux pages affichent un montant hors d'un tableau : la pesée de la page
    Blanchisserie et les deux finitions de la page Repassage. Aucune des deux
@@ -875,7 +887,7 @@ function ligneDeTarif(idSection, libelle) {
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   9 bis · LA PESÉE — page Blanchisserie
+   12 · LA PESÉE — page Blanchisserie
    ----------------------------------------------------------------------------
    Le linge courant est le seul poste facturé au poids. Un tableau n'y répond
    pas : personne ne sait ce que pèse son sac. La réglette donne l'ordre de
@@ -914,7 +926,7 @@ if (pesee) {
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   9 ter · LES DEUX FINITIONS — page Repassage
+   13 · LES DEUX FINITIONS — page Repassage
    ----------------------------------------------------------------------------
    Sur cintre ou pliée : c'est la question de la page, et les deux prix
    viennent de la section « Nettoyage — Vêtements », où ils sont écrits.
@@ -928,7 +940,7 @@ document.querySelectorAll('[data-prix-de]').forEach(el => {
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   10 · LE RÉSUMÉ DES HORAIRES, sur une ligne
+   14 · LE RÉSUMÉ DES HORAIRES, sur une ligne
    ═══════════════════════════════════════════════════════════════════════════ */
 document.querySelectorAll('[data-horaires-resume]').forEach(el => {
   const semaine = plagesLisibles(HORAIRES[1]);
