@@ -1,7 +1,7 @@
 /* ============================================================================
    PRESSING DE VERNIER — comportements communs à toutes les pages
    ----------------------------------------------------------------------------
-   Il est decoupe en quatorze sections numerotees, dans cet ordre :
+   Il est decoupe en douze sections numerotees, dans cet ordre :
      1. ouvrir et fermer le menu sur téléphone
      2. faire apparaître les blocs quand on descend dans la page
      3. écrire partout les coordonnées et les horaires
@@ -13,9 +13,7 @@
      9. mesurer le nom de l'enseigne et caler son cadre
     10. dresser les six métiers, sur la page d'accueil
     11. poser un prix isolé là où on le cite, hors d'un tableau
-    12. calculer la pesée du linge, sur la page Blanchisserie
-    13. comparer les deux finitions, sur la page Repassage
-    14. résumer les horaires sur une ligne
+    12. résumer les horaires sur une ligne
 
    Vous n'avez normalement jamais besoin d'y toucher.
      Pour changer un prix    : data/tarifs.js
@@ -254,6 +252,8 @@ document.querySelectorAll('[data-etat-ouverture]').forEach(el => {
    Construits à partir de data/tarifs.js. Un conteneur portant
    data-tarifs="identifiant-de-section" reçoit le tableau correspondant.
    data-tarifs="tout" affiche la liste complète.
+   data-lignes="6" n'affiche que les six premières lignes de chaque section,
+   et renvoie le reste à la page Tarifs.
    ═══════════════════════════════════════════════════════════════════════════ */
 function formatPrix(n) {
   // 24 → « 24.– »   5.5 → « 5.50 »
@@ -268,8 +268,17 @@ function formatPrix(n) {
    viennent directement sous le <h1> de la page — un <h3> y sauterait un
    niveau, ce qu'un lecteur d'ecran signale comme un trou dans le plan. Sur
    la page Couture elles sont imbriquees sous un <h2>, et <h3> est juste. */
-function tableauSection(sec, niveau) {
+function tableauSection(sec, niveau, maximum) {
   const doubles = Boolean(sec.colonnes);
+  /* UN EXTRAIT, PAS LA SECTION ENTIÈRE. Une page de métier répond à
+     « combien ça coûte », pas « quel est le prix de chaque article » : la
+     literie compte dix-sept lignes, qui font à elles seules mille pixels.
+     On en montre les premières — celles de data/tarifs.js, dans l'ordre où
+     elles y sont écrites, donc les plus courantes — et le reste est à un
+     bouton de distance. La source reste unique : rien n'est recopié. */
+  const lignes = (maximum && sec.lignes.length > maximum)
+    ? sec.lignes.slice(0, maximum) : sec.lignes;
+  const coupees = sec.lignes.length - lignes.length;
   const bloc = document.createElement('section');
   bloc.className = 'tarif-bloc revele';
   bloc.id = sec.id;
@@ -320,7 +329,7 @@ function tableauSection(sec, niveau) {
   };
 
   const tbody = document.createElement('tbody');
-  for (const ligne of sec.lignes) {
+  for (const ligne of lignes) {
     const tr = document.createElement('tr');
 
     const th = document.createElement('th');
@@ -341,6 +350,16 @@ function tableauSection(sec, niveau) {
   }
   table.append(tbody);
   bloc.append(table);
+
+  if (coupees > 0) {
+    const suite = document.createElement('p');
+    suite.className = 'note-tarif';
+    suite.innerHTML = coupees + (coupees > 1 ? ' autres articles' : ' autre article')
+      + ' dans cette rubrique : <a class="lien" href="tarifs.html#' + sec.id
+      + '">voir la liste complète</a>.';
+    bloc.append(suite);
+  }
+
   return bloc;
 }
 
@@ -356,7 +375,9 @@ document.querySelectorAll('[data-tarifs]').forEach(conteneur => {
   const sections = demande === 'tout'
     ? TARIFS
     : TARIFS.filter(s => demande.split(/\s*,\s*/).includes(s.id));
-  sections.forEach(s => conteneur.append(tableauSection(s, conteneur.dataset.niveau)));
+  const maximum = parseInt(conteneur.dataset.lignes, 10) || 0;
+  sections.forEach(s => conteneur.append(
+    tableauSection(s, conteneur.dataset.niveau, maximum)));
   revelerDans(conteneur);
 });
 
@@ -384,19 +405,35 @@ document.querySelectorAll('[data-mentions]').forEach(el => {
    onglets : on ne voyait qu'un vêtement à la fois, et il fallait deviner que
    les autres existaient derrière un bouton.
 
-   LA PAGE NE DÉCIDE PAS DE LA LISTE. Elle affiche toute pièce qui a à la fois
-   un dessin dans assets/vetements.js ET une section de prix dans
-   data/tarifs.js — une planche sans prix n'aurait aucun repère à porter. Le
-   jour où le complet reçoit sa section de tarifs, il apparaît ici sans qu'on
-   touche à cette page.
+   LA PAGE CHOISIT SES PIÈCES, la liste est écrite dans son attribut
+   `data-planches` : « retouches-jupes,retouches-manteaux » n'en affiche que
+   deux. Les autres dessins restent dans assets/vetements.js, prêts à être
+   remis d'un mot, sans qu'on retouche au code.
+
+   L'attribut laissé vide affiche TOUTES les pièces dessinées. Dans les deux
+   cas, une pièce n'apparaît que si elle a à la fois un dessin dans
+   assets/vetements.js ET une section de prix dans data/tarifs.js : une
+   planche sans prix n'aurait aucun repère à porter. Un identifiant mal
+   orthographié dans l'attribut est signalé en console plutôt qu'ignoré en
+   silence — sinon la planche disparaît sans que personne comprenne pourquoi.
    ═════════════════════════════════════════════════════════════════════════════ */
 const grillePlanches = document.querySelector('[data-planches]');
 
 if (grillePlanches && typeof VETEMENTS !== 'undefined'
     && typeof dessinVetement === 'function' && typeof TARIFS !== 'undefined') {
 
-  const dessinees = Object.keys(VETEMENTS)
-    .filter(id => TARIFS.some(s => s.id === id));
+  const demandees = (grillePlanches.dataset.planches || '')
+    .split(',').map(t => t.trim()).filter(Boolean);
+
+  demandees.forEach(id => {
+    if (!VETEMENTS[id]) {
+      console.warn('[planches] « ' + id + ' » : aucun dessin de ce nom dans '
+                 + 'assets/vetements.js. La planche ne sera pas affichée.');
+    }
+  });
+
+  const dessinees = (demandees.length ? demandees : Object.keys(VETEMENTS))
+    .filter(id => VETEMENTS[id] && TARIFS.some(s => s.id === id));
 
   if (!dessinees.length) {
     grillePlanches.closest('section').remove();
@@ -887,60 +924,7 @@ function ligneDeTarif(idSection, libelle) {
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   12 · LA PESÉE — page Blanchisserie
-   ----------------------------------------------------------------------------
-   Le linge courant est le seul poste facturé au poids. Un tableau n'y répond
-   pas : personne ne sait ce que pèse son sac. La réglette donne l'ordre de
-   grandeur, les deux formules côte à côte.
-   ═══════════════════════════════════════════════════════════════════════════ */
-const pesee = document.querySelector('[data-pesee]');
-if (pesee) {
-  const SANS = ligneDeTarif('blanchisserie-kilo', 'Lavage, séchage et pliage');
-  const AVEC = ligneDeTarif('blanchisserie-kilo', 'Lavage, séchage, repassage et pliage');
-
-  if (!SANS || !AVEC) {
-    /* On retire la SECTION entière, pas la seule réglette : son introduction
-       invite à faire glisser un curseur, et une invitation à manipuler ce qui
-       n'existe plus est pire qu'un manque. */
-    (pesee.closest('[data-pesee-section]') || pesee).remove();
-  } else {
-    const curseur = pesee.querySelector('input[type="range"]');
-    const poids   = pesee.querySelector('[data-poids-lu]');
-    const sans    = pesee.querySelector('[data-sans-repassage]');
-    const avec    = pesee.querySelector('[data-avec-repassage]');
-
-    /* Les trois valeurs sont des <output> : c'est l'élément prévu pour le
-       RÉSULTAT d'un calcul, et son rôle implicite `status` fait annoncer la
-       nouvelle valeur par un lecteur d'écran. Sans ça, seul le poids serait
-       annoncé — et le poids n'est pas ce qu'on est venu chercher. */
-    function peser() {
-      const kg = Number(curseur.value);
-      poids.textContent = kg + ' kg';
-      sans.textContent  = formatPrix(kg * SANS.prix);
-      avec.textContent  = formatPrix(kg * AVEC.prix);
-    }
-    curseur.addEventListener('input', peser);
-    peser();
-  }
-}
-
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   13 · LES DEUX FINITIONS — page Repassage
-   ----------------------------------------------------------------------------
-   Sur cintre ou pliée : c'est la question de la page, et les deux prix
-   viennent de la section « Nettoyage — Vêtements », où ils sont écrits.
-   ═══════════════════════════════════════════════════════════════════════════ */
-document.querySelectorAll('[data-prix-de]').forEach(el => {
-  const [section, libelle] = el.dataset.prixDe.split('|');
-  const ligne = ligneDeTarif(section, libelle);
-  if (!ligne) { el.textContent = '—'; return; }
-  el.textContent = (ligne.des ? 'dès ' : '') + formatPrix(ligne.prix);
-});
-
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   14 · LE RÉSUMÉ DES HORAIRES, sur une ligne
+   12 · LE RÉSUMÉ DES HORAIRES, sur une ligne
    ═══════════════════════════════════════════════════════════════════════════ */
 document.querySelectorAll('[data-horaires-resume]').forEach(el => {
   const semaine = plagesLisibles(HORAIRES[1]);

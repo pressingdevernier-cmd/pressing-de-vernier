@@ -733,6 +733,36 @@ h4{ font-size:var(--t-l); }
 .grille-services p{ font-size:15px; color:rgba(35,40,37,.68); margin:0; }
 
 /* ============================================================================
+   LES PAGES DE METIER — resserrees
+   Ces pages repondent a deux questions, dans cet ordre : qu'est-ce que vous
+   faites, et combien ca coute. Elles n'ont pas a etre parcourues, elles ont
+   a etre lues d'un coup.
+
+   Le rythme de l'accueil ne leur convient pas : `.section` y pose 140 px de
+   respiration en haut ET en bas, ce qui fait plus de mille pixels de vide
+   sur quatre sections — legitime quand chaque bloc est une scene, absurde
+   quand la page tient en deux ecrans. On resserre ici, et ici seulement :
+   l'accueil garde son souffle.
+   ============================================================================ */
+.page-metier .section{ padding:var(--s5) 0; }
+.page-metier .section.serree{ padding:var(--s4) 0; }
+.page-metier .section.millimetre{ padding-bottom:var(--s4); }
+.page-metier .grille-services{ margin-top:var(--s4); }
+.page-metier .grille-services article{ padding:var(--s3); }
+.page-metier .grille-services h3{ font-size:var(--t-m); margin-bottom:6px; }
+.page-metier .grille-services p{ font-size:14.5px; }
+.page-metier .filet.court{ margin-bottom:var(--s2); }
+.page-metier .chapo{ margin-bottom:0; }
+.page-metier .planches{ margin-top:var(--s4); }
+/* L'enseigne du metier respire moins haut ici que sur l'accueil : la page
+   doit montrer ses prix sans qu'on ait a defiler pour les atteindre. */
+.page-metier .enseigne-metier img{ max-height:clamp(180px,20vw,250px); }
+.page-metier h1{ font-size:clamp(33px,4.4vw,54px); }
+/* Les titres de section passent d'un cran : sur une page qui tient en deux
+   ecrans, un titre de 56 px annonce une scene qui n'arrive jamais. */
+.page-metier h2{ font-size:var(--t-2xl); }
+
+/* ============================================================================
    L APPEL — le bloc « une urgence ? », et l invitation a telephoner
    Le telephone est le canal principal : il a son propre bloc, pas un
    simple lien perdu dans un paragraphe.
@@ -950,32 +980,6 @@ h4{ font-size:var(--t-l); }
 
 
 /* ============================================================================
-   LE RÉPERTOIRE — le sur-mesure, page Retouches et couture
-   ----------------------------------------------------------------------------
-   Ce que personne d'autre ne propose à Genève. La section n'a pas de grille :
-   le prix se convient de vive voix, après examen de la pièce.
-
-   Des RANGÉES LARGES et non des cartes : trois cartes de plus auraient eu
-   l'air de trois services de plus. Le titre à gauche, ce qu'il recouvre à
-   droite, un filet d'or entre chaque — c'est la mise en page d'un répertoire
-   d'atelier, pas d'un catalogue.
-   ============================================================================ */
-.repertoire{ margin-top:var(--s5); }
-.repertoire > div{
-  display:grid; grid-template-columns:minmax(190px,.85fr) 1.15fr;
-  gap:var(--s3) var(--s4);
-  padding:var(--s4) 0;
-  border-top:1px solid var(--papier);
-}
-.repertoire > div:last-child{ border-bottom:1px solid var(--papier); }
-.repertoire h3{ font-size:var(--t-2xl); font-weight:500; line-height:1.1; }
-.repertoire p{ margin:0; font-size:var(--t-m); line-height:1.6; color:rgba(35,40,37,.76); max-width:58ch; }
-@media (max-width:860px){
-  .repertoire > div{ grid-template-columns:1fr; padding:var(--s3) 0; }
-}
-
-
-/* ============================================================================
    L'ENSEIGNE D'UNE PAGE DE MÉTIER
    ----------------------------------------------------------------------------
    Le dessin du métier, en grand, sur la même plaque verte que sa carte de
@@ -995,112 +999,6 @@ h4{ font-size:var(--t-l); }
   border:1px solid rgba(201,162,77,.42); pointer-events:none;
 }
 .enseigne-metier img{ width:auto; max-width:100%; max-height:clamp(210px,25vw,320px); }
-
-
-/* ============================================================================
-   LA PESÉE — page Blanchisserie
-   ----------------------------------------------------------------------------
-   Le linge courant est le SEUL poste du site facturé au poids. Un tableau de
-   prix n'y répond pas : personne ne sait ce que pèse son sac. La réglette
-   donne l'ordre de grandeur que la grille ne peut pas donner.
-
-   AUCUN MONTANT N'EST ÉCRIT ICI NI DANS LE HTML. Les deux tarifs au kilo sont
-   lus dans data/tarifs.js par le libellé de leur ligne, comme le font les
-   repères des planches à la craie. Un prix se change à un seul endroit.
-   ============================================================================ */
-.pesee{
-  border:1px solid var(--papier); background:var(--blanc);
-  padding:clamp(24px,3vw,38px); margin-top:var(--s4);
-}
-.pesee .reglette{ display:flex; align-items:baseline; gap:var(--s3); flex-wrap:wrap; }
-.pesee label{
-  font-size:10px; letter-spacing:.22em; text-transform:uppercase;
-  color:var(--acier-texte); flex:none;
-}
-.pesee output{
-  font-family:var(--serif); font-size:var(--t-2xl); font-weight:600;
-  color:var(--vert); font-variant-numeric:tabular-nums; margin-left:auto;
-}
-.pesee input[type="range"]{
-  flex-basis:100%; width:100%; margin:var(--s2) 0 0;
-  accent-color:var(--vert); height:28px;
-}
-.pesee dl{
-  margin:var(--s4) 0 0; display:grid; grid-template-columns:1fr 1fr;
-  gap:1px; background:var(--papier); border:1px solid var(--papier);
-}
-.pesee dl > div{ background:var(--blanc); padding:var(--s3); }
-.pesee dt{ font-size:14px; color:rgba(35,40,37,.72); margin-bottom:8px; }
-.pesee dd{
-  margin:0; font-family:var(--serif); font-size:var(--t-3xl); font-weight:600;
-  line-height:1; color:var(--vert); font-variant-numeric:tabular-nums;
-}
-.pesee dd small{
-  display:block; font-family:var(--sans); font-size:11px; font-weight:500;
-  letter-spacing:.14em; text-transform:uppercase; color:var(--or-grave);
-  margin-top:10px;
-}
-@media (max-width:620px){
-  .pesee dl{ grid-template-columns:1fr; }
-  .pesee output{ margin-left:0; flex-basis:100%; }
-}
-
-
-/* ============================================================================
-   LES DEUX FINITIONS — page Repassage
-   ----------------------------------------------------------------------------
-   Toute la page tient dans une question : sur cintre, ou plié ? Ce n'est pas
-   une liste de deux éléments, c'est un choix — deux panneaux de même poids,
-   côte à côte, et le prix de chacun.
-   ============================================================================ */
-.finitions{
-  display:grid; grid-template-columns:1fr 1fr; gap:1px;
-  background:var(--papier); border:1px solid var(--papier); margin-top:var(--s5);
-}
-.finitions article{
-  background:var(--blanc); padding:var(--s4) var(--s3);
-  display:flex; flex-direction:column;
-}
-.finitions h3{ font-size:var(--t-xl); margin-bottom:10px; }
-.finitions p{ font-size:15px; color:rgba(35,40,37,.68); margin:0 0 var(--s3); }
-.finitions .prix{
-  margin-top:auto; padding-top:var(--s3); border-top:1px solid var(--papier);
-  font-family:var(--serif); font-size:var(--t-2xl); font-weight:600;
-  color:var(--vert); font-variant-numeric:tabular-nums;
-}
-.finitions .prix span{
-  display:block; font-family:var(--sans); font-size:11px; font-weight:500;
-  letter-spacing:.14em; text-transform:uppercase; color:var(--acier-texte);
-  margin-bottom:6px;
-}
-@media (max-width:620px){ .finitions{ grid-template-columns:1fr; } }
-
-
-/* ============================================================================
-   LE PARCOURS D'UNE PIÈCE — page Cuir, daim, tapis et sacs
-   ----------------------------------------------------------------------------
-   C'est le seul métier du site qui n'a AUCUN prix : les quatre lignes sont
-   sur devis, et la pièce part chez un spécialiste. La page ne peut donc pas
-   montrer une grille — elle montre le chemin qui mène au prix.
-
-   Les numéros sont ici légitimes : ce sont des étapes qui se suivent dans le
-   temps, et leur ordre porte une information. Ailleurs sur le site, aucune
-   liste n'est numérotée.
-   ============================================================================ */
-.parcours{ list-style:none; margin:var(--s5) 0 0; padding:0; counter-reset:etape; }
-.parcours li{
-  counter-increment:etape;
-  display:grid; grid-template-columns:auto 1fr; gap:var(--s3);
-  padding:var(--s3) 0; border-top:1px solid var(--papier);
-}
-.parcours li::before{
-  content:counter(etape,decimal-leading-zero);
-  font-family:var(--serif); font-size:var(--t-xl); font-weight:600;
-  color:var(--or-grave); line-height:1; padding-top:3px;
-  font-variant-numeric:tabular-nums;
-}
-.parcours h3{ font-size:var(--t-l); margin-bottom:6px; }
-.parcours p{ margin:0; font-size:15px; color:rgba(35,40,37,.72); max-width:64ch; }
 
 
 /* ============================================================================

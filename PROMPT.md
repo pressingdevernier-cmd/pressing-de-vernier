@@ -78,23 +78,30 @@ une page. Pas de dépliant, pas de sous-menu.
 
 ### Le modèle d'une page de métier
 
-Chaque page suit le modèle de la page Retouches :
+Une page de métier répond à deux questions, dans cet ordre, et s'arrête là :
 
-1. **Un objet visuel fort** en tête — ce que le métier fait, montré.
-2. **Quelques prix indicatifs**, ceux qu'on demande le plus.
-3. **Un accès bien visible à la grille complète**, sans le faire chercher.
+1. **Qu'est-ce que vous faites ?** Un encadré des prestations principales,
+   chacune avec une explication d'une ou deux phrases.
+2. **Combien ça coûte ?** La liste des prix, juste en dessous, suivie d'un
+   accès bien visible à la grille complète.
 
-Ce n'est pas un catalogue : c'est une entrée en matière qui donne un ordre de
-grandeur et laisse la porte ouverte au détail.
+**Et c'est tout.** Pas de mise en scène, pas de transition, rien qui raconte
+ou justifie. C'est un pressing de quartier, pas une maison de luxe : le
+visiteur veut savoir ce qu'on fait et ce que ça coûte, pas lire une page.
 
-**L'objet visuel change avec le métier.** Le modèle est commun, la trouvaille
-ne l'est pas : les planches à la craie ne se transposent pas à un kilo de
-linge ni à un tapis. La blanchisserie montre une **pesée**, parce que le linge
-se compte au kilo et non à la pièce. Le repassage montre **trois finitions**
-côte à côte, le seul choix que le client ait réellement à faire. Le cuir
-montre un **parcours** en quatre temps — examen, devis, traitement, remise —
-parce que ce métier se vend sur la confiance dans le processus, pas sur un
-prix affiché. Chercher l'idée propre à chaque métier fait partie du modèle.
+**Une page doit tenir en deux écrans d'ordinateur**, en comptant l'en-tête et
+le pied. Ces pages ont été construites une première fois autrement — avec une
+pesée animée sur Blanchisserie, trois finitions comparées sur Repassage, un
+parcours en quatre étapes sur Cuir. Les idées étaient justes, la mise en scène
+faisait trop : elles ont été ramenées à deux phrases dans l'encadré, et le
+reste a été retiré. Ce qui subsiste de ces idées se lit dans une case du
+tableau, pas dans une section.
+
+**La liste des prix est un extrait.** Elle ne montre que les premières lignes
+de chaque rubrique — celles de `data/tarifs.js`, dans l'ordre où elles y sont
+écrites, donc les plus courantes — et annonce combien d'articles restent, avec
+le lien qui y mène. La literie compte dix-sept lignes : les afficher toutes
+ferait mille pixels et ferait de la page un doublon de la page Tarifs.
 
 ### La page Tarifs
 
@@ -111,13 +118,20 @@ toute seule ».
 
 ### La page Retouches et couture
 
-Les **cinq planches à la craie** — complet, robe, manteau, jupe, chemise —
-sont affichées d'emblée, côte à côte. Plus d'onglets : on voit les cinq pièces
-d'un coup d'œil et on va à la sienne.
+**Deux planches à la craie**, côte à côte : la **jupe** et le **manteau**.
+Elles ne sont pas choisies au hasard — l'ourlet de jupe à 22.– est le geste le
+plus demandé de l'atelier, et la fermeture ou la doublure de manteau, de 55 à
+170.–, en est le travail le plus technique. Les deux extrémités du panier, sans
+qu'aucune ligne se répète d'une planche à l'autre.
+
+Les trois autres dessins — chemise, robe, complet — restent dans
+`assets/vetements.js`. La page choisit ses pièces dans son attribut
+`data-planches` : les remettre tient en un mot, sans toucher au code.
 
 Chaque planche porte les prestations les plus demandées, à l'endroit qu'elles
 concernent, avec la mention discrète **« prix indicatifs »**. Un bouton très
-visible mène à la grille complète.
+visible mène à la grille complète. Sur cette page, les planches TIENNENT LIEU
+de liste de prix : un tableau en plus aurait répété les mêmes montants.
 
 ### Le sur-mesure et les transformations
 
@@ -1059,17 +1073,19 @@ ont été tranchés. Ce qui suit est du travail à faire.
 Gardé ici pour que personne ne rouvre un dossier clos, et pour que les mesures
 ne soient pas à refaire.
 
-- **Trois pages étaient vides : Blanchisserie, Repassage, Cuir.** Chacune a
-  désormais son objet propre, parce que les planches à la craie ne se
-  transposent pas à un kilo de linge. La blanchisserie montre **une pesée** :
-  ce que pèse un sac de linge courant et ce qu'il coûte — le linge se compte
-  au kilo, pas à la pièce. Le repassage montre **trois finitions** côte à
-  côte : le seul choix que le client ait réellement à faire dans ce métier.
-  Le cuir montre **un parcours** en quatre temps, examen, devis, traitement,
-  remise : ce métier se vend sur la confiance dans le processus, pas sur un
-  prix affiché. Aucun montant n'est écrit dans ces pages ; tous sont lus dans
+- **Trois pages étaient vides : Blanchisserie, Repassage, Cuir.** Elles
+  portent maintenant un encadré des prestations et une liste de prix, selon le
+  modèle décrit en section 3. Aucun montant n'y est écrit ; tous sont lus dans
   `data/tarifs.js` par libellé, et un libellé renommé dans les données émet un
   avertissement en console au lieu de disparaître sans bruit.
+
+- **Ces quatre pages étaient trop longues.** Sept à neuf écrans chacune, le
+  6 septembre 2026, pour un pressing de quartier. Elles ont été ramenées à
+  deux ou trois : de 7 410 à 2 924 px pour Blanchisserie, 5 443 à 2 443 pour
+  Repassage, 5 728 à 2 567 pour Cuir, 7 078 à 3 118 pour Couture — de 54 à
+  61 % de moins, et près de la moitié du texte en moins. Ce qui est parti :
+  la pesée animée, les finitions comparées, le parcours en quatre étapes, les
+  rappels « Nous trouver » en bas de page, et trois des cinq planches.
 
 - **La page Tarifs faisait plus de douze mille pixels d'un seul tenant**,
   précédés d'un sommaire de dix-sept ancres. Trois dispositifs la rendent

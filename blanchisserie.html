@@ -120,161 +120,81 @@
   </nav>
 </div>
 
-<main id="contenu">
+<main id="contenu" class="page-metier">
 
-<!-- ═══════════════ L'ENSEIGNE DU MÉTIER ═══════════════
-     Le dessin de la carte que le visiteur vient de cliquer, en grand, sur la
-     même plaque verte. La carte devient une porte au lieu d'un bouton. -->
+<!-- ═══════════════ L'ENSEIGNE DU MÉTIER ═══════════════ -->
 <section class="section millimetre">
-  <div class="zone duo large-gauche">
-    <div class="revele">
-      <p class="sur-titre">Blanchisserie</p>
-      <h1>Le linge de la maison,<br><span class="accent">rendu pr&#234;t &#224; ranger.</span></h1>
-      <p class="chapo">Le linge courant se facture au poids, la literie et le linge de maison &#224; la pi&#232;ce. Vous d&#233;posez, nous pesons, et vous savez ce que vous payez avant que la machine tourne.</p>
-    </div>
-    <div class="revele enseigne-metier" data-delai="2">
-      <img src="assets/illustrations/blanchisserie.webp" width="196" height="256"
-           alt="Une machine &#224; laver, dessin&#233;e au trait dor&#233;" decoding="async">
-    </div>
+<div class="zone duo large-gauche">
+  <div class="revele">
+    <p class="sur-titre">Blanchisserie</p>
+    <h1>Le linge de la maison,<br><span class="accent">rendu pr&#234;t &#224; ranger.</span></h1>
+    <p class="chapo">Le linge courant se facture au poids, la literie et le linge de maison &#224; la pi&#232;ce. Votre sac est pes&#233; au d&#233;p&#244;t&#160;: vous savez ce que vous payez avant que la machine tourne.</p>
   </div>
+  <div class="revele enseigne-metier" data-delai="2">
+    <img src="assets/illustrations/blanchisserie.webp" width="196" height="256"
+         alt="Une machine &#224; laver, dessin&#233;e au trait dor&#233;" decoding="async">
+  </div>
+</div>
 </section>
 
 <div class="bandeau-infos">
-  <div class="zone">
-    <dl>
-      <div><dt>Aujourd&#8217;hui</dt><dd class="pastille" data-etat-ouverture>&#8212;</dd></div>
-      <div><dt>Adresse</dt><dd data-adresse></dd></div>
-      <div><dt>T&#233;l&#233;phone</dt><dd><a href="tel:+41223416818" data-tel></a></dd></div>
-    </dl>
-  </div>
+<div class="zone">
+  <dl>
+    <div><dt>Aujourd&#8217;hui</dt><dd class="pastille" data-etat-ouverture>&#8212;</dd></div>
+    <div><dt>Adresse</dt><dd data-adresse></dd></div>
+    <div><dt>T&#233;l&#233;phone</dt><dd><a href="tel:+41223416818" data-tel></a></dd></div>
+  </dl>
+</div>
 </div>
 
-<!-- ═══════════════ LA PESÉE ═══════════════
-     Aucun montant n'est écrit ici : les deux tarifs au kilo sont lus dans
-     data/tarifs.js par le libellé de leur ligne. Voir assets/site.js, 9 bis. -->
-<section class="section serree" data-pesee-section>
-  <div class="zone">
-    <div class="revele" style="max-width:640px">
-      <div class="filet court"><i></i></div>
-      <p class="sur-titre">Le linge courant</p>
-      <h2>Ce que p&#232;se <span class="accent">votre sac.</span></h2>
-      <p class="chapo">Personne ne conna&#238;t le poids de son linge. Faites glisser&#160;: les deux formules se calculent devant vous. Le sac est pes&#233; au d&#233;p&#244;t, et c&#8217;est ce poids-l&#224; qui compte.</p>
-    </div>
-
-    <div class="pesee revele" data-pesee>
-      <div class="reglette">
-        <label for="poids-linge">Le poids de votre linge</label>
-        <output for="poids-linge" data-poids-lu>5 kg</output>
-        <input type="range" id="poids-linge" name="poids-linge"
-               min="1" max="15" step="1" value="5">
-      </div>
-      <!-- Les deux montants sont des <output> et non des <dd> ordinaires :
-           c'est l'element du RESULTAT d'un calcul, et son role implicite
-           `status` les fait annoncer quand ils changent. Sans cela, un lecteur
-           d'ecran annoncerait le poids et tairait les prix. -->
-      <dl>
-        <div>
-          <dt>Lavage, s&#233;chage et pliage</dt>
-          <dd><output for="poids-linge" data-sans-repassage>&#8212;</output>
-              <small>Rendu pli&#233;, pr&#234;t &#224; ranger</small></dd>
-        </div>
-        <div>
-          <dt>Lavage, s&#233;chage, repassage et pliage</dt>
-          <dd><output for="poids-linge" data-avec-repassage>&#8212;</output>
-              <small>Repass&#233; pi&#232;ce par pi&#232;ce</small></dd>
-        </div>
-      </dl>
-    </div>
-
-    <p class="note-tarif">Vous apportez du linge d&#233;j&#224; lav&#233;&#160;? Nous convenons du prix au d&#233;p&#244;t, selon le volume et les pi&#232;ces&#160;: <a class="lien" href="repassage.html">voir la page Repassage</a>.</p>
-  </div>
-</section>
-
 <!-- ═══════════════ CE QUE NOUS LAVONS ═══════════════ -->
-<section class="section">
-  <div class="zone">
-    <div class="revele" style="max-width:640px">
-      <div class="filet court"><i></i></div>
-      <p class="sur-titre">Six familles</p>
-      <h2>Le linge courant, la literie,<br><span class="accent">le linge de maison.</span></h2>
-    </div>
-    <div class="grille-services">
-      <article class="revele">
-        <h3>Le linge courant, au kilo</h3>
-        <p>Les pi&#232;ces du quotidien, pes&#233;es ensemble et rendues pli&#233;es. Deux formules&#160;: avec ou sans repassage. C&#8217;est la formule du panier de la semaine.</p>
-      </article>
-      <article class="revele">
-        <h3>La literie, &#224; la pi&#232;ce</h3>
-        <p>Duvets et oreillers, synth&#233;tiques ou en plumes, petits et grands formats. Draps, housses, taies, al&#232;ses, sur-matelas, couvre-lits et traversins.</p>
-      </article>
-      <article class="revele">
-        <h3>Le linge de maison, &#224; la pi&#232;ce</h3>
-        <p>Nappes, chemins de table, serviettes, linge de cuisine. Linge de bain et de toilette, tapis de bain, couvertures et coussins.</p>
-      </article>
-      <article class="revele">
-        <h3>Les rideaux, au m&#232;tre carr&#233;</h3>
-        <p>Nylon, coton simple ou doubl&#233;, velours. Le prix se compte au m&#232;tre carr&#233;&#160;: apportez les dimensions, ou la pi&#232;ce, nous mesurons.</p>
-      </article>
-      <article class="revele">
-        <h3>Les housses amovibles</h3>
-        <p>Tout ce qui se retire et s&#8217;apporte&#160;: housses de fauteuil et de canap&#233;, coussins, plaids. Sur devis, apr&#232;s avoir vu la pi&#232;ce.</p>
-      </article>
-      <article class="revele">
-        <h3>Le linge marqu&#233;</h3>
-        <p>Restaurants, h&#244;tels, cabinets, institutions&#160;: volumes r&#233;guliers et travaux en s&#233;rie, pris en charge de la m&#234;me mani&#232;re. <a class="lien" href="professionnels.html">Voir la page Professionnels</a>.</p>
-      </article>
-    </div>
-
-    <div class="appel revele">
-      <div>
-        <h3>Une urgence&#160;?</h3>
-        <p>Appelez-nous&#160;: nous vous dirons imm&#233;diatement ce qui est possible, selon la pi&#232;ce et la charge de l&#8217;atelier.</p>
-      </div>
-      <a class="bouton plein" href="tel:+41223416818" data-tel></a>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════ QUELQUES PRIX ═══════════════
-     Les tableaux sont construits par assets/site.js à partir de
-     data/tarifs.js. Aucun prix n'est écrit dans cette page. -->
 <section class="section serree">
-  <div class="zone">
-    <div class="revele" style="max-width:640px">
-      <div class="filet court"><i></i></div>
-      <p class="sur-titre">Quelques prix</p>
-      <h2>La literie et le linge <span class="accent">de maison.</span></h2>
-      <p class="chapo">Un extrait de la liste. Le d&#233;tail complet, article par article, est publi&#233; sur la page Tarifs.</p>
-    </div>
-    <div data-tarifs="blanchisserie-literie,blanchisserie-maison" style="margin-top:var(--s5)"></div>
-    <p><a class="bouton plein" href="tarifs.html">Toute la liste de prix</a></p>
+<div class="zone">
+  <div class="revele" style="max-width:640px">
+    <div class="filet court"><i></i></div>
+    <h2>Ce que nous <span class="accent">lavons.</span></h2>
   </div>
+  <div class="grille-services">
+    <article class="revele">
+      <h3>Le linge courant, au kilo</h3>
+      <p>Les pi&#232;ces du quotidien, pes&#233;es ensemble et rendues pli&#233;es. Deux formules&#160;: avec ou sans repassage.</p>
+    </article>
+    <article class="revele">
+      <h3>La literie, &#224; la pi&#232;ce</h3>
+      <p>Duvets et oreillers, synth&#233;tiques ou en plumes. Draps, housses, taies, al&#232;ses et couvre-lits.</p>
+    </article>
+    <article class="revele">
+      <h3>Le linge de maison, &#224; la pi&#232;ce</h3>
+      <p>Nappes, serviettes, linge de cuisine, linge de bain, couvertures et coussins.</p>
+    </article>
+    <article class="revele">
+      <h3>Les rideaux, au m&#232;tre carr&#233;</h3>
+      <p>Nylon, coton simple ou doubl&#233;, velours. Apportez les dimensions, ou la pi&#232;ce&#160;: nous mesurons.</p>
+    </article>
+    <article class="revele">
+      <h3>Les housses amovibles</h3>
+      <p>Fauteuils, canap&#233;s, coussins, plaids&#160;: tout ce qui se retire. Sur devis, apr&#232;s avoir vu la pi&#232;ce.</p>
+    </article>
+    <article class="revele">
+      <h3>Les volumes r&#233;guliers</h3>
+      <p>Restaurants, h&#244;tels, cabinets&#160;: les m&#234;mes travaux, en s&#233;rie. <a class="lien" href="professionnels.html">Voir la page Professionnels</a>.</p>
+    </article>
+  </div>
+</div>
 </section>
 
-<section class="section">
-  <div class="zone duo">
-    <div class="revele">
-      <div class="filet court"><i></i></div>
-      <p class="sur-titre">Nous trouver</p>
-      <h2>201 route <span class="accent">de Vernier</span></h2>
-      <dl class="horaires" data-horaires></dl>
-      <div class="coordonnees">
-        <a href="tel:+41223416818" data-tel><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg></a>
-        <a href="mailto:pressingdevernier@gmail.com" data-email><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg></a>
-      </div>
-    </div>
-    <div class="revele" data-delai="2">
-      <div class="plan">
-        <div class="epingle">
-          <b>Pressing de Vernier</b>
-          <span data-adresse></span>
-        </div>
-      </div>
-      <p style="margin-top:var(--s3)">
-        <a class="bouton plein" data-itineraire href="https://www.openstreetmap.org/directions" target="_blank" rel="noopener">Itin&#233;raire</a>
-      </p>
-    </div>
+<!-- ═══════════════ LES PRIX ═══════════════
+   Construits par assets/site.js à partir de data/tarifs.js.
+   Aucun prix n'est écrit dans cette page. -->
+<section class="section serree">
+<div class="zone">
+  <div class="revele" style="max-width:640px">
+    <div class="filet court"><i></i></div>
+    <h2>Les prix les <span class="accent">plus demand&#233;s.</span></h2>
   </div>
+  <div data-tarifs="blanchisserie-kilo,blanchisserie-literie" data-lignes="6" style="margin-top:var(--s4)"></div>
+  <p style="margin-top:var(--s3)"><a class="bouton plein" href="tarifs.html">Toute la liste de prix</a></p>
+</div>
 </section>
 
 </main>
