@@ -9,9 +9,26 @@
 :root{
 
   /* ---- COULEURS ------------------------------------------------------
-     Relevées sur le logo et sur l'affiche des 20 ans.                    */
-  --ivoire:        #F6F3EC;   /* fond principal des pages          */
-  --papier:        #EAE5D9;   /* filets, bordures, fonds secondaires */
+     Relevées sur le logo et sur l'affiche des 20 ans.
+
+     L'IVOIRE EST UN PAPIER ANCIEN, PAS UN BLANC CASSÉ. Il valait #F6F3EC,
+     un gris très clair neutre : à côté du vert et de l'or, il tirait au
+     froid. #F3ECDC est le même ivoire décalé de six degrés vers le jaune —
+     la couleur d'un papier qui a vieilli, pas une couleur nouvelle.
+
+     LA LIMITE EST FIXÉE PAR LE CONTRASTE, pas par le goût. Deux jetons de
+     texte du site sont réglés au ras du seuil de 4,5:1 : --or-grave (5,05:1
+     sur l'ivoire froid) et --acier-texte (5,22:1). Réchauffer le fond les
+     fait descendre ensemble. Mesuré sur #F3ECDC : or gravé 4,76:1 · acier
+     4,89:1. Les deux passent. Un cran plus chaud (#F2EBDA) donnait 4,71 et
+     4,84 — encore au-dessus, mais sans marge pour un futur ajustement.
+     #F3ECDC est le point où le papier est franchement chaud et où la marge
+     tient encore.
+
+     --papier suit du même décalage : c'est l'ivoire d'un ton plus soutenu,
+     il ne peut pas rester froid sous un fond qui ne l'est plus.           */
+  --ivoire:        #F3ECDC;   /* fond principal des pages          */
+  --papier:        #E8DFCA;   /* filets, bordures, fonds secondaires */
   --graphite:      #232825;   /* texte courant                     */
   --vert:          #04321E;   /* vert du logo — titres, boutons    */
   --vert-nuit:     #04180F;   /* fond des bandeaux sombres         */
@@ -32,9 +49,12 @@
   --acier-texte:   #5A686C;   /* 5,22:1 sur ivoire                 */
   --blanc:         #FFFFFF;
 
-  /* Le trait du papier millimétré. Sorti en jeton pour que la page
-     d'accueil puisse le passer à l'or sans toucher aux huit autres. */
-  --trait-quadrillage: rgba(35,40,37,.05);
+  /* Le trait du papier millimétré. Il est en OR, pas en gris : il court
+     derrière des plaques vertes qui portent de l'or, et un trait gris y
+     serait la seule chose froide de la vue. Très pâle — 8,5 % d'or, réduits
+     encore de moitié par l'opacité de `.millimetre`, soit 4 % à l'écran. On
+     ne le voit pas, on voit que le papier n'est pas nu. */
+  --trait-quadrillage: rgba(168,132,47,.085);
 
   /* ---- LE SYSTÈME DU VERT ---------------------------------------------
      UNE seule rampe pour toutes les surfaces vertes du site. Cinq crans
@@ -240,38 +260,6 @@ h4{ font-size:var(--t-l); }
 .sombre .bouton.plein:hover{ background:transparent; color:var(--or-clair); }
 .sombre .bouton.vide{ border-color:rgba(201,162,77,.55); color:var(--or-clair); }
 .sombre .bouton.vide:hover{ background:rgba(201,162,77,.14); }
-
-/* ============================================================================
-   LE PAPIER DE L'ACCUEIL — un ivoire plus chaud
-   ----------------------------------------------------------------------------
-   L'ivoire du site (#F6F3EC) est un blanc cassé neutre : à côté du vert et de
-   l'or, il tire au gris. Sur l'accueil il passe à #F3ECDC, qui est le même
-   ivoire décalé de six degrés vers le jaune — la couleur d'un papier qui a
-   vieilli, pas une couleur nouvelle.
-
-   LA LIMITE EST FIXÉE PAR LE CONTRASTE, pas par le goût. Deux jetons de texte
-   du site sont déjà réglés au ras du seuil de 4,5:1 : --or-grave (5,05:1 sur
-   l'ivoire froid) et --acier-texte (5,22:1). Réchauffer le fond les fait
-   descendre ensemble. Mesuré sur #F3ECDC : or gravé 4,76:1 · acier 4,89:1.
-   Les deux passent. Un cran plus chaud (#F2EBDA) donnait 4,71 et 4,84 — encore
-   au-dessus, mais sans marge pour un futur ajustement. #F3ECDC est le point où
-   le papier est franchement chaud et où la marge tient encore.
-
-   Le jeton est posé sur `body`, donc il descend sur TOUTES les surfaces
-   ivoire de la page — en-tête, navigation, mur des cartes, phrase de
-   positionnement. Réchauffer le seul bloc des cartes aurait fait une couture
-   visible en haut et en bas de ce bloc.
-   ============================================================================ */
-.accueil{
-  --ivoire: #F3ECDC;
-  --papier: #E8DFCA;
-  /* Le quadrillage de l'accueil est en or, pas en gris : il est posé derrière
-     six plaques vertes portant de l'or, et un trait gris y aurait été la seule
-     chose froide de la vue. Très pâle — 8,5 % d'or, réduits encore de moitié
-     par l'opacité de `.millimetre`, soit 4 % à l'écran. On ne le voit pas, on
-     voit que le papier n'est pas nu. */
-  --trait-quadrillage: rgba(168,132,47,.085);
-}
 
 /* ============================================================================
    LES SURFACES VERTES — un seul traitement, décliné selon le rôle
@@ -856,7 +844,25 @@ h4{ font-size:var(--t-l); }
 }
 
 /* ============================================================================
-   PAPIER MILLIMÉTRÉ — la signature de l atelier
+   PAPIER MILLIMÉTRÉ — la signature de l'atelier
+   ----------------------------------------------------------------------------
+   Le quadrillage du tailleur, en or très pâle. Il ne décorait qu'une section
+   par page — celle du titre — et s'arrêtait net au premier intertitre : le
+   papier commençait quadrillé et finissait nu, sans que rien ne le dise.
+
+   IL COURT MAINTENANT SOUS TOUT LE CONTENU. La classe est posée sur le
+   `<main>` de chaque page, et sur les deux blocs de l'accueil qui ont un fond
+   à eux. Tout ce qui porte son propre fond — les bandes vertes, les cartes
+   blanches, les planches à la craie — le recouvre là où il passe : le
+   quadrillage n'apparaît que sur le papier, ce qui est exactement son rôle.
+
+   SAUF LA LISTE DE PRIX. Sur la page Tarifs, le quadrillage s'arrête après
+   le titre. Ses traits tombent tous les 32 px et une ligne de prix en fait
+   57 : deux trames régulières qui ne se superposent jamais, et l'œil suit
+   la mauvaise. C'est la seule page où chaque ligne doit se lire d'un bout à
+   l'autre — le nom à gauche, le montant à droite, trente-trois traits
+   verticaux entre les deux. La classe y reste posée sur la section du titre,
+   comme avant, et pas sur le `<main>`.
    ============================================================================ */
 .millimetre{ position:relative; isolation:isolate; }
 .millimetre::before{
