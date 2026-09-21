@@ -121,105 +121,70 @@
 </div>
 
 <main id="contenu" class="page-metier millimetre">
-<section class="section">
-<div class="zone duo large-gauche">
-  <div class="revele">
+
+<!-- ═══════════════ LA BANDE D'ENTREE ═══════════════
+     La bande verte est la tringle : l'etiquette y pend, pincee, et la
+     traverse pour retomber dans le papier quadrille. Le texte est ecrit en
+     PREMIER et renvoye en colonne de droite par la feuille de style — le
+     <h1> d'une page ne peut pas etre precede d'une etiquette decorative dans
+     le document, et sur petit ecran l'empilement suit le balisage : le
+     titre, puis la carte.
+
+     LA CARTE VIENT DE METIERS dans assets/site.js, comme les six cartes de
+     l'accueil. Son texte, son illustration et ses proportions ne sont ecrits
+     nulle part ailleurs. -->
+<section class="ent-metier">
+<div class="zone ent-metier-duo">
+  <div class="ent-metier-mots revele">
     <p class="sur-titre">Entreprises et collectivit&#233;s</p>
     <h1>Du linge en volume,<br><span class="accent">un seul interlocuteur.</span></h1>
     <p class="chapo">Restaurants, entreprises, cr&#232;ches, clubs sportifs, boutiques de v&#234;tements&#160;: d&#232;s qu&#8217;il y a du linge &#224; entretenir, des tenues &#224; marquer ou de la couture en s&#233;rie, nous mettons en place une organisation &#224; votre rythme.</p>
   </div>
-  <!-- LA CARTE DE L'ACCUEIL, la vraie : son texte, son illustration et ses
-       proportions viennent de METIERS dans assets/site.js, comme les six
-       cartes de la tringle. Rien n'est recopie ici. -->
-  <div class="revele carte-metier-hote" data-delai="2"
-       data-carte-metier="professionnels"></div>
+  <div class="ent-metier-carte revele" data-delai="2" data-carte-metier="professionnels"></div>
 </div>
 </section>
 
-
+<!-- ═══════════════ NOS PRESTATIONS ═══════════════
+     « Broderies et patchs » et « Travaux de couture recurrents » sont sortis :
+     le chapo annonce deja les tenues a marquer et la couture en serie, et
+     « Retouches en serie » dit le reste. -->
 <section class="section">
   <div class="zone">
     <div class="revele" style="max-width:640px">
       <div class="filet court"><i></i></div>
-      <p class="sur-titre">Nos prestations</p>
       <h2>Le linge et la couture, <span class="accent">&#224; votre rythme.</span></h2>
+      <ul class="dit-lignes">
+        <li><b>Entretien r&#233;gulier du linge</b> &#8212; lavage, repassage et entretien du linge de table, de cuisine, de lit et de bain.</li>
+        <li><b>V&#234;tements et tenues de travail</b> &#8212; nettoyage et entretien r&#233;gulier des tenues professionnelles.</li>
+        <li><b>Retouches en s&#233;rie</b> &#8212; ourlets et retouches en volume pour les boutiques de v&#234;tements.</li>
+        <li><b>Collecte et livraison</b> &#8212; nous les &#233;tudions au cas par cas, selon le volume, la fr&#233;quence, le trajet et l&#8217;accessibilit&#233;. Nous intervenons dans les environs de Vernier.</li>
+      </ul>
     </div>
-    <div class="grille-services">
-      <article class="revele">
-        <h3>Entretien r&#233;gulier du linge</h3>
-        <p>Lavage, repassage et entretien du linge de table, de cuisine, de lit et de bain.</p>
-      </article>
-      <article class="revele">
-        <h3>V&#234;tements et tenues de travail</h3>
-        <p>Nettoyage et entretien r&#233;gulier des tenues professionnelles.</p>
-      </article>
-      <article class="revele">
-        <h3>Retouches en s&#233;rie</h3>
-        <p>Ourlets et retouches en volume pour les boutiques de v&#234;tements.</p>
-      </article>
-      <article class="revele">
-        <h3>Broderies et patchs</h3>
-        <p>Marquage de tenues, broderies et pose de patchs en volume.</p>
-      </article>
-      <article class="revele">
-        <h3>Travaux de couture r&#233;currents</h3>
-        <p>Une couturi&#232;re sur place permet de traiter des s&#233;ries r&#233;guli&#232;res, sans passer par un tiers.</p>
-      </article>
-      <article class="revele">
-        <h3>Collecte et livraison</h3>
-        <p>Nous les &#233;tudions au cas par cas, selon le volume, la fr&#233;quence, le trajet et l&#8217;accessibilit&#233;. Nous intervenons dans les environs de Vernier.</p>
-      </article>
+
+    <!-- L'ENCART UNIQUE, le meme sur les six pages. Il remplace « Un doute ? »
+         et « Une urgence ? », qui posaient le meme bouton sous deux
+         paragraphes disant la meme chose. -->
+    <div class="appel revele">
+      <p class="appel-mot">Une question, une urgence&#160;? Contactez-nous.</p>
+      <a class="bouton plein" href="tel:+41223416818" data-tel></a>
     </div>
   </div>
 </section>
 
-<section class="section sombre centre">
-  <div class="zone revele">
-    <div class="sceau-grand"><svg viewBox="0 0 140 140" fill="none" aria-hidden="true">
-        <path id="arcbas-devis" d="M8 70A62 62 0 0 0 132 70"/>
-        <circle cx="70" cy="70" r="66" stroke="currentColor" stroke-width="3.2"/>
-        <path d="M16.8 60.6A54 54 0 0 1 123.2 60.6" stroke="currentColor" stroke-width="1.2" opacity=".6"/>
-        <path d="M123.2 79.4A54 54 0 0 1 16.8 79.4" stroke="currentColor" stroke-width="1.2" opacity=".6"/>
-        <path d="M11 70l5-5 5 5-5 5z" fill="currentColor"/><path d="M119 70l5-5 5 5-5 5z" fill="currentColor"/>
-        <text x="70" y="64" font-family="Cinzel, Georgia, serif" font-size="12.5" font-weight="600"
-              letter-spacing="0.9" fill="currentColor" text-anchor="middle">PRESSING</text>
-        <text x="70" y="84" font-family="Cinzel, Georgia, serif" font-size="12.5" font-weight="600"
-              letter-spacing="0.9" fill="currentColor" text-anchor="middle">DE VERNIER</text>
-        <text font-family="Archivo, sans-serif" font-size="8.4" font-weight="500" letter-spacing="2.8" fill="currentColor">
-          <textPath href="#arcbas-devis" startOffset="50%" text-anchor="middle">DEPUIS 2006</textPath>
-        </text>
-      </svg></div>
-    <div class="filet"><i></i></div>
+<!-- ═══════════════ LES CONDITIONS ═══════════════
+     C'est la section des prix de cette page : aucune ligne de data/tarifs.js
+     ne concerne le volume, et le montant se convient au cas par cas. Le sceau
+     geant qui ouvrait ce bloc est parti — il est deja au pied de la page,
+     cinq cents pixels plus bas — et le bouton du telephone aussi : l'encart
+     unique le pose vingt lignes au-dessus. -->
+<section class="section serree">
+<div class="zone">
+  <div class="revele" style="max-width:640px">
+    <div class="filet court"><i></i></div>
     <h2>Des conditions adapt&#233;es <span class="accent">&#224; votre volume.</span></h2>
     <p class="chapo">Les tarifs professionnels se discutent selon le volume, la fr&#233;quence et la prestation. Appelez-nous pour &#233;tudier une solution et des conditions adapt&#233;es.</p>
-    <p style="margin-top:var(--s5)"><a class="bouton plein" href="tel:+41223416818" data-tel></a></p>
   </div>
-</section>
-
-<section class="section">
-  <div class="zone duo">
-    <div class="revele">
-      <div class="filet court"><i></i></div>
-      <p class="sur-titre">Nous trouver</p>
-      <h2>201 route <span class="accent">de Vernier</span></h2>
-      <dl class="horaires" data-horaires></dl>
-      <div class="coordonnees">
-        <a href="tel:+41223416818" data-tel><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg></a>
-        <a href="mailto:pressingdevernier@gmail.com" data-email><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg></a>
-      </div>
-    </div>
-    <div class="revele" data-delai="2">
-      <div class="plan">
-        <div class="epingle">
-          <b>Pressing de Vernier</b>
-          <span data-adresse></span>
-        </div>
-      </div>
-      <p style="margin-top:var(--s3)">
-        <a class="bouton plein" data-itineraire href="https://www.openstreetmap.org/directions" target="_blank" rel="noopener">Itin&#233;raire</a>
-      </p>
-    </div>
-  </div>
+</div>
 </section>
 
 </main>

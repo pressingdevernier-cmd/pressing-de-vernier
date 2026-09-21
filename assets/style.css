@@ -264,11 +264,11 @@ h4{ font-size:var(--t-l); }
 /* ============================================================================
    LES SURFACES VERTES — un seul traitement, décliné selon le rôle
    ----------------------------------------------------------------------------
-   Trois surfaces du site sont vertes, et une seule est visible à la fois sur
-   l'écran : le bandeau du nom, les six cartes de métier, la fin de page. Avant
-   ce bloc, chacune avait reçu son propre traitement au fil des essais — deux
+   Quatre surfaces du site sont vertes : le bandeau du nom, les six cartes de
+   métier, la bande d'entrée des pages de métier, la fin de page. Avant ce
+   bloc, chacune avait reçu son propre traitement au fil des essais — deux
    halos radiaux sur le bandeau, un dégradé à deux couleurs sur les cartes, un
-   aplat mort sur le pied. Trois verts qui ne se ressemblaient pas.
+   aplat mort sur le pied. Des verts qui ne se ressemblaient pas.
 
    LA MÉCANIQUE EST LA MÊME PARTOUT :
      · un dégradé vertical, toujours de 0 % à 100 % de la surface — jamais en
@@ -307,6 +307,16 @@ h4{ font-size:var(--t-l); }
        d'or fines sur toute sa largeur, et au-delà de deux crans le contraste
        de l'or change entre le sommet et la base des lettres.
 
+     BANDE D'ENTRÉE        2 crans   v2 → v4      ≈ 400 px
+       Une bande, donc deux crans — et les MÊMES que le bandeau du nom, qui
+       est juste au-dessus d'elle sur une page de métier. Deux bandes vertes
+       qui se suivent à trois pixels l'une de l'autre doivent parcourir la
+       même distance, sinon la seconde repart plus clair ou plus sombre que
+       la première n'a fini, et la jointure se voit comme une marche.
+       Elle est trois fois plus haute pour les deux mêmes crans : c'est la
+       pente la plus douce du site, et c'est voulu — elle porte un titre de
+       54 px et une carte de papier, pas des capitales fines.
+
      CARTE DE MÉTIER       4 crans   v1 → v5      403 px
        Un objet détouré, le seul du site : toute la rampe. La carte doit se
        lire comme une plaque bombée, pas comme une découpe. C'est la pente la
@@ -330,11 +340,13 @@ h4{ font-size:var(--t-l); }
    lui écrire un traitement à elle.
    ============================================================================ */
 .ent-plaque,
+.ent-metier,
 .tr-carte,
 .bande-appel,
 .pied{ position:relative; isolation:isolate; }
 
 .ent-plaque::after,
+.ent-metier::after,
 .tr-carte::after,
 .bande-appel::after,
 .pied::after{
@@ -980,16 +992,14 @@ h4{ font-size:var(--t-l); }
    MISES EN PAGE
    ============================================================================ */
 .duo{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(30px,5vw,72px); align-items:center; }
-.duo.large-gauche{ grid-template-columns:1.15fr .85fr; }
 .section{ padding:var(--s7) 0; }
 .section.serree{ padding:var(--s6) 0; }
-.sceau-grand{ width:clamp(130px,16vw,180px); margin:0 auto var(--s4); color:var(--or-clair); }
 .centre{ text-align:center; }
 .centre .chapo{ margin-inline:auto; }
 .centre .filet{ max-width:330px; margin-inline:auto; }
 
 @media (max-width:860px){
-  .duo,.duo.large-gauche{ grid-template-columns:1fr; }
+  .duo{ grid-template-columns:1fr; }
   .bandeau-infos dl{ grid-template-columns:1fr; }
   .bandeau-infos dl > div{ border-left:0; border-top:1px solid var(--papier); padding-left:0; padding-right:0; }
   .bandeau-infos dl > div:first-child{ border-top:0; }
@@ -1025,23 +1035,6 @@ h4{ font-size:var(--t-l); }
 }
 
 /* ============================================================================
-   GRILLE DE SERVICES
-   Meme langage que les cartes de metier — fond blanc, filets de papier —
-   mais pour une liste de familles de meme poids, sans carte vedette.
-   ============================================================================ */
-.grille-services{
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(285px,1fr)); gap:1px;
-  background:var(--papier); border:1px solid var(--papier); margin-top:var(--s5);
-}
-.grille-services article{
-  background:var(--blanc); padding:var(--s4) var(--s3);
-  display:flex; flex-direction:column; transition:background var(--transition);
-}
-.grille-services article:hover{ background:#FCFBF8; }
-.grille-services h3{ font-size:var(--t-l); margin-bottom:10px; }
-.grille-services p{ font-size:15px; color:rgba(35,40,37,.68); margin:0; }
-
-/* ============================================================================
    LES PAGES DE METIER — resserrees
    Ces pages repondent a deux questions, dans cet ordre : qu'est-ce que vous
    faites, et combien ca coute. Elles n'ont pas a etre parcourues, elles ont
@@ -1053,34 +1046,163 @@ h4{ font-size:var(--t-l); }
    quand la page tient en deux ecrans. On resserre ici, et ici seulement :
    l'accueil garde son souffle.
    ============================================================================ */
-/* LA CARTE PEND DU HAUT, ELLE NE FLOTTE PAS AU MILIEU. `.duo` centre ses deux
-   colonnes l'une sur l'autre, ce qui est juste pour deux blocs de texte — ici
-   ça posait une carte suspendue à mi-hauteur d'une section vide, sa pince
-   accrochée à rien. Les deux colonnes partent donc du même bord haut : la
-   pince entre dans la page au niveau du sur-titre, et le vide se reporte sous
-   le texte, là où c'est une marge et non un décrochement.
-   Le décalage de 34 px est celui dont la pince déborde de la carte : sans lui,
-   c'est la pince qui s'alignerait sur le sur-titre, et la carte paraîtrait
-   tombée d'autant. */
-.page-metier .duo.large-gauche{ align-items:start; }
-.page-metier .carte-metier-hote{ padding-top:34px; }
+.page-metier{
+  /* DE COMBIEN LA CARTE DÉBORDE DANS LE PAPIER. Une seule valeur, lue à trois
+     endroits : par la carte, qui descend d'autant sous la bande ; par la
+     section qui suit, qui recule d'autant pour ne pas passer dessous ; et par
+     le calcul de la marge de la carte, qui doit y ajouter le retrait bas de
+     la bande. Un écart entre ces trois lectures, et le titre « Ce que nous… »
+     se glisse sous la carte. */
+  --debord-carte:clamp(58px,6.8vw,94px);
+  /* Le retrait bas de la bande, sorti en jeton pour la même raison : il entre
+     dans le calcul de la marge de la carte. */
+  --pad-bas-entree:clamp(30px,3.4vw,44px);
+}
 
 .page-metier .section{ padding:var(--s5) 0; }
 .page-metier .section.serree{ padding:var(--s4) 0; }
-.page-metier .section.millimetre{ padding-bottom:var(--s4); }
-.page-metier .grille-services{ margin-top:var(--s4); }
-.page-metier .grille-services article{ padding:var(--s3); }
-.page-metier .grille-services h3{ font-size:var(--t-m); margin-bottom:6px; }
-.page-metier .grille-services p{ font-size:14.5px; }
 .page-metier .filet.court{ margin-bottom:var(--s2); }
 .page-metier .chapo{ margin-bottom:0; }
 .page-metier .planches{ margin-top:var(--s4); }
-/* L'enseigne du metier respire moins haut ici que sur l'accueil : la page
-   doit montrer ses prix sans qu'on ait a defiler pour les atteindre. */
+/* Le titre respire moins haut ici que sur l'accueil : la page doit montrer
+   ses prix sans qu'on ait a defiler pour les atteindre. */
 .page-metier h1{ font-size:clamp(33px,4.4vw,54px); }
 /* Les titres de section passent d'un cran : sur une page qui tient en deux
    ecrans, un titre de 56 px annonce une scene qui n'arrive jamais. */
 .page-metier h2{ font-size:var(--t-2xl); }
+
+/* ============================================================================
+   CE QUE NOUS FAISONS — la version courte
+   ----------------------------------------------------------------------------
+   Sous l'intertitre, les pages de métier disaient l'essentiel en six ou sept
+   cartes blanches — sept familles pour dire « nous nettoyons des vêtements ».
+   Trois d'entre elles se répondaient, deux répétaient le chapô, et il fallait
+   deux écrans pour arriver aux prix. Il n'en reste qu'un paragraphe, ou deux
+   lignes quand le métier se partage vraiment en deux — au kilo ou à la pièce,
+   les chemises ou le linge de maison.
+
+   LA PARTIE EN TÊTE DE LIGNE N'EST PAS UN TITRE, c'est le premier mot de la
+   phrase, mis en avant : « Au kilo — le linge du quotidien… » se lit d'un
+   trait. Un `<h3>` au-dessus d'un paragraphe aurait coupé la phrase en deux
+   et rajouté deux rangs au plan du document pour deux lignes de texte.
+   ============================================================================ */
+.dit{
+  max-width:62ch; margin:var(--s3) 0 0;
+  font-size:var(--t-m); line-height:1.62; color:rgba(35,40,37,.78);
+}
+.dit-lignes{
+  max-width:62ch; margin:var(--s3) 0 0; padding:0; list-style:none;
+}
+.dit-lignes li{
+  padding:15px 0; border-bottom:1px solid var(--papier);
+  color:rgba(35,40,37,.78);
+}
+.dit-lignes li:last-child{ border-bottom:0; }
+.dit-lignes b{
+  font-family:var(--serif); font-size:var(--t-l); font-weight:600;
+  color:var(--vert);
+}
+
+/* ============================================================================
+   LA BANDE D'ENTRÉE D'UNE PAGE DE MÉTIER
+   ----------------------------------------------------------------------------
+   LA BANDE EST LA TRINGLE. C'est toute l'idée : on a décroché une étiquette
+   du mur de l'accueil, elle est encore pincée, et la bande verte est la barre
+   à laquelle elle pend. Elle ne s'arrête donc pas au bord de l'étiquette —
+   l'étiquette la traverse et retombe dans le papier, comme une étiquette
+   épinglée au-dessus d'un comptoir dépasse du rebord.
+
+   CE QUI SE DÉCIDE ICI, C'EST L'ÉQUILIBRE, et rien d'autre : la couleur, le
+   grain, les caractères et la carte existent déjà ailleurs dans le site.
+
+     LES DEUX COLONNES   280 px | reste       ratio ≈ 1:3
+       La carte est FIXE, en pixels, pas en fractions : c'est un objet aux
+       proportions données — 280 de large pour 2,4 de rapport — et une carte
+       qui s'étire cesse d'être une étiquette. Elle ne doit pas non plus
+       disputer la page au titre : c'est un jeton de reconnaissance, le titre
+       est la page. La gouttière va de 32 à 72 px.
+
+     LA CARTE EST À GAUCHE    on l'a cliquée à gauche de son texte sur
+       l'accueil, elle est à gauche de son texte ici. Le titre, lui, garde le
+       bord où commencent toutes les lignes de la page.
+
+     LE DÉBORD EST FIXE, ET C'EST TOUT LE MÉCANISME. Premier essai : la carte
+       recevait une marge basse négative et s'alignait en haut. Le débord
+       valait alors « hauteur de la carte moins hauteur du texte moins le
+       retrait bas de la bande » — un nombre que personne n'avait choisi, qui
+       changeait d'une page à l'autre avec la longueur du chapô, et qui
+       tombait à zéro dès qu'un titre passait sur trois lignes.
+
+       La carte s'aligne donc sur le BAS de sa rangée (`align-self:end`) et
+       porte une marge basse négative de « débord + retrait bas ». Le calcul
+       donne alors exactement le débord voulu, que ce soit le texte ou la
+       carte qui décide de la hauteur de la bande — les deux cas tombent sur
+       le même résultat. La carte descend quand le texte s'allonge, et elle
+       dépasse toujours d'autant.
+
+     LE DÉBORD vaut de 58 à 94 px, soit environ le quart de la largeur de la
+       carte. Moins, et elle a l'air posée de travers sur la limite ; plus,
+       elle ne pend plus de la bande, elle est tombée devant.
+
+   LA BANDE NE PORTE PAS `.sombre`. Elle aurait pris ses couleurs de texte
+   d'un coup — mais aussi celles de la CARTE, qui est en papier ivoire et dont
+   le titre serait passé à l'ivoire sur de l'ivoire. Les quatre lignes de
+   couleur sont donc écrites ici, et elles s'arrêtent au bloc de texte.
+   ============================================================================ */
+.ent-metier{
+  /* Deux crans, et les crans hauts : c'est une bande, et elle ouvre la page.
+     Voir « LES SURFACES VERTES ». Le grain et `isolation` viennent de là. */
+  background:linear-gradient(180deg,var(--v2),var(--v4));
+  color:var(--sur-nuit);
+  padding:clamp(44px,5.2vw,70px) 0 var(--pad-bas-entree);
+  /* La carte sort par le bas : rien ne doit la couper, et elle doit passer
+     DEVANT la section suivante. */
+  overflow:visible;
+  z-index:1;
+}
+.ent-metier-mots h1{ color:var(--sur-nuit); }
+.ent-metier-mots .accent{ color:var(--or-clair); }
+.ent-metier-mots .sur-titre{ color:var(--or-clair); }
+.ent-metier-mots .chapo{ color:var(--sur-nuit-doux); }
+
+.ent-metier-duo{
+  display:grid;
+  grid-template-columns:280px minmax(0,1fr);
+  gap:clamp(32px,5vw,72px);
+  align-items:start;
+}
+/* L'ORDRE DU BALISAGE N'EST PAS L'ORDRE DE L'ÉCRAN. Le texte est écrit en
+   premier — le `<h1>` d'une page ne peut pas être précédé d'une étiquette
+   décorative dans le document — et il est renvoyé en colonne 2. Sur petit
+   écran les deux blocs s'empilent dans l'ordre du balisage : le titre, puis
+   la carte. C'est le bon ordre pour lire, et c'est pour ça qu'il est écrit
+   ainsi. */
+.ent-metier-mots { grid-row:1; grid-column:2; }
+.ent-metier-carte{ grid-row:1; grid-column:1; }
+
+/* LA CARTE PEND DU BAS DE LA BANDE, ET DÉBORDE D'UN NOMBRE CHOISI.
+   `align-self:end` plus une marge basse négative de « débord + retrait bas » :
+   voir le calcul dans l'en-tête de ce bloc. La carte descend d'elle-même
+   quand le texte s'allonge, et le débord ne bouge pas. */
+.ent-metier-carte{
+  align-self:end;
+  margin-bottom:calc(-1 * (var(--debord-carte) + var(--pad-bas-entree)));
+}
+
+/* La section qui suit recule du débord : sans ça, son titre passe sous la
+   carte. Les deux valeurs viennent du même jeton. */
+.ent-metier + .section{ padding-top:calc(var(--s5) + var(--debord-carte)); }
+
+@media (max-width:860px){
+  .page-metier{ --debord-carte:66px; --pad-bas-entree:28px; }
+  .ent-metier-duo{ grid-template-columns:1fr; }
+  .ent-metier-mots,
+  .ent-metier-carte{ grid-row:auto; grid-column:1; }
+  /* Empilée, la carte n'a plus de colonne en face : le retrait dégage la
+     pince du chapô qui la précède maintenant. Il s'ajoute à la hauteur de la
+     carte ET à sa contribution : le débord reste celui qui est écrit. */
+  .ent-metier-carte{ padding-top:46px; }
+}
 
 /* ============================================================================
    L APPEL — le bloc « une urgence ? », et l invitation a telephoner
@@ -1093,12 +1215,22 @@ h4{ font-size:var(--t-l); }
   display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
   gap:var(--s3) var(--s4);
 }
-.appel > div{ max-width:56ch; }
-.appel h3{ margin-bottom:8px; }
-.appel p{ margin:0; font-size:15px; color:rgba(35,40,37,.68); }
 .appel .bouton{ flex:none; }
-.sombre .appel{ background:rgba(246,243,236,.05); border-color:rgba(201,162,77,.28); }
-.sombre .appel p{ color:var(--sur-nuit-doux); }
+/* L'ENCART UNIQUE DES PAGES DE MÉTIER. Il y en avait deux par page, « Un
+   doute ? » et « Une urgence ? », qui posaient le même bouton sous deux
+   paragraphes disant la même chose. Il n'en reste qu'un, et il tient en une
+   phrase : un encart qui a besoin d'un titre ET d'un paragraphe pour demander
+   qu'on appelle en dit un de trop.
+   La phrase est en serif et au corps du chapô — c'est la seule ligne de
+   l'encart, elle n'a personne au-dessus d'elle pour la présenter.
+   `.appel .appel-mot` et non `.appel-mot` seul : il n'y a plus de règle
+   `.appel p` aujourd'hui, mais la phrase reste un `<p>` dans une carte, et
+   une classe nue céderait devant la première règle de type qu'on y ajouterait. */
+.appel .appel-mot{
+  margin:0; max-width:42ch;
+  font-family:var(--serif); font-size:var(--t-l); font-weight:400;
+  line-height:1.35; color:var(--vert);
+}
 @media (max-width:620px){
   .appel{ flex-direction:column; align-items:stretch; }
 }
@@ -1293,12 +1425,6 @@ h4{ font-size:var(--t-l); }
     letter-spacing:.1em; text-transform:uppercase; color:var(--acier-texte);
   }
 }
-
-/* « Prix indicatifs » : la mention doit être là, et discrète. */
-.mention-planches{
-  margin:var(--s3) 0 0; font-size:13px; color:var(--acier-texte); max-width:64ch;
-}
-
 
 /* ============================================================================
    LA PLAQUE DU NOM — le nom en or, dessiné en SVG et mesuré après rendu
@@ -1617,27 +1743,34 @@ h4{ font-size:var(--t-l); }
 /* ============================================================================
    LA CARTE SEULE — en tête de sa propre page de métier
    ----------------------------------------------------------------------------
-   C'est LA MÊME CARTE que sur l'accueil, pas une imitation : même dégradé,
-   même liseré, même grain, même pince, mêmes textes — tout vient de la règle
-   `.tr-carte` ci-dessus et de METIERS dans assets/site.js. On a cliqué un
-   objet sur l'accueil, on le retrouve ici, agrandi et décroché de la tringle.
+   C'est LE MÊME OBJET que sur l'accueil : même forme, même pince, même filet
+   d'or, même cadrage, mêmes textes — tout vient de la règle `.tr-carte`
+   ci-dessus et de METIERS dans assets/site.js. On a cliqué une étiquette sur
+   l'accueil, on la retrouve ici, décrochée de la tringle.
 
-   Ce bloc ne contient donc QUE les quatre écarts qu'impose le changement de
-   contexte. Si une cinquième règle apparaît ici un jour, c'est que la carte
-   est en train de se scinder en deux composants — et il faudra se demander
-   pourquoi.
+   MAIS ELLE A CHANGÉ DE MATIÈRE, ET C'EST LE FOND QUI L'EXIGE. Sur l'accueil
+   les six cartes sont vertes parce qu'elles sont posées sur du papier : c'est
+   l'écart qui les détache. Ici l'étiquette est posée SUR le vert, et une
+   carte verte sur une bande verte ne se détache plus — mesuré au premier
+   essai : 1,04:1 entre la carte et son fond. Elle passe donc au papier, et
+   l'écart se rétablit dans l'autre sens.
+
+   La règle est la même des deux côtés : la carte prend la matière que son
+   fond n'a pas. Ce n'est pas une exception, c'est le même principe appliqué
+   à un fond différent.
    ============================================================================ */
 
 /* 1 · LA PINCE EST TOUJOURS LÀ. Sur l'accueil elle ne sort qu'en dessous de
        1200 px, quand la tringle cède la place à l'empilement. Ici il n'y a
-       jamais de tringle, et c'est la pince qui dit que l'objet est suspendu :
-       sans elle, la carte redevient un cadre posé dans une colonne. */
+       jamais de tringle : c'est la pince, et elle seule, qui dit que l'objet
+       pend de la bande verte. Sans elle, la carte est un cadre posé dans une
+       colonne. */
 .tr-carte-seule .tr-pince{ display:block; }
 
-/* 2 · LA LARGEUR. À 1440 px la colonne de droite fait 429 px, et une carte de
-       429 px de large cesse d'être une étiquette pour devenir une affiche —
-       son rapport hauteur/largeur tomberait à 1,2 alors qu'il vaut 2,4 sur la
-       tringle. 280 px la maintient dans les proportions d'une pièce qui pend. */
+/* 2 · LA LARGEUR. 280 px, en pixels et non en fractions. Une étiquette a des
+       proportions — 2,4 de rapport sur la tringle — et une étiquette qui
+       s'étire cesse d'en être une. À 1440 px sa colonne ferait 429 px et le
+       rapport tomberait à 1,2 : une affiche, plus une étiquette. */
 .tr-carte-seule{
   max-width:280px;
   margin:0 auto;
@@ -1645,7 +1778,46 @@ h4{ font-size:var(--t-l); }
      lien. L'ombre reste, c'est un objet en relief, pas un bouton. */
   transition:none;
 }
-.tr-carte-seule:hover{ transform:none; box-shadow:0 14px 28px -10px rgba(4,24,15,.32); }
+
+/* 3 · LE PAPIER. Le fond, le cadre imprimé, le nom du métier et son texte
+       reprennent les couleurs du site sur fond clair. Exactement celles-là :
+       la carte n'a pas de palette à elle.
+
+       ELLE PERD SON LISERÉ D'OR. Sur l'accueil, deux pixels d'or francs
+       marquent l'endroit où la mâchoire mord une carte sombre. Ici la carte
+       est claire sur du vert : son arête se lit déjà à 12:1, et le liseré
+       redirait une deuxième fois ce que le bord dit déjà. Le filet d'or
+       intérieur reste — c'est le cadre imprimé de l'étiquette, pas un
+       soulignement du bord.
+
+       L'OMBRE EST DOUBLE, PARCE QUE LA CARTE FLOTTE AU-DESSUS DE DEUX FONDS.
+       Une ombre réglée pour le vert disparaît dessus ; réglée pour l'ivoire,
+       elle fait une salissure sur le vert. L'ombre longue et très diffuse
+       porte sur le vert, l'ombre courte et serrée décolle la carte du papier
+       en bas. */
+.tr-carte-seule{
+  background:var(--ivoire);
+  border-top:0;
+  box-shadow:0 30px 56px -20px rgba(2,12,8,.62),
+             0 5px 13px -5px rgba(2,12,8,.34);
+}
+.tr-carte-seule::before{ border-color:rgba(168,132,47,.5); }
+.tr-carte-seule p{ color:rgba(35,40,37,.72); }
+.tr-carte-seule .tr-filet{ background:linear-gradient(90deg,transparent,var(--or),transparent); }
+.tr-carte-seule:hover{
+  transform:none;
+  box-shadow:0 30px 56px -20px rgba(2,12,8,.62),
+             0 5px 13px -5px rgba(2,12,8,.34);
+}
+
+/* L'ILLUSTRATION EST UNE ENCRE, PAS UNE DORURE. Les six dessins sont tracés
+   dans un or clair — #BB8419 à #D1A553 — réglé pour ressortir sur du vert de
+   nuit. Sur le papier ivoire ce même or tombe à 1,43:1 de moyenne : le trait
+   ne disparaît pas, mais il pâlit jusqu'à ne plus tenir la carte.
+   Le filtre le ramène au registre de l'or gravé, celui que le site emploie
+   déjà pour tout ce qui est doré sur fond clair. Ce n'est pas une couleur de
+   plus : c'est le même dessin, imprimé au lieu d'être estampé. */
+.tr-carte-seule .tr-vue img{ filter:brightness(.62) saturate(1.5) contrast(1.12); }
 
 /* 3 · LE CADRAGE DE L'ILLUSTRATION suit le régime large, celui de la carte
        empilée — 66cqw et non 122. Le régime étroit est déclaré dans une
@@ -1657,13 +1829,16 @@ h4{ font-size:var(--t-l); }
 
 /* 4 · LE NOM DU MÉTIER n'est plus un titre mais un rappel — voir la raison
        dans assets/site.js, au-dessus de `carteMetier`. Il garde exactement
-       l'aspect du `<h2>` de l'accueil : c'est le même objet, seul son rang
-       dans le plan du document change. Écrit après `.tr-carte p` pour le
-       devancer. */
+       l'aspect du `<h2>` de l'accueil, à la couleur près : la carte est en
+       papier ici, le nom est du vert du site et non de l'ivoire. Écrit après
+       `.tr-carte p` pour le devancer.
+       `.tr-nom` n'existe QUE sur la carte seule : sa couleur est donc écrite
+       ici, avec le reste de son aspect, et non dans le bloc du papier — deux
+       règles de même poids, celle-ci serait de toute façon la dernière. */
 .tr-carte .tr-nom{
   margin:0; font-weight:500; line-height:1.16;
   font-family:var(--serif);
-  font-size:clamp(18px,13.5cqw,31px); color:var(--sur-nuit); text-wrap:balance;
+  font-size:clamp(18px,13.5cqw,31px); color:var(--vert); text-wrap:balance;
 }
 
 /* ============================================================================
@@ -1696,12 +1871,11 @@ h4{ font-size:var(--t-l); }
   .tr-rail{ display:none; }
   .tr-ensemble{ max-width:none; }
 
-  /* Une colonne sur téléphone, deux sur tablette, trois au-delà : c'est la
-     grille de `.grille-services`, déjà employée par le site pour une liste
-     d'éléments de même poids. Sans elle, une carte « pleine largeur » sur un
-     écran de 1000 px ferait 920 px de large et son dessin 600 px de haut.
-     Le pas de 280 px est celui sous lequel le texte de la carte cesse d'être
-     lisible. */
+  /* Une colonne sur téléphone, deux sur tablette, trois au-delà. Sans cette
+     grille, une carte « pleine largeur » sur un écran de 1000 px ferait
+     920 px de large et son dessin 600 px de haut. Le pas de 280 px est celui
+     sous lequel le texte de la carte cesse d'être lisible — et c'est aussi
+     la largeur de la carte seule des pages de métier. */
   .tr-cartes{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(280px,1fr));

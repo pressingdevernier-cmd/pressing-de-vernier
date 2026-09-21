@@ -121,107 +121,61 @@
 </div>
 
 <main id="contenu" class="page-metier millimetre">
-<section class="section">
-<div class="zone duo large-gauche">
-  <div class="revele">
+
+<!-- ═══════════════ LA BANDE D'ENTREE ═══════════════
+     La bande verte est la tringle : l'etiquette y pend, pincee, et la
+     traverse pour retomber dans le papier quadrille. Le texte est ecrit en
+     PREMIER et renvoye en colonne de droite par la feuille de style — le
+     <h1> d'une page ne peut pas etre precede d'une etiquette decorative dans
+     le document, et sur petit ecran l'empilement suit le balisage : le
+     titre, puis la carte.
+
+     LA CARTE VIENT DE METIERS dans assets/site.js, comme les six cartes de
+     l'accueil. Son texte, son illustration et ses proportions ne sont ecrits
+     nulle part ailleurs. -->
+<section class="ent-metier">
+<div class="zone ent-metier-duo">
+  <div class="ent-metier-mots revele">
     <p class="sur-titre">Nettoyage &amp; entretien</p>
     <h1>Le traitement juste,<br><span class="accent">pour chaque textile.</span></h1>
-    <p class="chapo">Dites-nous ce que vous souhaitez. Nous examinons la mati&#232;re, la tache, les finitions et les risques, puis nous vous conseillons la m&#233;thode la plus adapt&#233;e.</p>
+    <p class="chapo">Nous examinons chaque pi&#232;ce avant d&#8217;agir&#160;: la mati&#232;re, la tache, les finitions. Vous repartez en sachant ce que nous allons faire, et nous tenons compte de ce que vous nous demandez.</p>
   </div>
-  <!-- LA CARTE DE L'ACCUEIL, la vraie : son texte, son illustration et ses
-       proportions viennent de METIERS dans assets/site.js, comme les six
-       cartes de la tringle. Rien n'est recopie ici. -->
-  <div class="revele carte-metier-hote" data-delai="2"
-       data-carte-metier="nettoyage"></div>
+  <div class="ent-metier-carte revele" data-delai="2" data-carte-metier="nettoyage"></div>
 </div>
 </section>
 
-
+<!-- ═══════════════ CE QUE NOUS NETTOYONS ═══════════════ -->
 <section class="section">
   <div class="zone">
     <div class="revele" style="max-width:640px">
       <div class="filet court"><i></i></div>
-      <p class="sur-titre">Sept familles</p>
-      <h2>Ce que nous <span class="accent">entretenons.</span></h2>
-    </div>
-    <div class="grille-services" id="blanchisserie">
-      <article class="revele">
-        <h3>V&#234;tements et pi&#232;ces d&#233;licates</h3>
-        <p>V&#234;tements courants, costumes, robes, manteaux et doudounes. Soie, laine et cachemire. D&#233;tachage et conseil au cas par cas. Vos v&#234;tements vous sont rendus pr&#234;ts &#224; porter.</p>
-      </article>
-      <article class="revele">
-        <h3>Chemises, blanchisserie et repassage</h3>
-        <p>Chemises lav&#233;es et repass&#233;es, rendues sur cintre ou pli&#233;es&#160;; le prix diff&#232;re selon la finition. Repassage seul si vous apportez du linge d&#233;j&#224; lav&#233;.</p>
-      </article>
-      <article class="revele">
-        <h3>Linge courant au kilo</h3>
-        <p>Deux formules&#160;: lavage, s&#233;chage et pliage &#224; 6.&#8211; le kilo&#160;; avec repassage, 12.&#8211; le kilo. Le linge est pes&#233; au d&#233;p&#244;t.</p>
-      </article>
-      <article class="revele">
-        <h3>Literie et linge de maison</h3>
-        <p>Duvets et oreillers, synth&#233;tiques ou en plumes. Draps, housses, al&#232;ses, couvre-lits. Nappes, chemins de table, serviettes, linge de bain et de toilette.</p>
-      </article>
-      <article class="revele">
-        <h3>Textiles d&#8217;ameublement amovibles</h3>
-        <p>Rideaux et voilages, housses, coussins et plaids&#160;: tout ce qui se retire et s&#8217;apporte. Pour un canap&#233;, un fauteuil ou un matelas entier, une intervention &#224; votre domicile peut parfois &#234;tre organis&#233;e &#8212; appelez-nous, nous vous dirons si c&#8217;est possible.</p>
-      </article>
-      <article class="revele">
-        <h3>Tapis, cuir, daim et sacs</h3>
-        <p>Nous prenons en charge le nettoyage des tapis, des v&#234;tements et articles en cuir, du daim, ainsi que le nettoyage et la restauration de sacs de luxe. Apportez la pi&#232;ce&#160;: nous &#233;valuons ensemble ce qui est possible.</p>
-      </article>
-      <article class="revele">
-        <h3>Conseil textile</h3>
-        <p>Une tache, une &#233;tiquette illisible, un doute sur une mati&#232;re&#160;: montrez-nous la pi&#232;ce. Nous vous dirons franchement ce qui est r&#233;alisable, et ce qui ne l&#8217;est pas.</p>
-      </article>
+      <h2>Ce que nous <span class="accent">nettoyons.</span></h2>
+      <p class="dit">Costumes, robes, manteaux, doudounes et v&#234;tements de ville. Soie, laine, cachemire, pi&#232;ces pliss&#233;es et tenues habill&#233;es. D&#233;tachage et conseil au cas par cas.</p>
     </div>
 
+    <!-- L'ENCART UNIQUE, le meme sur les six pages. Il remplace « Un doute ? »
+         et « Une urgence ? », qui posaient le meme bouton sous deux
+         paragraphes disant la meme chose. -->
     <div class="appel revele">
-      <div>
-        <h3>Une urgence&#160;?</h3>
-        <p>Appelez-nous&#160;: nous vous dirons imm&#233;diatement ce qui est possible, selon la pi&#232;ce et la charge de l&#8217;atelier.</p>
-      </div>
+      <p class="appel-mot">Une question, une urgence&#160;? Contactez-nous.</p>
       <a class="bouton plein" href="tel:+41223416818" data-tel></a>
     </div>
   </div>
 </section>
 
-<section class="section serree" id="literie">
-  <div class="zone">
-    <div class="revele" style="max-width:640px">
-      <div class="filet court"><i></i></div>
-      <p class="sur-titre">Quelques prix</p>
-      <h2>Les tarifs <span class="accent">les plus demand&#233;s.</span></h2>
-      <p class="chapo">Un extrait de la liste. Le d&#233;tail complet, article par article, est publi&#233; sur la page Tarifs.</p>
-    </div>
-    <div data-tarifs="nettoyage-vetements,entretien-specialise" style="margin-top:var(--s5)"></div>
-    <p><a class="bouton plein" href="tarifs.html">Toute la liste de prix</a></p>
+<!-- ═══════════════ LES PRIX ═══════════════
+     Construits par assets/site.js a partir de data/tarifs.js. Aucun prix
+     n'est ecrit dans cette page. -->
+<section class="section serree">
+<div class="zone">
+  <div class="revele" style="max-width:640px">
+    <div class="filet court"><i></i></div>
+    <h2>Les tarifs <span class="accent">les plus demand&#233;s.</span></h2>
   </div>
-</section>
-
-<section class="section">
-  <div class="zone duo">
-    <div class="revele">
-      <div class="filet court"><i></i></div>
-      <p class="sur-titre">Nous trouver</p>
-      <h2>201 route <span class="accent">de Vernier</span></h2>
-      <dl class="horaires" data-horaires></dl>
-      <div class="coordonnees">
-        <a href="tel:+41223416818" data-tel><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg></a>
-        <a href="mailto:pressingdevernier@gmail.com" data-email><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg></a>
-      </div>
-    </div>
-    <div class="revele" data-delai="2">
-      <div class="plan">
-        <div class="epingle">
-          <b>Pressing de Vernier</b>
-          <span data-adresse></span>
-        </div>
-      </div>
-      <p style="margin-top:var(--s3)">
-        <a class="bouton plein" data-itineraire href="https://www.openstreetmap.org/directions" target="_blank" rel="noopener">Itin&#233;raire</a>
-      </p>
-    </div>
-  </div>
+  <div data-tarifs="nettoyage-vetements,nettoyage-manteaux" data-lignes="6" style="margin-top:var(--s4)"></div>
+  <p class="note-tarif">Les pi&#232;ces particuli&#232;res se chiffrent apr&#232;s examen, au d&#233;p&#244;t.</p>
+  <p style="margin-top:var(--s3)"><a class="bouton plein" href="tarifs.html">Toute la liste de prix</a></p>
+</div>
 </section>
 
 </main>

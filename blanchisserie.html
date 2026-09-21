@@ -122,69 +122,61 @@
 
 <main id="contenu" class="page-metier millimetre">
 
-<!-- ═══════════════ L'ENSEIGNE DU MÉTIER ═══════════════ -->
-<section class="section">
-<div class="zone duo large-gauche">
-  <div class="revele">
-    <p class="sur-titre">Blanchisserie</p>
-    <h1>Le linge de la maison,<br><span class="accent">rendu pr&#234;t &#224; ranger.</span></h1>
-    <p class="chapo">Le linge courant se facture au poids, la literie et le linge de maison &#224; la pi&#232;ce. Votre sac est pes&#233; au d&#233;p&#244;t&#160;: vous savez ce que vous payez avant que la machine tourne.</p>
+<!-- ═══════════════ LA BANDE D'ENTREE ═══════════════
+     La bande verte est la tringle : l'etiquette y pend, pincee, et la
+     traverse pour retomber dans le papier quadrille. Le texte est ecrit en
+     PREMIER et renvoye en colonne de droite par la feuille de style — le
+     <h1> d'une page ne peut pas etre precede d'une etiquette decorative dans
+     le document, et sur petit ecran l'empilement suit le balisage : le
+     titre, puis la carte.
+
+     LA CARTE VIENT DE METIERS dans assets/site.js, comme les six cartes de
+     l'accueil. Son texte, son illustration et ses proportions ne sont ecrits
+     nulle part ailleurs. -->
+<section class="ent-metier">
+<div class="zone ent-metier-duo">
+  <div class="ent-metier-mots revele">
+    <p class="sur-titre">Au kilo ou &#224; la pi&#232;ce</p>
+    <h1>Lav&#233;, s&#233;ch&#233;,<br>repassage en option,<br><span class="accent">pli&#233; et pr&#234;t &#224; ranger.</span></h1>
+    <p class="chapo">Du linge du quotidien aux duvets, des draps aux rideaux&#160;: tout ce qui se lave &#224; l&#8217;eau, y compris ce qui ne tient pas dans une machine de maison. Vous d&#233;posez, nous nous occupons de tout, vous n&#8217;avez plus qu&#8217;&#224; ranger.</p>
   </div>
-  <!-- LA CARTE DE L'ACCUEIL, la vraie : son texte, son illustration et ses
-       proportions viennent de METIERS dans assets/site.js, comme les six
-       cartes de la tringle. Rien n'est recopie ici. -->
-  <div class="revele carte-metier-hote" data-delai="2"
-       data-carte-metier="blanchisserie"></div>
+  <div class="ent-metier-carte revele" data-delai="2" data-carte-metier="blanchisserie"></div>
 </div>
 </section>
 
-
 <!-- ═══════════════ CE QUE NOUS LAVONS ═══════════════ -->
-<section class="section serree">
-<div class="zone">
-  <div class="revele" style="max-width:640px">
-    <div class="filet court"><i></i></div>
-    <h2>Ce que nous <span class="accent">lavons.</span></h2>
+<section class="section">
+  <div class="zone">
+    <div class="revele" style="max-width:640px">
+      <div class="filet court"><i></i></div>
+      <h2>Ce que nous <span class="accent">lavons.</span></h2>
+      <ul class="dit-lignes">
+        <li><b>Au kilo</b> &#8212; le linge du quotidien, pes&#233; ensemble et rendu pli&#233;.</li>
+        <li><b>&#192; la pi&#232;ce</b> &#8212; literie, linge de table et de bain, rideaux au m&#232;tre carr&#233;, housses sur devis.</li>
+      </ul>
+    </div>
+
+    <!-- L'ENCART UNIQUE, le meme sur les six pages. Il remplace « Un doute ? »
+         et « Une urgence ? », qui posaient le meme bouton sous deux
+         paragraphes disant la meme chose. -->
+    <div class="appel revele">
+      <p class="appel-mot">Une question, une urgence&#160;? Contactez-nous.</p>
+      <a class="bouton plein" href="tel:+41223416818" data-tel></a>
+    </div>
   </div>
-  <div class="grille-services">
-    <article class="revele">
-      <h3>Le linge courant, au kilo</h3>
-      <p>Les pi&#232;ces du quotidien, pes&#233;es ensemble et rendues pli&#233;es. Deux formules&#160;: avec ou sans repassage.</p>
-    </article>
-    <article class="revele">
-      <h3>La literie, &#224; la pi&#232;ce</h3>
-      <p>Duvets et oreillers, synth&#233;tiques ou en plumes. Draps, housses, taies, al&#232;ses et couvre-lits.</p>
-    </article>
-    <article class="revele">
-      <h3>Le linge de maison, &#224; la pi&#232;ce</h3>
-      <p>Nappes, serviettes, linge de cuisine, linge de bain, couvertures et coussins.</p>
-    </article>
-    <article class="revele">
-      <h3>Les rideaux, au m&#232;tre carr&#233;</h3>
-      <p>Nylon, coton simple ou doubl&#233;, velours. Apportez les dimensions, ou la pi&#232;ce&#160;: nous mesurons.</p>
-    </article>
-    <article class="revele">
-      <h3>Les housses amovibles</h3>
-      <p>Fauteuils, canap&#233;s, coussins, plaids&#160;: tout ce qui se retire. Sur devis, apr&#232;s avoir vu la pi&#232;ce.</p>
-    </article>
-    <article class="revele">
-      <h3>Les volumes r&#233;guliers</h3>
-      <p>Restaurants, h&#244;tels, cabinets&#160;: les m&#234;mes travaux, en s&#233;rie. <a class="lien" href="professionnels.html">Voir la page Professionnels</a>.</p>
-    </article>
-  </div>
-</div>
 </section>
 
 <!-- ═══════════════ LES PRIX ═══════════════
-   Construits par assets/site.js à partir de data/tarifs.js.
-   Aucun prix n'est écrit dans cette page. -->
+     Construits par assets/site.js a partir de data/tarifs.js. Aucun prix
+     n'est ecrit dans cette page. -->
 <section class="section serree">
 <div class="zone">
   <div class="revele" style="max-width:640px">
     <div class="filet court"><i></i></div>
-    <h2>Les prix les <span class="accent">plus demand&#233;s.</span></h2>
+    <h2>Les tarifs <span class="accent">les plus demand&#233;s.</span></h2>
   </div>
   <div data-tarifs="blanchisserie-kilo,blanchisserie-literie" data-lignes="6" style="margin-top:var(--s4)"></div>
+  <p class="note-tarif">Prix indicatifs. Pour une pi&#232;ce particuli&#232;re, appelez-nous&#160;: nous vous donnons le prix avant de commencer.</p>
   <p style="margin-top:var(--s3)"><a class="bouton plein" href="tarifs.html">Toute la liste de prix</a></p>
 </div>
 </section>

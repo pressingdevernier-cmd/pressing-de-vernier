@@ -122,65 +122,63 @@
 
 <main id="contenu" class="page-metier millimetre">
 
-<!-- ═══════════════ L'ENSEIGNE DU MÉTIER ═══════════════ -->
-<section class="section">
-<div class="zone duo large-gauche">
-  <div class="revele">
+<!-- ═══════════════ LA BANDE D'ENTREE ═══════════════
+     La bande verte est la tringle : l'etiquette y pend, pincee, et la
+     traverse pour retomber dans le papier quadrille. Le texte est ecrit en
+     PREMIER et renvoye en colonne de droite par la feuille de style — le
+     <h1> d'une page ne peut pas etre precede d'une etiquette decorative dans
+     le document, et sur petit ecran l'empilement suit le balisage : le
+     titre, puis la carte.
+
+     LA CARTE VIENT DE METIERS dans assets/site.js, comme les six cartes de
+     l'accueil. Son texte, son illustration et ses proportions ne sont ecrits
+     nulle part ailleurs. -->
+<section class="ent-metier">
+<div class="zone ent-metier-duo">
+  <div class="ent-metier-mots revele">
     <p class="sur-titre">Cuir, daim, tapis et sacs</p>
     <h1>Les pi&#232;ces qui demandent<br><span class="accent">un sp&#233;cialiste.</span></h1>
     <p class="chapo">Un tapis, un blouson de cuir, un sac de valeur ne se traitent pas comme une chemise. Nous les prenons en charge au magasin, les examinons avec vous et les confions &#224; des sp&#233;cialistes.</p>
   </div>
-  <!-- LA CARTE DE L'ACCUEIL, la vraie : son texte, son illustration et ses
-       proportions viennent de METIERS dans assets/site.js, comme les six
-       cartes de la tringle. Rien n'est recopie ici. -->
-  <div class="revele carte-metier-hote" data-delai="2"
-       data-carte-metier="cuir"></div>
+  <div class="ent-metier-carte revele" data-delai="2" data-carte-metier="cuir"></div>
 </div>
 </section>
 
+<!-- ═══════════════ CE QUE NOUS PRENONS EN CHARGE ═══════════════
+     Quatre matieres, et rien d'autre. « Comment ca se passe » repetait le
+     chapo mot pour mot ; « Un doute ? » posait le bouton du telephone une
+     premiere fois, l'encart unique le pose deja. -->
+<section class="section">
+  <div class="zone">
+    <div class="revele" style="max-width:640px">
+      <div class="filet court"><i></i></div>
+      <h2>Ce que nous <span class="accent">prenons en charge.</span></h2>
+      <ul class="dit-lignes">
+        <li><b>Les tapis</b> &#8212; nettoy&#233;s en profondeur, en atelier sp&#233;cialis&#233;. Le prix se compte au m&#232;tre carr&#233;.</li>
+        <li><b>Le cuir</b> &#8212; blousons, vestes, manteaux, jupes et pantalons. Nettoyage, puis nourrissage pour que la peau ne se dess&#232;che pas.</li>
+        <li><b>Le daim</b> &#8212; trait&#233; &#224; part du cuir lisse&#160;: la mati&#232;re ne supporte pas les m&#234;mes produits ni le m&#234;me s&#233;chage.</li>
+        <li><b>Les sacs</b> &#8212; sacs de ville et pi&#232;ces de valeur, nettoy&#233;s et remis en teinte quand la mati&#232;re le permet.</li>
+      </ul>
+    </div>
 
-<!-- ═══════════════ CE QUE NOUS PRENONS EN CHARGE ═══════════════ -->
+    <!-- L'ENCART UNIQUE, le meme sur les six pages. Il remplace « Un doute ? »
+         et « Une urgence ? », qui posaient le meme bouton sous deux
+         paragraphes disant la meme chose. -->
+    <div class="appel revele">
+      <p class="appel-mot">Une question, une urgence&#160;? Contactez-nous.</p>
+      <a class="bouton plein" href="tel:+41223416818" data-tel></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ LES PRIX ═══════════════
+     Construits par assets/site.js a partir de data/tarifs.js. Aucun prix
+     n'est ecrit dans cette page. -->
 <section class="section serree">
 <div class="zone">
   <div class="revele" style="max-width:640px">
     <div class="filet court"><i></i></div>
-    <h2>Ce que nous <span class="accent">prenons en charge.</span></h2>
-  </div>
-  <div class="grille-services">
-    <article class="revele">
-      <h3>Les tapis</h3>
-      <p>Nettoy&#233;s en profondeur, en atelier sp&#233;cialis&#233;. Le prix se compte au m&#232;tre carr&#233;.</p>
-    </article>
-    <article class="revele">
-      <h3>Le cuir</h3>
-      <p>Blousons, vestes, manteaux, jupes et pantalons. Nettoyage, puis nourrissage pour que la peau ne se dess&#232;che pas.</p>
-    </article>
-    <article class="revele">
-      <h3>Le daim</h3>
-      <p>Trait&#233; &#224; part du cuir lisse&#160;: la mati&#232;re ne supporte pas les m&#234;mes produits ni le m&#234;me s&#233;chage.</p>
-    </article>
-    <article class="revele">
-      <h3>Les sacs</h3>
-      <p>Sacs de ville et pi&#232;ces de valeur, nettoy&#233;s et remis en teinte quand la mati&#232;re le permet.</p>
-    </article>
-    <article class="revele">
-      <h3>Comment &#231;a se passe</h3>
-      <p>Vous d&#233;posez la pi&#232;ce, nous l&#8217;examinons avec vous et vous remettons un prix. Rien ne part avant que vous ayez dit oui.</p>
-    </article>
-    <article class="revele">
-      <h3>Un doute&#160;?</h3>
-      <p>Appelez avant de vous d&#233;placer&#160;: nous vous dirons si la pi&#232;ce se traite, et dans quel ordre de prix. <a class="lien" href="tel:+41223416818" data-tel></a></p>
-    </article>
-  </div>
-</div>
-</section>
-
-<!-- ═══════════════ LES PRIX ═══════════════ -->
-<section class="section serree">
-<div class="zone">
-  <div class="revele" style="max-width:640px">
-    <div class="filet court"><i></i></div>
-    <h2>Quatre lignes, <span class="accent">quatre devis.</span></h2>
+    <h2>Les tarifs <span class="accent">les plus demand&#233;s.</span></h2>
     <p class="chapo">Ces pi&#232;ces n&#8217;ont pas de prix fixe&#160;: la mati&#232;re, la taille et l&#8217;&#233;tat d&#233;cident. Le montant est convenu au d&#233;p&#244;t, avant tout travail.</p>
   </div>
   <div data-tarifs="entretien-specialise" style="margin-top:var(--s4)"></div>
