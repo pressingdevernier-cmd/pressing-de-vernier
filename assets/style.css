@@ -108,13 +108,21 @@
    ============================================================================ */
 *,*::before,*::after{ box-sizing:border-box; }
 
-/* `scroll-padding-top` : la hauteur de ce qui reste collé en haut. Sans lui,
-   un lien d'ancre — le sommaire de la page Tarifs, le lien d'évitement —
-   amène sa cible EXACTEMENT au bord haut de la fenêtre, c'est-à-dire
-   derrière la navigation collante. Le titre visé disparaît sous elle.
-   52 px de navigation plus seize d'air ; la valeur mobile est plus bas, avec
-   le reste du régime étroit. */
-html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; scroll-padding-top:68px; }
+/* `scroll-padding-top` : la hauteur de ce qui reste en haut de l'écran. Sans
+   lui, un lien d'ancre — le sommaire de la page Tarifs, le lien d'évitement —
+   amène sa cible EXACTEMENT au bord haut de la fenêtre, c'est-à-dire derrière
+   la bande fixe. Le titre visé disparaît dessous.
+
+   Ce qui reste en haut, c'est la bande du logo, et elle seule : sa hauteur
+   RÉELLE est mesurée par assets/site.js et exposée en `--h-bande-logo`.
+   La valeur de repli, 61 px, est celle de la bande à sa taille de texte par
+   défaut — un visiteur qui a forcé une taille minimale la fait grandir, et
+   une valeur figée laisserait le titre à moitié caché. Seize pixels d'air
+   en plus. La valeur mobile est plus bas, avec le reste du régime étroit. */
+html{
+  scroll-behavior:smooth; -webkit-text-size-adjust:100%;
+  scroll-padding-top:calc(var(--h-bande-logo,61px) + 16px);
+}
 
 /* Newsreader porte un axe de taille optique : son dessin s'épaissit de
    lui-même dans les petits corps et s'affine dans les grands. C'est le
@@ -122,8 +130,15 @@ html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; scroll-padding-top:
    le neutralise par mégarde. */
 :where(html){ font-optical-sizing:auto; }
 
+/* LA PLACE DE LA BANDE FIXE. Elle est sortie du flux, donc rien ne la
+   réserve : sans ce retrait, le nom d'or de la plaque commencerait sous elle
+   et les soixante premiers pixels de chaque page seraient cachés. Le retrait
+   suit la hauteur mesurée, jamais une valeur figée — voir `--h-bande-logo`
+   dans assets/site.js. Sur téléphone la plaque du nom est fixe elle aussi ;
+   le retrait vaut alors les deux, et c'est écrit dans le régime étroit. */
 body{
   margin:0;
+  padding-top:var(--h-bande-logo,61px);
   background:var(--ivoire);
   color:var(--graphite);
   font-family:var(--sans);
@@ -158,9 +173,11 @@ button{ font:inherit; cursor:pointer; }
   border-radius:2px;
 }
 
-/* Lien d'évitement, pour les lecteurs d'écran et le clavier */
+/* Lien d'évitement, pour les lecteurs d'écran et le clavier.
+   Il se pose SOUS la bande fixe : au bord haut il la recouvrirait, et le
+   premier arrêt du clavier masquerait le numéro de téléphone. */
 .saut{
-  position:absolute; left:-9999px; top:0; z-index:200;
+  position:absolute; left:-9999px; top:var(--h-bande-logo,61px); z-index:200;
   background:var(--vert); color:var(--ivoire); padding:14px 20px;
   font-size:var(--t-s); letter-spacing:.1em; text-transform:uppercase;
 }
@@ -359,20 +376,23 @@ h4{ font-size:var(--t-l); }
    l'accueil, où le nom EST le titre de la page, `p` ailleurs, où la page a
    déjà le sien. Tout le reste est identique au caractère près.
 
-   CE QUI EST COLLANT, ET POURQUOI SEULEMENT ÇA
-   La bande 3, et rien d'autre : 52 px. À l'arrivée l'en-tête dit qui nous
-   sommes ; en cours de lecture il ne doit plus que mener quelque part.
-   Coller les trois, ce serait garder 230 px à l'écran en permanence — un
-   quart d'un portable de 900 px de haut.
-   La navigation est donc posée HORS du `<header>` : une bande collante
-   enfermée dans un `<header>` court se décolle avec lui dès que celui-ci
-   sort de l'écran. Un `<nav>` est un repère de navigation à part entière,
-   la sémantique n'y perd rien.
+   CE QUI RESTE À L'ÉCRAN, ET POURQUOI SEULEMENT ÇA
+   La bande 1, et rien d'autre : 61 px. C'est la bande des FAITS — le nom, si
+   c'est ouvert, et le numéro. Ce sont les trois choses qu'on vient chercher
+   en cours de lecture, et le numéro est la seule action du site qui compte
+   vraiment : il doit être atteignable sans jamais remonter.
+
+   LA NAVIGATION NE COLLE PLUS. Elle collait, et c'était le mauvais choix :
+   un menu de huit entrées ne sert qu'une fois, au moment où l'on décide où
+   aller. Le garder à l'écran pendant toute la lecture, c'était réserver
+   52 px à une décision déjà prise. Elle défile maintenant avec la page.
+   Elle reste posée HORS du `<header>` — un `<nav>` est un repère de
+   navigation à part entière, la sémantique n'y perd rien.
 
    Sur téléphone, la navigation se replie derrière le bouton du menu. C'est
-   alors la PLAQUE qui devient collante, sinon le menu cesserait d'être
-   atteignable une fois la page défilée : l'en-tête entier colle à
-   `top:-61px`, la hauteur exacte de la bande du logo, qui remonte et sort.
+   alors la PLAQUE qui est fixe elle aussi, juste sous la bande, sinon le
+   menu cesserait d'être atteignable une fois la page défilée. Voir le régime
+   étroit, plus bas.
 
    Tout est calé sur `.zone`, donc sur le conteneur de 1180 px, comme le pied
    de page et comme la tringle.
@@ -383,7 +403,16 @@ h4{ font-size:var(--t-l); }
    l'action à droite. La grille est `1fr auto 1fr`, donc les faits tombent
    exactement sur l'axe de la page — le même axe que le nom d'or en dessous
    et que la tringle plus bas. */
-.ent-logo{ background:var(--ivoire); border-bottom:1px solid var(--papier); }
+/* ELLE EST FIXE, SUR LES NEUF PAGES. `fixed` et non `sticky` : une bande
+   collante reste dans le flux et ne se fige qu'une fois atteinte par le
+   défilement — celle-ci doit être là dès le premier pixel et n'en plus
+   bouger. Le fond est opaque, la page passe dessous.
+   z-index 70 : au-dessus de la plaque (60) et du panneau du menu (54), en
+   dessous du seul lien d'évitement (200). */
+.ent-logo{
+  position:fixed; top:0; left:0; right:0; z-index:70;
+  background:var(--ivoire); border-bottom:1px solid var(--papier);
+}
 .ent-logo .zone{
   display:grid; grid-template-columns:1fr auto 1fr;
   column-gap:var(--s3); align-items:center;
@@ -467,9 +496,9 @@ h4{ font-size:var(--t-l); }
 }
 .ent-plaque .filet i{ background:var(--or-clair); width:6px; height:6px; }
 
-/* ── 3 · LA NAVIGATION ───────────────────────────────────────────────────── */
+/* ── 3 · LA NAVIGATION ─────────────────────────────────────────────────────
+   Elle défile avec la page : voir « CE QUI RESTE À L'ÉCRAN », plus haut. */
 .ent-nav{
-  position:sticky; top:0; z-index:60;
   background:var(--ivoire); border-bottom:1px solid var(--papier);
 }
 .navigation{ display:flex; justify-content:center; gap:clamp(16px,2.2vw,32px); }
@@ -655,19 +684,26 @@ h4{ font-size:var(--t-l); }
 @media (max-width:860px){
   :root{ --s6:64px; --s7:88px; }
 
-  /* Ce qui reste collé n'est plus la navigation mais la plaque du nom, plus
-     haute : l'écart d'une ancre à son titre suit. */
-  html{ scroll-padding-top:116px; }
+  /* LA PLAQUE DU NOM EST FIXE ELLE AUSSI, juste sous la bande du logo.
+     La navigation se replie ici derrière le bouton du menu, et ce bouton vit
+     dans la plaque : si la plaque défilait, le menu deviendrait inatteignable
+     dès le premier écran passé. Deux bandes fixes, donc, et pas une de plus.
 
-  /* La navigation se replie derrière le bouton du menu. C'est donc la plaque
-     qui doit rester à l'écran, sinon le menu devient inatteignable une fois
-     la page défilée : l'en-tête entier colle, remonté de la hauteur exacte
-     de la bande du logo — 60 px de bande plus son filet.
-     La valeur de repli est 61 px ; `--h-bande-logo` la remplace par la
-     hauteur RÉELLE, mesurée par assets/site.js. Voir le commentaire là-bas :
-     un visiteur qui a forcé une taille de texte minimale fait grandir la
-     bande, et un décalage figé laisserait une tranche à l'écran. */
-  .entete{ position:sticky; top:calc(-1 * var(--h-bande-logo, 61px)); z-index:60; }
+     `fixed` et non `sticky` : la bande du logo étant elle-même sortie du
+     flux, `.entete` n'a plus pour hauteur que celle de la plaque — une plaque
+     collante n'y aurait aucune course et se décollerait aussitôt.
+
+     Les deux hauteurs sont MESURÉES par assets/site.js (`--h-bande-logo` et
+     `--h-plaque`) : le nom passe sur une ou deux lignes selon la largeur, et
+     une taille de texte forcée fait grandir les deux bandes. Les valeurs de
+     repli ne servent qu'avant l'exécution du script. */
+  .ent-plaque{
+    position:fixed; top:var(--h-bande-logo,45px); left:0; right:0; z-index:60;
+  }
+  body{ padding-top:calc(var(--h-bande-logo,45px) + var(--h-plaque,97px)); }
+  /* L'écart d'une ancre à son titre suit les deux bandes, plus huit d'air. */
+  html{ scroll-padding-top:calc(var(--h-bande-logo,45px) + var(--h-plaque,97px) + 8px); }
+
   .ent-nav{ display:none; }
   .burger{ display:block; }
 
@@ -735,7 +771,18 @@ h4{ font-size:var(--t-l); }
 
      Reste deux zones : les faits à gauche, l'action à droite. */
   .marque{ display:none; }
-  .ent-logo .zone{ grid-template-columns:minmax(0,1fr) auto; }
+
+  /* LA BANDE FIXE RESTE SOUS 50 px. Elle occupe maintenant le haut de
+     l'écran en permanence : chaque pixel qu'elle prend est un pixel de
+     lecture en moins, sur l'écran où il y en a le moins.
+     Mesurée à 375 px : 44 px de hauteur minimale — la cible tactile du
+     numéro, qu'on ne descend pas — plus le filet du bas, soit 45 px. Le
+     `padding` tombe à 3 px : à 10,5 et 12,5 px de corps, les deux lignes
+     font 17 px de haut et le `min-height` décide seul. */
+  .ent-logo .zone{
+    grid-template-columns:minmax(0,1fr) auto;
+    min-height:44px; padding-block:3px;
+  }
   .ent-faits{ grid-column:1; justify-self:start; }
   .ent-tel{ grid-column:2; }
 
@@ -764,14 +811,16 @@ h4{ font-size:var(--t-l); }
    ============================================================================ */
 /* Le panneau couvre tout l'écran et PASSE SOUS l'en-tête, qui garde son
    z-index supérieur : le bouton qui a ouvert le menu doit rester visible et
-   cliquable pour le refermer. Un panneau calé sous une hauteur fixe se
-   décale dès que la page est défilée — l'en-tête ne fait plus alors que la
-   hauteur de sa plaque. Le retrait par le haut est donc un `padding`, pas
-   une position : il dégage l'en-tête à l'arrivée, et ne gêne rien ensuite. */
+   cliquable pour le refermer. Le retrait par le haut dégage les deux bandes
+   fixes — la bande du logo et la plaque du nom — et vingt-quatre pixels
+   d'air. Il suit leurs hauteurs mesurées : une valeur figée laisserait la
+   première entrée du menu sous la plaque dès qu'un nom passe sur deux
+   lignes. */
 .menu-mobile{
   position:fixed; inset:0; z-index:54;
   background:var(--ivoire); overflow-y:auto;
-  padding:170px var(--marge-page) var(--s4);
+  padding:calc(var(--h-bande-logo,45px) + var(--h-plaque,97px) + 24px)
+          var(--marge-page) var(--s4);
 }
 .menu-mobile ul{ list-style:none; margin:0; padding:0; }
 .menu-mobile li{ border-bottom:1px solid var(--papier); }
@@ -1070,12 +1119,12 @@ h4{ font-size:var(--t-l); }
 .familles-tarifs a:hover{ background:#FCFBF8; color:var(--or-grave); }
 
 /* ── La barre collante ────────────────────────────────────────────────────
-   Elle se pose sous ce qui colle déjà : la navigation sur ordinateur, la
-   plaque du nom sur téléphone — dont la hauteur est mesurée par
-   assets/site.js et exposée en `--h-plaque`. Sans ce calage, la barre se
-   glisserait DERRIÈRE le mobilier au lieu de dessous. */
+   Elle se pose sous ce qui est déjà fixe : la bande du logo sur ordinateur,
+   la bande du logo ET la plaque du nom sur téléphone. Les deux hauteurs sont
+   mesurées par assets/site.js. Sans ce calage, la barre se glisserait
+   DERRIÈRE le mobilier au lieu de dessous. */
 .barre-tarifs{
-  position:sticky; top:52px; z-index:59;
+  position:sticky; top:var(--h-bande-logo,61px); z-index:59;
   background:rgba(246,243,236,.94); backdrop-filter:blur(8px);
   border-block:1px solid var(--papier);
 }
@@ -1126,17 +1175,18 @@ h4{ font-size:var(--t-l); }
 [hidden]{ display:none !important; }
 
 @media (max-width:860px){
-  /* La plaque colle deja 97 px : la barre doit rester mince, sinon le
-     mobilier fixe mange un quart de l'ecran. Retiree a 78 px -- une ligne de
-     reperes, une ligne de recherche, et rien de plus. */
-  .barre-tarifs{ top:var(--h-plaque,97px); }
+  /* La bande et la plaque occupent deja 142 px : la barre doit rester mince,
+     sinon le mobilier fixe mange un tiers de l'ecran. Retiree a 78 px -- une
+     ligne de reperes, une ligne de recherche, et rien de plus. */
+  .barre-tarifs{ top:calc(var(--h-bande-logo,45px) + var(--h-plaque,97px)); }
   .barre-tarifs .zone{ min-height:0; padding-block:8px; gap:7px; }
   .barre-tarifs input{ min-height:38px; font-size:14.5px; }
   .barre-tarifs .ou,.barre-tarifs .compte{ font-size:10.5px; }
   .barre-tarifs .ou{ order:1; }
   .barre-tarifs .compte{ order:2; margin-left:auto; text-align:right; min-width:0; }
   .barre-tarifs .chercher{ order:3; flex-basis:100%; margin-left:0; }
-  /* 116 px sont déjà réservés par la page ; la barre en ajoute 79. */
+  /* Les deux bandes fixes sont déjà réservées par la page ; la barre en
+     ajoute 79. */
   .groupes-tarifs .tarif-bloc,
   .famille-tarifs{ scroll-margin-top:79px; }
   .familles-tarifs a{ min-height:64px; font-size:var(--t-l); }
