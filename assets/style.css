@@ -323,13 +323,14 @@ h4{ font-size:var(--t-l); }
        plus raide de la page — un cran tous les 100 px — et c'est justement ce
        qui la détache du papier.
 
-     PIED DE PAGE          2 crans   v3 → v5      ≈ 330 px
+     PIED DE PAGE          2 crans   v3 → v5      ≈ 337 px
        Une bande, donc deux crans — et les crans BAS, il ferme la page. Il
        finit sur v5 : rien ne vient après, la page s'éteint.
-       Avant que la bande d'appel n'y soit fondue, cette surface faisait 962 px
-       et prenait trois crans. Elle en fait trois fois moins aujourd'hui : à
-       trois crans sur 330 px la pente aurait triplé, et un fond de page se
-       serait mis à ressembler à une carte.
+       Avant que la bande d'appel n'y soit fondue, la fin de page faisait
+       962 px en deux blocs et prenait trois crans. Elle en fait trois fois
+       moins aujourd'hui, en un seul : à trois crans sur 337 px la pente
+       aurait triplé, et un fond de page se serait mis à ressembler à une
+       carte.
 
    `.sombre` reste un aplat : c'est v5, le dernier cran de la rampe. Une
    surface sans dégradé qui se tient au bout de l'échelle est dans le système,
@@ -342,13 +343,11 @@ h4{ font-size:var(--t-l); }
 .ent-plaque,
 .ent-metier,
 .tr-carte,
-.bande-appel,
 .pied{ position:relative; isolation:isolate; }
 
 .ent-plaque::after,
 .ent-metier::after,
 .tr-carte::after,
-.bande-appel::after,
 .pied::after{
   content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
   opacity:var(--grain-force);
@@ -1474,34 +1473,6 @@ h4{ font-size:var(--t-l); }
   font-family:var(--serif); font-size:clamp(19px,2.2vw,25px);
   line-height:1.5; color:var(--vert); font-weight:400;
 }
-
-/* ============================================================================
-   LA BANDE D'APPEL — pleine largeur, en fin de page d'accueil
-   Nom distinct de « .appel », qui est la carte blanche des autres pages :
-   deux composants differents ne doivent jamais partager une classe.
-   ============================================================================ */
-/* LA BANDE D'APPEL ET LE PIED NE SONT QU'UNE SURFACE.
-   Elles se touchent, elles sont vertes toutes les deux, et rien entre elles
-   ne dit qu'on change de bloc. Leur donner chacune son dégradé referait
-   exactement le défaut qu'on corrige : le pied redeviendrait clair en haut,
-   juste sous un bas de bande sombre, et la jointure se verrait comme une
-   couture.
-
-   Le dégradé de la fin de page est donc UN SEUL, partagé en deux morceaux qui
-   se raccordent : la bande d'appel descend de v2 à v3, le pied reprend à v3 et
-   va jusqu'à v5. Le raccord tombe exactement sur v3, donc il est invisible.
-   Trois crans en tout, étalés sur ≈880 px — la pente la plus douce du site. */
-.bande-appel{
-  background:linear-gradient(180deg,var(--v2),var(--v3));
-  color:var(--sur-nuit); text-align:center;
-  /* Resserré en bas : le bouton flottait dans 74 px de vide, suivis des 96 px
-     de tête du pied et des 40 px sous le sceau — 210 px de rien entre l'action
-     et la signature. Le vide sous le bouton n'a plus qu'à le décoller du pied,
-     pas à le séparer d'un bloc dont il ne se distingue plus. */
-  padding:clamp(44px,6vw,74px) var(--marge-page) clamp(30px,3.4vw,42px);
-}
-.bande-appel h2{ color:var(--sur-nuit); font-size:clamp(23px,3.1vw,33px); font-weight:500; margin:0 0 14px; }
-.bande-appel p{ max-width:56ch; margin:0 auto clamp(24px,3vw,34px); color:var(--sur-nuit-doux); }
 
 /* ============================================================================
    MOUVEMENT RÉDUIT — respecté partout, ce n'est pas une option
