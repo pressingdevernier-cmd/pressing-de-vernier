@@ -684,6 +684,34 @@ h4{ font-size:var(--t-l); }
   .marque .mots span{ display:none; }
   .marque .mots b{ font-size:15px; letter-spacing:.09em; }
 }
+
+/* LA NAVIGATION SE RESSERRE AVANT DE SE REPLIER.
+   Ses huit entrées sont en `white-space:nowrap` et centrées : trop larges,
+   elles ne se coupent pas et ne passent pas à la ligne — elles débordent de
+   la `.zone`, des deux côtés à la fois. Mesuré à 880 px : 830 px de
+   navigation pour 795 de place, et « Nettoyage » comme « Nous trouver »
+   touchaient le bord de l'écran.
+
+   Le défaut vivait entre 861 px — juste au-dessus du seuil où la navigation
+   se replie derrière le bouton du menu — et 1000 px, où la place redevient
+   suffisante d'elle-même. Une tablette en paysage tombe en plein dedans.
+
+   C'est la GOUTTIÈRE qui cède D'ABORD : les petites capitales espacées sont
+   la voix du site, et les resserrer change le dessin de la navigation, pas
+   seulement son encombrement.
+
+   Sous 920 px la gouttière seule n'y suffit plus — il reste seize pixels de
+   trop de chaque côté à 865 px, et zéro de marge à 901 — et l'interlettrage
+   cède à son tour, de trois centièmes de cadratin. C'est la dernière bande avant que la navigation ne
+   se replie derrière le bouton du menu, et trois centièmes ne se voient pas
+   quand rien n'est là pour les comparer. */
+@media (min-width:861px) and (max-width:1040px){
+  .navigation{ gap:12px; }
+}
+@media (min-width:861px) and (max-width:920px){
+  .navigation{ gap:8px; }
+  .navigation a{ letter-spacing:.14em; }
+}
 @media (max-width:1040px){
   /* L'ANCIENNETÉ SORT DE LA BANDE. Mesuré à 900 px : le nom composé fait
      235 px de large et sa colonne 234 — il a `white-space:nowrap` et il
