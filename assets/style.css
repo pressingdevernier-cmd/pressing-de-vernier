@@ -678,8 +678,27 @@ h4{ font-size:var(--t-l); }
    ============================================================================ */
 @media (max-width:1120px){
   /* La ligne « nettoyage · blanchisserie · couture » saute la première : le
-     nom composé se suffit, et la bande a besoin de sa place pour les faits. */
+     nom composé se suffit, et la bande a besoin de sa place pour les faits.
+     Le nom descend d'un cran dans le même mouvement : il porte
+     `white-space:nowrap` et déborde par-dessus les faits dès que sa colonne
+     passe sous sa longueur. Deux points de moins lui en font vingt-huit. */
   .marque .mots span{ display:none; }
+  .marque .mots b{ font-size:15px; letter-spacing:.09em; }
+}
+@media (max-width:1040px){
+  /* L'ANCIENNETÉ SORT DE LA BANDE. Mesuré à 900 px : le nom composé fait
+     235 px de large et sa colonne 234 — il a `white-space:nowrap` et il
+     débordait donc PAR-DESSUS les faits, de soixante pixels, sans que rien
+     ne l'arrête. Le défaut vivait entre 860 et 1120 px, là où le nom est
+     encore affiché et où la bande n'a plus la place de le porter.
+
+     C'est l'ancienneté qui cède, et non le nom : elle est répétée sur la
+     plaque verte juste en dessous et dans le pied de page, où elle est un
+     argument. L'état d'ouverture et le numéro, eux, ne sont écrits nulle
+     part ailleurs en haut de page. Reste « Ouvert · jusqu'à 18h30 »,
+     175 px, et la colonne du nom repasse à 302. */
+  .ent-faits [data-depuis],
+  .ent-faits i{ display:none; }
 }
 @media (max-width:860px){
   :root{ --s6:64px; --s7:88px; }
@@ -708,13 +727,8 @@ h4{ font-size:var(--t-l); }
   .burger{ display:block; }
 
   .marque svg{ width:28px; }
-  .marque .mots b{ font-size:15px; letter-spacing:.09em; }
-  /* L'ancienneté sort de la bande : à cette largeur, le nom composé, la
-     phrase d'ouverture et le numéro ne tiennent plus à trois sur une ligne.
-     C'est l'ancienneté qui cède — elle reste sur la plaque du nom, où elle
-     est un argument, pas une information d'usage. */
-  .ent-faits [data-depuis],
-  .ent-faits i{ display:none; }
+  /* Le nom est déjà à 15 px depuis 1120 px, et l'ancienneté déjà sortie à
+     1040 px : voir plus haut. */
   .ent-faits{ font-size:10.5px; letter-spacing:.08em; }
   .ent-logo .zone{ column-gap:11px; }
   .ent-tel{ font-size:12.5px; }
