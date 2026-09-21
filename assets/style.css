@@ -1190,6 +1190,30 @@ h4{ font-size:var(--t-l); }
 .ent-metier-mots .sur-titre{ color:var(--or-clair); }
 .ent-metier-mots .chapo{ color:var(--sur-nuit-doux); }
 
+/* LA PHRASE QU'ON VIENT CHERCHER. Une page de métier a parfois UNE
+   information qui précède toutes les autres — sur Couture, c'est la cabine
+   d'essayage : aucun autre atelier du quartier n'en a, et c'est pour ça qu'on
+   vient. Noyée au milieu du chapô, elle se lit comme un détail d'intendance.
+
+   ELLE PASSE AU SERIF, ET À L'IVOIRE PLEIN. Deux choses, pas trois : la voix
+   des titres du site, et le contraste que le reste du chapô n'a pas (l'ivoire
+   adouci tient 7,5:1 sur ce vert, l'ivoire plein 12,5). Aucune couleur
+   nouvelle, aucun ornement, aucun encadré — une phrase du corps de texte qui
+   emprunte la voix d'un titre suffit à se détacher, et elle reste une phrase.
+
+   Sa taille se tient EN DESSOUS du `h1` et au-dessus du chapô : elle ne
+   dispute pas le titre, elle le prolonge. */
+.chapo-fort{
+  margin:var(--s3) 0 0; max-width:48ch;
+  font-family:var(--serif); font-weight:400;
+  font-size:clamp(20px,2.1vw,26px); line-height:1.35;
+  color:var(--vert);
+}
+.ent-metier-mots .chapo-fort{ color:var(--sur-nuit); }
+/* Le reste du chapô suit la phrase de près : c'est la suite du même propos,
+   pas un second paragraphe. */
+.chapo-fort + .chapo{ margin-top:14px; }
+
 .ent-metier-duo{
   display:grid;
   grid-template-columns:minmax(0,1fr) 280px;
@@ -1218,6 +1242,90 @@ h4{ font-size:var(--t-l); }
      sa contribution : le débord reste celui qui est écrit. */
   .ent-metier-carte{ padding-top:46px; }
 }
+
+/* ============================================================================
+   QUELQUES PRIX CHOISIS
+   ----------------------------------------------------------------------------
+   Ce n'est pas un tableau de prix réduit : c'est une liste de lignes prises
+   où il faut. La page Couture en montre quatre par section, dont trois
+   viennent d'une rubrique et la quatrième d'une autre — celles qu'on demande
+   au comptoir, et non celles qui se suivent dans le fichier. Un tableau
+   `data-tarifs` ne sait montrer que le début d'une rubrique entière.
+
+   Le libellé ET le montant viennent de data/tarifs.js : voir la section 11 de
+   assets/site.js. Rien n'est recopié ici.
+
+   La forme est celle des tableaux de prix du site — libellé à gauche, montant
+   à droite en serif vert, filet pointillé entre les lignes. Ce sont les mêmes
+   prix, ils se lisent de la même façon ; leur donner une présentation à eux
+   aurait laissé croire qu'ils se comptent autrement.
+   ============================================================================ */
+.prix-choisis{
+  max-width:62ch; margin:var(--s4) 0 0; padding:0; list-style:none;
+}
+.prix-choisis li{
+  display:flex; align-items:baseline; justify-content:space-between;
+  gap:var(--s3); padding:12px 0;
+  border-bottom:1px dotted var(--papier);
+}
+.prix-choisis li:last-child{ border-bottom:0; }
+/* La mention qui suit une liste de prix se décolle : collée sous le dernier
+   montant, elle se lit comme une cinquième ligne sans prix. */
+.prix-choisis + .note-tarif{ margin-top:var(--s3); }
+.prix-choisis span{ font-size:15px; color:var(--graphite); }
+.prix-choisis b{
+  flex:none;
+  font-family:var(--serif); font-size:var(--t-l); font-weight:600;
+  color:var(--vert); font-variant-numeric:tabular-nums; white-space:nowrap;
+}
+/* Le « dès » d'un prix minimum : même traitement que dans les tableaux. */
+.prix-choisis b i{
+  font-style:normal; font-family:var(--sans); font-size:11px; font-weight:500;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--acier-texte);
+}
+/* « Sur devis » prend la place du montant. En or GRAVÉ et non en or du site :
+   c'est du texte de 11 px, et l'or du site n'y tient que 2,97:1 sur l'ivoire
+   chaud. L'or gravé tient 4,75:1. */
+.prix-choisis .devis{
+  font-family:var(--sans); font-size:11px; font-weight:500;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--or-grave);
+}
+
+/* ============================================================================
+   LA PHRASE DE LIAISON
+   ----------------------------------------------------------------------------
+   Une ligne seule entre deux sections, pour dire ce que les deux ont en
+   commun. Sur la page Couture elle sépare les retouches du quotidien des
+   grandes occasions, et empêche de lire la seconde comme un rayon plus cher :
+   c'est le même atelier, le même soin, et la phrase est là pour le dire.
+
+   Serif italique et or gravé : c'est exactement le motif de `.accent`, la
+   respiration dorée que portent tous les titres du site. L'or du site y
+   tiendrait 2,97:1, sous le seuil de 3:1 des grands textes dès que la phrase
+   redescend à 19 px sur téléphone ; l'or gravé tient 4,75:1 à toute taille.
+
+   Elle n'est pas dans une `.section` : elle n'a ni titre ni contenu, elle est
+   ce qui reste entre deux sections. Ses marges le disent — plus serrées que
+   celles d'une section, et égales des deux côtés.
+   ============================================================================ */
+.liaison{
+  max-width:44ch; margin:0 auto; padding:clamp(30px,4vw,52px) var(--marge-page);
+  text-align:center;
+  font-family:var(--serif); font-style:italic; font-weight:400;
+  font-size:clamp(19px,2.2vw,25px); line-height:1.4;
+  color:var(--or-grave); text-wrap:balance;
+}
+/* LA LIAISON PORTE SON AIR ELLE-MÊME, des deux côtés, et les sections qui
+   l'encadrent retirent le leur. Sans ça elle reçoit le retrait bas de la
+   première section EN PLUS du sien — 116 px au-dessus, 52 en dessous — et une
+   phrase qui dit ce que deux sections ont en commun se retrouve poussée
+   contre la seconde.
+
+   `:has()` n'est pas supporté partout ; là où il manque, la première règle
+   est ignorée et l'on retombe sur l'espacement d'avant, plus large en haut.
+   C'est un défaut d'équilibre, pas une casse. */
+.section:has(+ .liaison){ padding-bottom:0; }
+.liaison + .section{ padding-top:0; }
 
 /* ============================================================================
    L APPEL — le bloc « une urgence ? », et l invitation a telephoner

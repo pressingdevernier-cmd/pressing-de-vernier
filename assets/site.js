@@ -7,12 +7,12 @@
      3. écrire partout les coordonnées et les horaires
      4. afficher « Ouvert » ou « Fermé » selon l'heure qu'il est
      5. construire les tableaux de prix
-     6. afficher les planches à la craie, sur la page Couture
+     6. afficher les planches à la craie (aucune page ne les emploie aujourd'hui)
      7. ranger, chercher et situer, sur la page Tarifs
      8. donner à Google l'adresse et les horaires du magasin
      9. mesurer le nom de l'enseigne et caler son cadre
     10. dresser les six métiers, sur la page d'accueil
-    11. poser un prix isolé là où on le cite, hors d'un tableau
+    11. citer quelques prix choisis, hors d'un tableau
     12. résumer les horaires sur une ligne
 
    Vous n'avez normalement jamais besoin d'y toucher.
@@ -988,14 +988,21 @@ document.querySelectorAll('[data-carte-metier]').forEach(hote => {
 /* ═══════════════════════════════════════════════════════════════════════════
    11 · UN PRIX, LU DANS data/tarifs.js PAR SON LIBELLÉ
    ----------------------------------------------------------------------------
-   Deux pages affichent un montant hors d'un tableau : la pesée de la page
-   Blanchisserie et les deux finitions de la page Repassage. Aucune des deux
-   n'écrit de chiffre — elles citent une ligne par son libellé exact, comme
-   le font les repères des planches à la craie. Un prix se change à un seul
-   endroit, dans data/tarifs.js.
+   Une page de métier montre parfois quelques prix qui ne forment pas une
+   section : ni les quatre premiers d'une rubrique, ni tous de la même. La
+   page Couture en est l'exemple — trois lignes de « Retouches — Pantalons »
+   et une de « Retouches — Robe simple », parce que ce sont celles-là qu'on
+   demande, et pas parce qu'elles se suivent dans le fichier.
 
-   Si le libellé change là-bas sans être changé ici, la page le dit dans la
-   console plutôt que d'afficher un montant faux ou un blanc.
+   ELLES SONT CITÉES PAR LEUR LIBELLÉ, jamais recopiées. Le montant ET le
+   libellé affichés viennent de data/tarifs.js : corriger « Ourlet simple
+   piqué machine » là-bas le corrige ici, et un prix se change à un seul
+   endroit. C'est la mécanique des repères des planches à la craie, appliquée
+   à une liste.
+
+   Si le libellé change là-bas sans être changé ici, la ligne disparaît et la
+   page le dit dans la console — plutôt qu'afficher un intitulé sans montant,
+   ou pire, un montant faux.
    ═══════════════════════════════════════════════════════════════════════════ */
 function ligneDeTarif(idSection, libelle) {
   if (typeof TARIFS === 'undefined') return null;
@@ -1008,6 +1015,33 @@ function ligneDeTarif(idSection, libelle) {
   }
   return ligne;
 }
+
+/* Un `<li>` qui porte `data-section` et `data-ligne` reçoit le libellé et le
+   montant de cette ligne. Un `<li>` qui n'en porte pas est laissé tel quel :
+   c'est ainsi que la page Couture ajoute « Pièces uniques ou complexes : sur
+   devis » au bas de sa liste, qui n'est pas un article de la liste de prix. */
+document.querySelectorAll('[data-prix-choisis] [data-ligne]').forEach(li => {
+  const ligne = ligneDeTarif(li.dataset.section, li.dataset.ligne);
+  if (!ligne) { li.remove(); return; }
+
+  const nom = document.createElement('span');
+  nom.textContent = ligne.fr;
+
+  const montant = document.createElement('b');
+  if (ligne.devis) {
+    montant.className = 'devis';
+    montant.textContent = 'Sur devis';
+  } else {
+    if (ligne.des) {
+      const des = document.createElement('i');
+      des.textContent = 'dès';
+      montant.append(des, ' ');
+    }
+    montant.append(formatPrix(ligne.prix));
+  }
+
+  li.append(nom, montant);
+});
 
 
 

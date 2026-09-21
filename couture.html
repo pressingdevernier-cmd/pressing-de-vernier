@@ -131,72 +131,80 @@
 
      LA CARTE VIENT DE METIERS dans assets/site.js, comme les six cartes de
      l'accueil. Son texte, son illustration et ses proportions ne sont ecrits
-     nulle part ailleurs. -->
+     nulle part ailleurs.
+
+     LA CABINE D'ESSAYAGE EST LA PREMIERE PHRASE, ET ELLE EST DETACHEE. C'est
+     ce que personne d'autre n'offre dans le quartier, et c'est pour ca qu'on
+     vient : voir `.chapo-fort` dans assets/style.css. -->
 <section class="ent-metier">
 <div class="zone ent-metier-duo">
   <div class="ent-metier-mots revele">
     <p class="sur-titre">Notre atelier, sur place</p>
     <h1>Retoucher, r&#233;parer,<br><span class="accent">transformer, cr&#233;er.</span></h1>
-    <p class="chapo">L&#8217;atelier est dans le magasin. Nous voyons la pi&#232;ce, nous vous disons ce qui est possible, et le travail se fait ici.</p>
+    <p class="chapo-fort">Une cabine d&#8217;essayage est &#224; votre disposition sur place.</p>
+    <p class="chapo">Venez avec la pi&#232;ce&#160;: nous prenons vos mesures sur vous, ou nous partons des v&#244;tres si vous les avez d&#233;j&#224;.</p>
   </div>
   <div class="ent-metier-carte revele" data-delai="2" data-carte-metier="couture"></div>
 </div>
 </section>
 
-<!-- ═══════════════ CE QUE NOUS FAISONS ═══════════════ -->
+<!-- ═══════════════ LES RETOUCHES DU QUOTIDIEN ═══════════════
+     Quatre prix seulement, et ce ne sont ni les quatre premiers d'une
+     rubrique ni tous de la meme : trois viennent des pantalons, le quatrieme
+     des robes. Ce sont ceux qu'on demande au comptoir. Le libelle comme le
+     montant sont lus dans data/tarifs.js — voir la section 11 de
+     assets/site.js. Rien n'est recopie ici. -->
 <section class="section">
   <div class="zone">
     <div class="revele" style="max-width:640px">
       <div class="filet court"><i></i></div>
-      <h2>Ce que nous <span class="accent">savons faire.</span></h2>
-      <ul class="dit-lignes">
-        <li><b>Retouches courantes</b> &#8212; ourlets, fermetures &#233;clair, reprises de taille, manches raccourcies. C&#8217;est l&#8217;essentiel de ce qu&#8217;on nous apporte.</li>
-        <li><b>R&#233;parations</b> &#8212; trous, accrocs, fonds de poche, doublures d&#233;chir&#233;es ou &#224; refaire enti&#232;rement.</li>
-        <li><b>Rideaux et linge de maison</b> &#8212; ourlets et reprises sur les pi&#232;ces de la maison, aux dimensions que vous nous donnez.</li>
-      </ul>
+      <h2>Toutes les retouches <span class="accent">du quotidien.</span></h2>
+      <p class="dit">Le pantalon de tous les jours, la robe qu&#8217;on aime, la veste qui ne tombe plus bien&#160;: r&#233;par&#233;s et ajust&#233;s, ils se portent encore des ann&#233;es. Si &#231;a se coud, &#231;a se retouche ici &#8212; ourlets de toutes sortes, fermetures, ajustements, doublures, r&#233;parations, sur tous vos textiles.</p>
     </div>
+    <ul class="prix-choisis revele" data-prix-choisis>
+      <li data-section="retouches-pantalons" data-ligne="Ourlet simple piqu&#233; machine"></li>
+      <li data-section="retouches-pantalons" data-ligne="Fermeture &#233;clair"></li>
+      <li data-section="retouches-pantalons" data-ligne="Ajuster taille ou hanches"></li>
+      <li data-section="retouches-robe" data-ligne="Ourlet robe droite"></li>
+    </ul>
+  </div>
+</section>
 
-    <!-- L'ENCART UNIQUE, le meme sur les six pages. Il remplace « Un doute ? »
-         et « Une urgence ? », qui posaient le meme bouton sous deux
-         paragraphes disant la meme chose. -->
+<!-- ═══════════════ LA LIAISON ═══════════════
+     Elle empeche de lire la section suivante comme un rayon plus cher : c'est
+     le meme atelier et le meme soin. -->
+<p class="liaison">Quel que soit le v&#234;tement, le m&#234;me soin.</p>
+
+<!-- ═══════════════ LES GRANDES OCCASIONS ═══════════════ -->
+<section class="section">
+  <div class="zone">
+    <div class="revele" style="max-width:640px">
+      <div class="filet court"><i></i></div>
+      <h2>Les grandes <span class="accent">occasions.</span></h2>
+      <p class="dit">La robe de mari&#233;e, le costume de c&#233;r&#233;monie, la tenue de soir&#233;e, le costume de sc&#232;ne&#160;: chaque pi&#232;ce est ajust&#233;e sur vous, pour &#234;tre parfaite le jour o&#249; vous la porterez.</p>
+    </div>
+    <!-- Le dernier <li> ne porte pas de `data-ligne` : il n'est pas un
+         article de la liste de prix, et assets/site.js le laisse tel quel. -->
+    <ul class="prix-choisis revele" data-prix-choisis>
+      <li data-section="retouches-soiree" data-ligne="Ourlet simple sans doublure"></li>
+      <li data-section="retouches-soiree" data-ligne="Ourlet simple avec doublure"></li>
+      <li data-section="retouches-soiree" data-ligne="Fermeture &#233;clair invisible"></li>
+      <li data-section="retouches-soiree" data-ligne="Ajuster taille"></li>
+      <li><span>Pi&#232;ces uniques ou complexes</span><b class="devis">Sur devis</b></li>
+    </ul>
+
+    <!-- La mention vaut pour les DEUX listes de prix, celle du quotidien
+         comme celle des grandes occasions : elle est ecrite une fois, ici, et
+         non repetee sous chacune. -->
+    <p class="note-tarif">Prix indicatifs. La mati&#232;re, la doublure et l&#8217;&#233;tat de la pi&#232;ce font varier le tarif.</p>
+    <p style="margin-top:var(--s3)"><a class="bouton plein" href="tarifs.html">Toute la liste de prix</a></p>
+
+    <!-- L'ENCART UNIQUE, le meme sur les six pages. -->
     <div class="appel revele">
       <p class="appel-mot">Une question, une urgence&#160;? Contactez-nous.</p>
       <a class="bouton plein" href="tel:+41223416818" data-tel></a>
     </div>
   </div>
-</section>
-
-<!-- ═══════════════ LES PRIX, SUR LA PIECE ═══════════════
-     Deux planches seulement, choisies dans l'attribut data-planches. Les
-     autres dessins restent dans assets/vetements.js. Aucun prix n'est ecrit
-     ici : chaque repere cite une ligne de data/tarifs.js par son libelle. -->
-<section class="section serree">
-<div class="zone">
-  <div class="revele" style="max-width:640px">
-    <div class="filet court"><i></i></div>
-    <h2>Les tarifs <span class="accent">les plus demand&#233;s.</span></h2>
-  </div>
-  <div class="planches" data-planches="retouches-jupes,retouches-manteaux"></div>
-  <p class="note-tarif">Prix indicatifs. La mati&#232;re, la doublure et l&#8217;&#233;tat de la pi&#232;ce font varier le tarif&#160;; le prix ferme est convenu au d&#233;p&#244;t, avant que le travail commence.</p>
-  <p style="margin-top:var(--s3)"><a class="bouton plein" href="tarifs.html">Toute la liste de prix</a></p>
-</div>
-</section>
-
-<!-- ═══════════════ LE SUR-MESURE ═══════════════
-     La seule chose que personne d'autre ne propose a Geneve. -->
-<section class="section serree">
-<div class="zone">
-  <div class="revele" style="max-width:640px">
-    <div class="filet court"><i></i></div>
-    <p class="sur-titre">Sur mesure</p>
-    <h2>Ce que peu d&#8217;ateliers<br><span class="accent">acceptent encore de faire.</span></h2>
-      <ul class="dit-lignes">
-        <li><b>Dans votre tissu</b> &#8212; vous avez une &#233;toffe et une id&#233;e&#160;: nous en cousons une chemise ou une robe, &#224; vos mesures.</li>
-        <li><b>La transformation compl&#232;te</b> &#8212; reprendre une pi&#232;ce pour lui donner une autre forme, une autre longueur, un autre usage.</li>
-        <li><b>Broderie et patchs</b> &#8212; initiales, &#233;cussons, patchs&#160;: pos&#233;s &#224; la main, sur la pi&#232;ce de votre choix.</li>
-      </ul>
-  </div>
-</div>
 </section>
 
 </main>
@@ -270,7 +278,12 @@
 
 <script src="data/etablissement.js"></script>
 <script src="data/tarifs.js"></script>
-<script src="assets/vetements.js"></script>
+<!-- assets/vetements.js n'est plus charge : les planches a la craie sont
+     sorties de cette page. Le fichier RESTE dans le projet, les dessins y
+     sont intacts, et la section 6 de assets/site.js sait encore les poser.
+     Pour les remettre : rajouter cette ligne de script, et un conteneur
+     <div class="planches" data-planches="..."> dans la page.
+<script src="assets/vetements.js"></script> -->
 <script src="assets/site.js"></script>
 </body>
 </html>
