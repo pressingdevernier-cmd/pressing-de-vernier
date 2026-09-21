@@ -1135,9 +1135,21 @@ h4{ font-size:var(--t-l); }
        disputer la page au titre : c'est un jeton de reconnaissance, le titre
        est la page. La gouttière va de 32 à 72 px.
 
-     LA CARTE EST À GAUCHE    on l'a cliquée à gauche de son texte sur
-       l'accueil, elle est à gauche de son texte ici. Le titre, lui, garde le
-       bord où commencent toutes les lignes de la page.
+     LA CARTE EST À DROITE, ET LE TEXTE À GAUCHE. Le titre prend le bord où
+       commencent toutes les lignes de la page — celui du sur-titre qui
+       l'annonce, celui des intertitres en dessous, celui de la colonne des
+       horaires tout en bas. Une page qui s'ouvre par une étiquette fait
+       commencer sa première ligne trois cent cinquante pixels plus à droite
+       que toutes les suivantes.
+       On lit le texte, PUIS on voit la carte : elle confirme qu'on est bien
+       là où l'on a cliqué, elle ne l'annonce pas.
+
+       L'ORDRE DE L'ÉCRAN EST DEVENU CELUI DU BALISAGE, et les deux règles de
+       placement explicite ont disparu avec. Le texte est écrit en premier —
+       le `<h1>` d'une page ne peut pas être précédé d'une étiquette
+       décorative dans le document — et il est maintenant le premier à
+       l'écran. L'empilement sur téléphone suit tout seul : le titre, puis la
+       carte.
 
      LE DÉBORD EST FIXE, ET C'EST TOUT LE MÉCANISME. Premier essai : la carte
        recevait une marge basse négative et s'alignait en haut. Le débord
@@ -1180,18 +1192,10 @@ h4{ font-size:var(--t-l); }
 
 .ent-metier-duo{
   display:grid;
-  grid-template-columns:280px minmax(0,1fr);
+  grid-template-columns:minmax(0,1fr) 280px;
   gap:clamp(32px,5vw,72px);
   align-items:start;
 }
-/* L'ORDRE DU BALISAGE N'EST PAS L'ORDRE DE L'ÉCRAN. Le texte est écrit en
-   premier — le `<h1>` d'une page ne peut pas être précédé d'une étiquette
-   décorative dans le document — et il est renvoyé en colonne 2. Sur petit
-   écran les deux blocs s'empilent dans l'ordre du balisage : le titre, puis
-   la carte. C'est le bon ordre pour lire, et c'est pour ça qu'il est écrit
-   ainsi. */
-.ent-metier-mots { grid-row:1; grid-column:2; }
-.ent-metier-carte{ grid-row:1; grid-column:1; }
 
 /* LA CARTE PEND DU BAS DE LA BANDE, ET DÉBORDE D'UN NOMBRE CHOISI.
    `align-self:end` plus une marge basse négative de « débord + retrait bas » :
@@ -1209,11 +1213,9 @@ h4{ font-size:var(--t-l); }
 @media (max-width:860px){
   .page-metier{ --debord-carte:66px; --pad-bas-entree:28px; }
   .ent-metier-duo{ grid-template-columns:1fr; }
-  .ent-metier-mots,
-  .ent-metier-carte{ grid-row:auto; grid-column:1; }
   /* Empilée, la carte n'a plus de colonne en face : le retrait dégage la
-     pince du chapô qui la précède maintenant. Il s'ajoute à la hauteur de la
-     carte ET à sa contribution : le débord reste celui qui est écrit. */
+     pince du chapô qui la précède. Il s'ajoute à la hauteur de la carte ET à
+     sa contribution : le débord reste celui qui est écrit. */
   .ent-metier-carte{ padding-top:46px; }
 }
 
