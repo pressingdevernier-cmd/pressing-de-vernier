@@ -110,6 +110,20 @@ const TARIFS = [
       en: "We take the item in and give you a price once we have examined it."
     },
     lignes: [
+      /* LES TAPIS AURONT BIENTÔT UN PRIX AU MÈTRE CARRÉ. Il n'est pas encore
+         arrêté ; en attendant, ils restent sur devis comme les trois autres.
+
+         POUR LE POSER LE JOUR VENU : remplacer `devis: true` par le montant
+         et son unité, sur le modèle des rideaux de la rubrique
+         « Blanchisserie — Linge de maison », plus bas dans ce fichier :
+
+             { fr: "Tapis", en: "Rugs", prix: 00,
+               unite: { fr: "le m²", en: "per m²" } },
+
+         Ajouter `des: true` si c'est un prix minimum — il s'affichera
+         « dès 00.– ». Rien d'autre à changer : la page Cuir et la page Tarifs
+         lisent toutes deux cette ligne, et la mention « Sur devis »
+         disparaîtra d'elle-même. */
       { fr: "Tapis",                              en: "Rugs",                          devis: true },
       { fr: "Vêtements et articles en cuir",      en: "Leather clothing and goods",    devis: true },
       { fr: "Daim",                               en: "Suede",                         devis: true },
