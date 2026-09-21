@@ -135,34 +135,56 @@
 <section class="ent-metier">
 <div class="zone ent-metier-duo">
   <div class="ent-metier-mots revele">
-    <p class="sur-titre">Entreprises et collectivit&#233;s</p>
-    <h1>Du linge en volume,<br><span class="accent">un seul interlocuteur.</span></h1>
-    <p class="chapo">Restaurants, entreprises, cr&#232;ches, clubs sportifs, boutiques de v&#234;tements&#160;: d&#232;s qu&#8217;il y a du linge &#224; entretenir, des tenues &#224; marquer ou de la couture en s&#233;rie, nous mettons en place une organisation &#224; votre rythme.</p>
+    <p class="sur-titre">Entreprises et commerces</p>
+    <h1>Des tenues de vos &#233;quipes<br><span class="accent">aux ourlets de vos clients.</span></h1>
+    <p class="chapo">Un seul contact pour votre linge et vos retouches, qui conna&#238;t vos habitudes et s&#8217;adapte &#224; votre activit&#233;.</p>
   </div>
   <div class="ent-metier-carte revele" data-delai="2" data-carte-metier="professionnels"></div>
 </div>
 </section>
 
-<!-- ═══════════════ NOS PRESTATIONS ═══════════════
-     « Broderies et patchs » et « Travaux de couture recurrents » sont sortis :
-     le chapo annonce deja les tenues a marquer et la couture en serie, et
-     « Retouches en serie » dit le reste. -->
+<!-- ═══════════════ LES DEUX VOLETS ═══════════════
+     Deux clienteles qui n'ont rien a se dire : le restaurant qui fait laver
+     ses nappes, et la boutique qui fait ourler les pantalons de ses clients.
+     Deux colonnes et non deux sections l'une sous l'autre — elles ne se
+     suivent pas, elles s'opposent. Voir « LES DEUX VOLETS » dans
+     assets/style.css. -->
 <section class="section">
   <div class="zone">
-    <div class="revele" style="max-width:640px">
-      <div class="filet court"><i></i></div>
-      <h2>Le linge et la couture, <span class="accent">&#224; votre rythme.</span></h2>
+
+    <div class="volets">
+
+      <div class="revele">
+        <div class="filet court"><i></i></div>
+        <h2>Pour les <span class="accent">&#233;tablissements</span></h2>
+        <p class="dit">Restaurants, h&#244;tels, entreprises, cr&#232;ches, clubs.</p>
+        <ul class="dit-lignes">
+          <li><b>Linge</b> &#8212; de table, de cuisine, de lit et de bain, lav&#233; et repass&#233;.</li>
+          <li><b>Tenues de travail</b> &#8212; nettoy&#233;es et entretenues r&#233;guli&#232;rement.</li>
+          <li><b>Marquage</b> &#8212; le nom de votre restaurant sur les tabliers, l&#8217;&#233;cusson de votre club sur les vestes, le pr&#233;nom de vos chefs brod&#233; sur leur tenue.</li>
+        </ul>
+      </div>
+
+      <div class="revele" data-delai="1">
+        <div class="filet court"><i></i></div>
+        <h2>Pour les boutiques <span class="accent">de v&#234;tements</span></h2>
+        <ul class="dit-lignes">
+          <li><b>Retouches en s&#233;rie</b> &#8212; ourlets et ajustements pour vos clients, faits sur place par notre couturi&#232;re.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- CE QUI VAUT POUR LES DEUX. Ni au restaurant ni a la boutique : aux
+         deux. La ligne passe donc sous les colonnes, sur toute la largeur, et
+         un filet la detache. -->
+    <div class="volets-commun revele">
       <ul class="dit-lignes">
-        <li><b>Entretien r&#233;gulier du linge</b> &#8212; lavage, repassage et entretien du linge de table, de cuisine, de lit et de bain.</li>
-        <li><b>V&#234;tements et tenues de travail</b> &#8212; nettoyage et entretien r&#233;gulier des tenues professionnelles.</li>
-        <li><b>Retouches en s&#233;rie</b> &#8212; ourlets et retouches en volume pour les boutiques de v&#234;tements.</li>
-        <li><b>Collecte et livraison</b> &#8212; nous les &#233;tudions au cas par cas, selon le volume, la fr&#233;quence, le trajet et l&#8217;accessibilit&#233;. Nous intervenons dans les environs de Vernier.</li>
+        <li><b>Collecte et livraison</b> &#8212; dans les environs de Vernier, &#224; organiser ensemble.</li>
       </ul>
     </div>
 
-    <!-- L'ENCART UNIQUE, le meme sur les six pages. Il remplace « Un doute ? »
-         et « Une urgence ? », qui posaient le meme bouton sous deux
-         paragraphes disant la meme chose. -->
+    <!-- L'ENCART UNIQUE, le meme sur les six pages. -->
     <div class="appel revele">
       <p class="appel-mot">Une question, une urgence&#160;? Contactez-nous.</p>
       <a class="bouton plein" href="tel:+41223416818" data-tel></a>
@@ -170,18 +192,17 @@
   </div>
 </section>
 
-<!-- ═══════════════ LES CONDITIONS ═══════════════
-     C'est la section des prix de cette page : aucune ligne de data/tarifs.js
-     ne concerne le volume, et le montant se convient au cas par cas. Le sceau
-     geant qui ouvrait ce bloc est parti — il est deja au pied de la page,
-     cinq cents pixels plus bas — et le bouton du telephone aussi : l'encart
-     unique le pose vingt lignes au-dessus. -->
+<!-- ═══════════════ LES TARIFS ═══════════════
+     PAS DE BOUTON « Toute la liste de prix » ici, et c'est la seule page qui
+     n'en a pas : la liste publique est celle des particuliers, a la piece.
+     Un tarif professionnel se negocie au volume, et renvoyer vers des prix
+     qui ne sont pas les siens serait une fausse piste. -->
 <section class="section serree">
 <div class="zone">
   <div class="revele" style="max-width:640px">
     <div class="filet court"><i></i></div>
-    <h2>Des conditions adapt&#233;es <span class="accent">&#224; votre volume.</span></h2>
-    <p class="chapo">Les tarifs professionnels se discutent selon le volume, la fr&#233;quence et la prestation. Appelez-nous pour &#233;tudier une solution et des conditions adapt&#233;es.</p>
+    <h2>Des tarifs adapt&#233;s <span class="accent">&#224; vos besoins.</span></h2>
+    <p class="dit">Ils se fixent selon le volume et la fr&#233;quence.</p>
   </div>
 </div>
 </section>

@@ -1244,6 +1244,47 @@ h4{ font-size:var(--t-l); }
 }
 
 /* ============================================================================
+   LES DEUX VOLETS — page Professionnels
+   ----------------------------------------------------------------------------
+   Cette page s'adresse à DEUX clientèles qui n'ont rien à se dire : le
+   restaurant qui fait laver ses nappes, et la boutique qui fait ourler les
+   pantalons de ses clients. L'une vient pour du linge, l'autre pour de la
+   couture, et chacune doit se reconnaître sans lire ce qui concerne l'autre.
+
+   DEUX COLONNES, ET NON DEUX SECTIONS L'UNE SOUS L'AUTRE. C'est le cas où
+   deux colonnes disent quelque chose : elles ne se suivent pas, elles
+   s'opposent. Empilées, la seconde se lirait comme la suite de la première
+   — « et en plus, nous faisons des retouches » — alors qu'elle s'adresse à
+   quelqu'un d'autre.
+
+   ELLES SONT INÉGALES, ET C'EST HONNÊTE : trois lignes à gauche, une à
+   droite. Il y a plus à dire aux établissements. Étoffer le volet des
+   boutiques pour équilibrer le dessin aurait été écrire pour la mise en page.
+
+   Les deux colonnes partent du même bord haut, sinon les deux intitulés ne
+   tombent pas sur la même ligne — et deux titres de même rang qui se ratent
+   de vingt pixels se voient tout de suite.
+   ============================================================================ */
+.volets{
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:var(--s4) clamp(var(--s4),5vw,var(--s6));
+  align-items:start;
+}
+@media (max-width:860px){
+  .volets{ grid-template-columns:1fr; gap:var(--s5); }
+}
+
+/* CE QUI VAUT POUR LES DEUX. La collecte et la livraison ne sont ni au
+   restaurant ni à la boutique : elles sont aux deux. La ligne passe donc
+   sous les colonnes, sur toute la largeur, et un filet la détache — sans
+   lui, elle se lirait comme la quatrième ligne de la colonne de gauche. */
+.volets-commun{
+  margin-top:var(--s5); padding-top:var(--s4);
+  border-top:1px solid var(--papier);
+}
+.volets-commun .dit-lignes{ margin-top:0; }
+
+/* ============================================================================
    QUELQUES PRIX CHOISIS
    ----------------------------------------------------------------------------
    Ce n'est pas un tableau de prix réduit : c'est une liste de lignes prises
