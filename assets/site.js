@@ -170,6 +170,40 @@ document.querySelectorAll('[data-horaires-pied]').forEach(ul => {
   });
 });
 
+/* LES HORAIRES GROUPÉS — trois lignes au lieu de sept
+   Sept lignes dont cinq identiques, c'est un tableau, pas une information.
+   Les jours qui se suivent et qui ont les mêmes plages sont réunis sur une
+   ligne : « Lundi – Vendredi », « Samedi », « Dimanche ».
+
+   Le groupement est CALCULÉ, jamais écrit en dur : fermer le mercredi dans
+   data/etablissement.js coupe le groupe en deux tout seul, et le pied de page
+   dit la vérité sans qu'on y touche. */
+function semaineGroupee() {
+  const groupes = [];
+  SEMAINE.forEach(jour => {
+    const heures = plagesLisibles(HORAIRES[jour] || []);
+    const dernier = groupes[groupes.length - 1];
+    if (dernier && dernier.heures === heures) dernier.fin = jour;
+    else groupes.push({ debut: jour, fin: jour, heures: heures });
+  });
+  return groupes;
+}
+
+document.querySelectorAll('[data-horaires-groupes]').forEach(ul => {
+  ul.innerHTML = '';
+  semaineGroupee().forEach(g => {
+    const li = document.createElement('li');
+    const jours = document.createElement('span');
+    jours.textContent = g.debut === g.fin
+      ? JOURS[g.debut]
+      : JOURS[g.debut] + ' – ' + JOURS[g.fin];
+    const heures = document.createElement('span');
+    heures.textContent = g.heures;
+    li.append(jours, heures);
+    ul.append(li);
+  });
+});
+
 /* Le jour en cours est mis en valeur */
 document.querySelectorAll('[data-jour]').forEach(el => {
   if (Number(el.dataset.jour) === new Date().getDay()) el.classList.add('aujourdhui');
@@ -190,6 +224,17 @@ document.querySelectorAll('[data-adresse-lignes]').forEach(el => {
     ETABLISSEMENT.rue, document.createElement('br'),
     ETABLISSEMENT.codePostal + ' ' + ETABLISSEMENT.ville, document.createElement('br'),
     ETABLISSEMENT.canton + ', ' + ETABLISSEMENT.pays
+  );
+});
+
+/* L'adresse du pied : la rue, puis le code postal et la ville. Le canton et le
+   pays sont dans les mentions légales trois lignes plus bas — les répéter ici
+   ferait une ligne de plus sans rien apprendre à personne. */
+document.querySelectorAll('[data-adresse-2l]').forEach(el => {
+  el.innerHTML = '';
+  el.append(
+    ETABLISSEMENT.rue, document.createElement('br'),
+    ETABLISSEMENT.codePostal + ' ' + ETABLISSEMENT.ville
   );
 });
 
@@ -876,26 +921,69 @@ const METIERS = [
     texte: "Solutions sur mesure pour entreprises, hôtels, restaurants et professions exigeantes." }
 ];
 
+/* LA CARTE, ÉCRITE UNE SEULE FOIS POUR SES DEUX EMPLOIS.
+   Elle sert à deux endroits : accrochée à la tringle sur l'accueil, et seule
+   en tête de sa propre page de métier. C'est le MÊME objet, pas deux objets
+   qui se ressemblent — c'est tout l'intérêt : on doit reconnaître la carte
+   qu'on vient de cliquer.
+
+   Trois choses seulement changent entre les deux emplois, et chacune a sa
+   raison :
+
+     · L'ENVELOPPE. Sur l'accueil c'est un `<a>` : la carte mène quelque part.
+       Sur sa propre page c'est un `<div>` — un lien vers la page où l'on se
+       trouve déjà n'est pas un lien, c'est une impasse.
+
+     · LE TITRE. `<h2>` sur l'accueil, où les six cartes sont les six entrées
+       d'une section et forment un vrai plan. `<p class="tr-nom">` sur la page
+       de métier, où la carte n'introduit aucune section : elle rappelle. Un
+       titre de plus dans le plan y enverrait un lecteur d'écran vers un
+       intitulé qui ne mène nulle part.
+
+     · « VOIR ». Il disparaît sur la page de métier, pour la même raison que
+       le lien.
+
+   Tout le reste — le vert et son dégradé, le liseré, la pince, le cadrage de
+   l'illustration, les textes — vient d'un seul endroit. */
+function carteMetier(m, o) {
+  const balise = o.lien ? 'a' : 'div';
+  return '<' + balise + ' class="tr-carte' + (o.lien ? '' : ' tr-carte-seule') + '"'
+       +   (o.lien ? ' href="' + m.page + '"' : '')
+       +   ' style="--vue:' + m.vue + '">'
+       +   '<span class="tr-pince" aria-hidden="true"></span>'
+       +   '<span class="tr-vue">'
+       +     '<img src="' + (o.racine || '') + 'assets/illustrations/' + m.cle + '.webp"'
+       +          ' width="' + m.l + '" height="' + m.h + '"'
+       +          ' alt="' + m.alt + '"' + (o.differe ? ' loading="lazy"' : '') + ' decoding="async">'
+       +   '</span>'
+       +   (o.lien ? '<h2>' + m.titre + '</h2>'
+                   : '<p class="tr-nom">' + m.titre + '</p>')
+       +   '<span class="tr-filet"></span>'
+       +   '<p>' + m.texte + '</p>'
+       +   (o.lien ? '<span class="tr-voir"><i></i>Voir</span>' : '')
+       + '</' + balise + '>';
+}
+
+/* LES SIX CARTES DE L'ACCUEIL, à la tringle.
+   Les deux premières sont visibles d'emblée : elles se chargent tout de
+   suite. Les quatre autres attendent d'approcher de l'écran. */
 const zoneCartes = document.getElementById('cartes-metiers');
 
 if (zoneCartes) {
-
-  /* Les deux premières cartes sont visibles d'emblée : elles se chargent tout
-     de suite. Les quatre autres attendent d'approcher de l'écran. */
-  zoneCartes.innerHTML = METIERS.map((m, i) =>
-      '<a class="tr-carte" href="' + m.page + '" style="--vue:' + m.vue + '">'
-    +   '<span class="tr-pince" aria-hidden="true"></span>'
-    +   '<span class="tr-vue">'
-    +     '<img src="assets/illustrations/' + m.cle + '.webp" width="' + m.l + '" height="' + m.h + '"'
-    +          ' alt="' + m.alt + '"' + (i < 2 ? '' : ' loading="lazy"') + ' decoding="async">'
-    +   '</span>'
-    +   '<h2>' + m.titre + '</h2>'
-    +   '<span class="tr-filet"></span>'
-    +   '<p>' + m.texte + '</p>'
-    +   '<span class="tr-voir"><i></i>Voir</span>'
-    + '</a>').join('');
-
+  zoneCartes.innerHTML = METIERS
+    .map((m, i) => carteMetier(m, { lien: true, differe: i >= 2 }))
+    .join('');
 }
+
+/* LA CARTE SEULE, en tête de sa page de métier.
+   La page dit de quel métier il s'agit par `data-carte-metier="couture"` ; le
+   texte, l'illustration et les proportions viennent de METIERS, comme sur
+   l'accueil. Aucune page de métier n'écrit son propre texte de carte. */
+document.querySelectorAll('[data-carte-metier]').forEach(hote => {
+  const m = METIERS.find(x => x.cle === hote.dataset.carteMetier);
+  if (!m) return;
+  hote.innerHTML = carteMetier(m, { lien: false, differe: false });
+});
 
 /* ═══════════════════════════════════════════════════════════════════════════
    11 · UN PRIX, LU DANS data/tarifs.js PAR SON LIBELLÉ

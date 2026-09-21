@@ -32,13 +32,33 @@
   --acier-texte:   #5A686C;   /* 5,22:1 sur ivoire                 */
   --blanc:         #FFFFFF;
 
-  /* ---- LA PLAQUE ------------------------------------------------------
-     Le vert des objets qui portent de l'or : les six cartes de la tringle,
-     et l'enseigne en tete des pages de metier. Ce n'est pas un aplat — le
-     bord haut prend la lumiere, le bas s'enfonce ; sans ce degrade la
-     plaque parait decoupee dans du carton.                               */
-  --carte-haut:    #0C2C21;
-  --carte-bas:     #051C13;
+  /* Le trait du papier millimétré. Sorti en jeton pour que la page
+     d'accueil puisse le passer à l'or sans toucher aux huit autres. */
+  --trait-quadrillage: rgba(35,40,37,.05);
+
+  /* ---- LE SYSTÈME DU VERT ---------------------------------------------
+     UNE seule rampe pour toutes les surfaces vertes du site. Cinq crans
+     d'une même teinte (149–152°), du plus clair au plus sombre. Le cran 5
+     est --vert-nuit : la rampe ne remplace pas la palette, elle la
+     prolonge vers le haut.
+
+     Chaque surface verte pioche DEUX crans dans cette rampe, et c'est le
+     seul réglage qui la distingue des autres. Même famille, même grain,
+     même sens de lumière — seule l'amplitude change. Voir le bloc
+     « LES SURFACES VERTES », plus bas, pour le détail et la raison de
+     chaque amplitude.                                                     */
+  --v1: #16402B;   /* cime   — la lumière tombe ici              */
+  --v2: #103322;
+  --v3: #0B2718;
+  --v4: #071E12;
+  --v5: #04180F;   /* fond   — l'ombre. Identique à --vert-nuit  */
+
+  /* Le grain : une turbulence fractale, sans couleur propre. Il donne de la
+     matière au vert sans le déplacer d'un degré de teinte. 14 % est le
+     point où la trame cesse d'être visible comme trame et devient du
+     tissu ; au-delà elle se met à grésiller sur les grandes surfaces.     */
+  --grain-tissu: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+  --grain-force: .14;
 
   /* ---- TEXTES SUR FOND SOMBRE ---------------------------------------- */
   --sur-nuit:      #F6F3EC;
@@ -205,6 +225,120 @@ h4{ font-size:var(--t-l); }
 .sombre .bouton.vide:hover{ background:rgba(201,162,77,.14); }
 
 /* ============================================================================
+   LE PAPIER DE L'ACCUEIL — un ivoire plus chaud
+   ----------------------------------------------------------------------------
+   L'ivoire du site (#F6F3EC) est un blanc cassé neutre : à côté du vert et de
+   l'or, il tire au gris. Sur l'accueil il passe à #F3ECDC, qui est le même
+   ivoire décalé de six degrés vers le jaune — la couleur d'un papier qui a
+   vieilli, pas une couleur nouvelle.
+
+   LA LIMITE EST FIXÉE PAR LE CONTRASTE, pas par le goût. Deux jetons de texte
+   du site sont déjà réglés au ras du seuil de 4,5:1 : --or-grave (5,05:1 sur
+   l'ivoire froid) et --acier-texte (5,22:1). Réchauffer le fond les fait
+   descendre ensemble. Mesuré sur #F3ECDC : or gravé 4,76:1 · acier 4,89:1.
+   Les deux passent. Un cran plus chaud (#F2EBDA) donnait 4,71 et 4,84 — encore
+   au-dessus, mais sans marge pour un futur ajustement. #F3ECDC est le point où
+   le papier est franchement chaud et où la marge tient encore.
+
+   Le jeton est posé sur `body`, donc il descend sur TOUTES les surfaces
+   ivoire de la page — en-tête, navigation, mur des cartes, phrase de
+   positionnement. Réchauffer le seul bloc des cartes aurait fait une couture
+   visible en haut et en bas de ce bloc.
+   ============================================================================ */
+.accueil{
+  --ivoire: #F3ECDC;
+  --papier: #E8DFCA;
+  /* Le quadrillage de l'accueil est en or, pas en gris : il est posé derrière
+     six plaques vertes portant de l'or, et un trait gris y aurait été la seule
+     chose froide de la vue. Très pâle — 8,5 % d'or, réduits encore de moitié
+     par l'opacité de `.millimetre`, soit 4 % à l'écran. On ne le voit pas, on
+     voit que le papier n'est pas nu. */
+  --trait-quadrillage: rgba(168,132,47,.085);
+}
+
+/* ============================================================================
+   LES SURFACES VERTES — un seul traitement, décliné selon le rôle
+   ----------------------------------------------------------------------------
+   Trois surfaces du site sont vertes, et une seule est visible à la fois sur
+   l'écran : le bandeau du nom, les six cartes de métier, la fin de page. Avant
+   ce bloc, chacune avait reçu son propre traitement au fil des essais — deux
+   halos radiaux sur le bandeau, un dégradé à deux couleurs sur les cartes, un
+   aplat mort sur le pied. Trois verts qui ne se ressemblaient pas.
+
+   LA MÉCANIQUE EST LA MÊME PARTOUT :
+     · un dégradé vertical, toujours de 0 % à 100 % de la surface — jamais en
+       pixels. Une carte qui grandit sur un grand écran garde son modelé ;
+       un dégradé calé en pixels s'y serait aplati.
+     · la lumière tombe du haut. Clair en haut, sombre en bas. Sans exception,
+       y compris sur les surfaces qui sont en bas de page.
+     · le même grain, à la même force, DERRIÈRE le contenu (z-index:-1 sous
+       `isolation:isolate`). Il ne peut donc pas passer sur les traits fins
+       des illustrations dorées : ce n'est pas un réglage d'opacité qui les
+       protège, c'est l'ordre des couches.
+
+   CE QUI CHANGE D'UNE SURFACE À L'AUTRE : deux crans de la rampe --v1…--v5,
+   et rien d'autre.
+
+   DEUX RÉGLAGES, PAS UN. L'amplitude dit COMBIEN de crans ; la position dit
+   LESQUELS. Les deux ont leur règle, et elles sont indépendantes.
+
+     L'AMPLITUDE SUIT LE RÔLE
+       Un objet détouré prend toute la rampe. Une bande pleine largeur en prend
+       deux. Un objet a quatre bords qui bornent son dégradé et le rendent
+       lisible ; une bande n'en a pas, et au-delà de deux crans elle cesse
+       d'être une surface pour devenir un effet.
+
+     LA POSITION SUIT LA PLACE DANS LA PAGE
+       Ce qui est en haut prend les crans hauts, ce qui est en bas les crans
+       bas. La page entre par v2 et sort par v5 : elle s'éclaire en arrivant et
+       s'éteint en partant. C'est la même lumière à l'échelle du document, et
+       pas seulement à celle de chaque bloc.
+
+   CE QUE ÇA DONNE, MESURÉ :
+
+     BANDEAU DU NOM        2 crans   v2 → v4      118 px
+       Une bande, donc deux crans — et les crans HAUTS, il ouvre la page.
+       Bridé aussi pour une raison qui lui est propre : il porte des capitales
+       d'or fines sur toute sa largeur, et au-delà de deux crans le contraste
+       de l'or change entre le sommet et la base des lettres.
+
+     CARTE DE MÉTIER       4 crans   v1 → v5      403 px
+       Un objet détouré, le seul du site : toute la rampe. La carte doit se
+       lire comme une plaque bombée, pas comme une découpe. C'est la pente la
+       plus raide de la page — un cran tous les 100 px — et c'est justement ce
+       qui la détache du papier.
+
+     PIED DE PAGE          2 crans   v3 → v5      ≈ 330 px
+       Une bande, donc deux crans — et les crans BAS, il ferme la page. Il
+       finit sur v5 : rien ne vient après, la page s'éteint.
+       Avant que la bande d'appel n'y soit fondue, cette surface faisait 962 px
+       et prenait trois crans. Elle en fait trois fois moins aujourd'hui : à
+       trois crans sur 330 px la pente aurait triplé, et un fond de page se
+       serait mis à ressembler à une carte.
+
+   `.sombre` reste un aplat : c'est v5, le dernier cran de la rampe. Une
+   surface sans dégradé qui se tient au bout de l'échelle est dans le système,
+   pas à côté.
+
+   La liste ci-dessous est la liste COMPLÈTE des surfaces vertes du site. Rien
+   d'autre n'est vert. Ajouter une surface verte, c'est l'ajouter ici — pas
+   lui écrire un traitement à elle.
+   ============================================================================ */
+.ent-plaque,
+.tr-carte,
+.bande-appel,
+.pied{ position:relative; isolation:isolate; }
+
+.ent-plaque::after,
+.tr-carte::after,
+.bande-appel::after,
+.pied::after{
+  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
+  opacity:var(--grain-force);
+  background-image:var(--grain-tissu);
+}
+
+/* ============================================================================
    L'EN-TÊTE — le même mobilier sur les neuf pages
    ----------------------------------------------------------------------------
    Trois bandes, dans cet ordre, aux mêmes places partout :
@@ -300,23 +434,18 @@ h4{ font-size:var(--t-l); }
 .ent-tel:hover::after{ background:var(--vert); }
 
 /* ── 2 · LA PLAQUE DU NOM ─────────────────────────────────────────────────
-   Les deux halos et le grain : un vert lumineux qui tombe du haut, un reflet
-   doré au coin bas droit. Sans eux l'aplat sombre paraît plat. Ce traitement
-   ne se réemploie nulle part ailleurs. */
+   Deux crans de la rampe, le minimum : c'est la surface verte la plus courte
+   du site, et la seule qui porte des capitales d'or fines sur toute sa
+   largeur. Voir « LES SURFACES VERTES » pour la règle.
+
+   Les deux halos radiaux qui vivaient ici — un vert lumineux tombant du haut,
+   un reflet doré au coin bas droit — ont été retirés. Le reflet doré en
+   particulier plaçait une seconde source de lumière en bas à droite, qui
+   contredisait toutes les autres surfaces vertes de la page. */
 .ent-plaque{
-  background:var(--vert-nuit);
+  background:linear-gradient(180deg,var(--v2),var(--v4));
   border-bottom:1px solid rgba(201,162,77,.28);
-  position:relative; isolation:isolate; overflow:hidden;
-}
-.ent-plaque::before{
-  content:""; position:absolute; inset:0; z-index:-2;
-  background:
-    radial-gradient(115% 78% at 50% -6%, rgba(15,90,50,.42), transparent 62%),
-    radial-gradient(88% 58% at 88% 106%, rgba(201,162,77,.14), transparent 60%);
-}
-.ent-plaque::after{                   /* le grain */
-  content:""; position:absolute; inset:0; z-index:-1; opacity:.16; pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+  overflow:hidden;
 }
 .ent-plaque .zone{ padding-block:clamp(20px,2.4vw,28px) clamp(17px,2vw,23px); }
 /* `.ent-plaque .nom` et non `.nom` seul : les planches techniques de la page
@@ -397,7 +526,12 @@ h4{ font-size:var(--t-l); }
 /* ============================================================================
    PIED DE PAGE
    ============================================================================ */
-.pied{ background:var(--vert-nuit); color:var(--sur-nuit); padding:var(--s6) 0 var(--s4); }
+.pied{
+  /* Deux crans, et les deux derniers : c'est une bande, et elle ferme la page.
+     Voir « LES SURFACES VERTES ». */
+  background:linear-gradient(180deg,var(--v3),var(--v5));
+  color:var(--sur-nuit); padding:var(--s6) 0 var(--s4);
+}
 .pied .sceau{ width:120px; margin:0 auto var(--s4); color:var(--or-clair); }
 .pied .colonnes{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s4); }
 /* Les titres de colonne du pied sont des h2 et non des h3 : trois pages du
@@ -409,12 +543,106 @@ h4{ font-size:var(--t-l); }
 .pied p,.pied li{ font-size:var(--t-s); color:var(--sur-nuit-doux); margin:0 0 7px; }
 .pied ul{ list-style:none; margin:0; padding:0; }
 .pied a:hover{ color:var(--or-clair); }
+/* ── LE PIED, EN UNE SEULE BANDE ──────────────────────────────────────────
+   La bande d'appel et le pied étaient deux blocs verts collés, tous deux
+   terminés par le même numéro de téléphone, séparés par un écran de vide :
+   962 px de fin de page pour deux appels à l'action et une seule intention.
+   Ils n'en font plus qu'un, et la bande fait ≈ 330 px — le tiers visé.
+
+   TROIS COLONNES, ET LEURS LARGEURS NE SONT PAS ÉGALES : `1fr auto 1fr`.
+   Le sceau prend la largeur qu'il fait, les deux colonnes de texte se
+   partagent le reste à parts égales. Trois colonnes égales auraient donné au
+   sceau — 88 px de large — le même tiers de page qu'à trois lignes d'horaires,
+   et les deux colonnes utiles se seraient serrées pour le vide du centre.
+
+   L'ORDRE DU BALISAGE N'EST PAS L'ORDRE DE L'ÉCRAN, et c'est délibéré : le
+   sceau est écrit en premier et placé au centre par `grid-column`. Sur
+   téléphone les colonnes s'empilent dans l'ordre du balisage — sceau,
+   horaires, coordonnées — et le sceau annonce la fin de page au lieu de couper
+   en deux les deux seules choses qu'on vient y lire. Le SVG est décoratif et
+   rien n'y est focalisable : l'ordre du clavier n'en est pas affecté.
+   ------------------------------------------------------------------------ */
+.pied-bande{ padding:clamp(40px,4.6vw,58px) 0 var(--s3); }
+
+.pied-bande .colonnes{
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  gap:var(--s4) clamp(var(--s3),4vw,var(--s5));
+  /* Les deux colonnes de texte partent du haut — sinon « HORAIRES » et
+     « NOUS TROUVER » ne tombent pas sur la même ligne, et deux intitulés de
+     même rang qui se ratent de vingt pixels se voient tout de suite. Le sceau,
+     lui, se recentre : c'est un disque, et un disque calé par son bord
+     supérieur sur un intitulé paraît toujours tombé. */
+  align-items:start;
+}
+.pied-bande .pied-sceau{ align-self:center; }
+/* `grid-row:1` est indispensable, et ce n'est pas une précaution : le sceau
+   réclame la colonne 2, donc l'auto-placement passe la colonne 1 et ne revient
+   jamais en arrière — les horaires tombaient sur une deuxième rangée, et les
+   coordonnées sur une troisième. Les trois colonnes doivent dire qu'elles sont
+   sur la MÊME rangée pour que l'ordre du balisage cesse de compter. */
+.pied-bande .pied-sceau   { grid-row:1; grid-column:2; }
+.pied-bande .pied-horaires{ grid-row:1; grid-column:1; }
+.pied-bande .pied-trouver { grid-row:1; grid-column:3; }
+
+.pied-sceau{ text-align:center; }
+.pied-bande .sceau{ width:88px; margin:0 auto 12px; }
+.signature-depuis{
+  margin:0; text-align:center;
+  font-size:10.5px; letter-spacing:.28em; text-transform:uppercase;
+  color:var(--or-clair);
+}
+
+/* La colonne de droite se cale sur le bord droit du conteneur, comme celle de
+   gauche se cale sur le bord gauche. Le pied a deux bords et un axe : les
+   trois colonnes les occupent, une chacun. */
+.pied-trouver{ text-align:right; }
+
+.pied-bande .colonnes ul{ margin:0; padding:0; list-style:none; }
+.pied-bande .colonnes li{ margin:0; }
+.pied-bande h2{ margin-bottom:10px; }
+
+/* LES HORAIRES : le jour à gauche, l'heure à droite, un filet léger entre
+   chaque ligne. Les chiffres sont tabulaires, sinon les trois plages ne
+   s'alignent pas d'une ligne à l'autre. */
+.pied-horaires li{
+  display:flex; align-items:baseline; justify-content:space-between;
+  gap:var(--s3); padding:9px 0;
+  border-bottom:1px solid rgba(246,243,236,.11);
+}
+.pied-horaires li:last-child{ border-bottom:0; }
+.pied-horaires li span:first-child{ color:var(--sur-nuit); white-space:nowrap; }
+.pied-horaires li span:last-child{ font-variant-numeric:tabular-nums; text-align:right; }
+
+/* NOUS TROUVER : « Adresse » et « Contact » disaient la même chose. Les trois
+   lignes sont des liens, et non du texte dont un seul cliquait — l'adresse
+   ouvre l'itinéraire, le bouton compose l'appel, le courriel ouvre la
+   messagerie.
+
+   LE BOUTON DORÉ EST ICI, ET NON DANS UNE BANDE À LUI. C'est la seule action
+   du pied, et elle appartient aux coordonnées : on cherche un numéro là où on
+   cherche une adresse. Isolé au-dessus, il répétait un numéro qui se trouvait
+   déjà quinze lignes plus bas. */
+.pied-trouver p{ margin:0; }
+.pied-adresse a,.pied-mail a{
+  display:inline-block; line-height:1.55;
+  border-bottom:1px solid transparent;
+  transition:color var(--transition), border-color var(--transition);
+}
+.pied-adresse a:hover,.pied-adresse a:focus-visible,
+.pied-mail a:hover,.pied-mail a:focus-visible{
+  color:var(--or-clair); border-bottom-color:rgba(201,162,77,.5);
+}
+.pied-trouver .bouton{ margin:14px 0 12px; min-height:48px; }
+
 .pied .mentions{
   margin-top:var(--s5); padding-top:var(--s3);
   border-top:1px solid rgba(246,243,236,.14);
   font-size:var(--t-xs); color:rgba(246,243,236,.5);
   display:flex; flex-wrap:wrap; gap:var(--s3); justify-content:space-between;
 }
+/* Les horaires se terminent déjà par un filet : 64 px de plus avant celui des
+   mentions faisaient deux séparations coup sur coup. */
+.pied-bande .mentions{ margin-top:var(--s3); }
 
 /* ============================================================================
    PETITS ÉCRANS
@@ -466,6 +694,32 @@ h4{ font-size:var(--t-l); }
   .ent-plaque .filet{ display:none; }
 
   .pied .colonnes{ grid-template-columns:1fr; gap:var(--s3); }
+
+  /* LES TROIS COLONNES DU PIED S'EMPILENT DANS L'ORDRE DU BALISAGE :
+     le sceau, les horaires, les coordonnées. C'est pour cet empilement que le
+     sceau est écrit en premier — au milieu du balisage, il aurait séparé les
+     horaires des coordonnées, c'est-à-dire les deux seules choses qu'on vient
+     lire ici. En tête, il fait ce qu'il fait déjà sur grand écran : il dit que
+     la page se termine.
+
+     L'alignement à droite tombe avec les colonnes. Il ne servait qu'à ancrer
+     « Nous trouver » sur le bord droit, en face des horaires ; l'un sous
+     l'autre, il ne resterait qu'un bloc aligné à droite sans rien en face, et
+     le pied aurait deux axes pour une seule colonne. */
+  .pied-bande .colonnes{ grid-template-columns:1fr; }
+  .pied-bande .pied-sceau,
+  .pied-bande .pied-horaires,
+  .pied-bande .pied-trouver{ grid-row:auto; grid-column:1; }
+  .pied-trouver{ text-align:left; }
+  /* Le bouton prend toute la largeur : seul sur sa ligne et calé à gauche, il
+     aurait eu l'air d'un reste de la colonne qui n'existe plus. */
+  .pied-trouver .bouton{ display:flex; width:100%; }
+
+  /* Le jour et son horaire se touchaient : « 8h00 – 12h30 · 13h30 – 18h30 »
+     fait 190 px à lui seul, et 24 px de gouttière ne rentrent pas dans les
+     354 px utiles d'un téléphone. La gouttière tombe à 16 px, et le retour à
+     la ligne reste possible si la formulation s'allonge un jour. */
+  .pied-horaires li{ flex-wrap:wrap; gap:4px var(--s2); }
 }
 @media (max-width:620px){
   /* LE LOGO SORT DE LA BANDE. Mesuré à 375 px : le bouton, l'état
@@ -559,8 +813,8 @@ h4{ font-size:var(--t-l); }
 .millimetre::before{
   content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; opacity:.5;
   background:
-    repeating-linear-gradient(0deg,transparent 0 31px,rgba(35,40,37,.05) 31px 32px),
-    repeating-linear-gradient(90deg,transparent 0 31px,rgba(35,40,37,.05) 31px 32px);
+    repeating-linear-gradient(0deg,transparent 0 31px,var(--trait-quadrillage) 31px 32px),
+    repeating-linear-gradient(90deg,transparent 0 31px,var(--trait-quadrillage) 31px 32px);
 }
 
 /* ============================================================================
@@ -744,6 +998,18 @@ h4{ font-size:var(--t-l); }
    quand la page tient en deux ecrans. On resserre ici, et ici seulement :
    l'accueil garde son souffle.
    ============================================================================ */
+/* LA CARTE PEND DU HAUT, ELLE NE FLOTTE PAS AU MILIEU. `.duo` centre ses deux
+   colonnes l'une sur l'autre, ce qui est juste pour deux blocs de texte — ici
+   ça posait une carte suspendue à mi-hauteur d'une section vide, sa pince
+   accrochée à rien. Les deux colonnes partent donc du même bord haut : la
+   pince entre dans la page au niveau du sur-titre, et le vide se reporte sous
+   le texte, là où c'est une marge et non un décrochement.
+   Le décalage de 34 px est celui dont la pince déborde de la carte : sans lui,
+   c'est la pince qui s'alignerait sur le sur-titre, et la carte paraîtrait
+   tombée d'autant. */
+.page-metier .duo.large-gauche{ align-items:start; }
+.page-metier .carte-metier-hote{ padding-top:34px; }
+
 .page-metier .section{ padding:var(--s5) 0; }
 .page-metier .section.serree{ padding:var(--s4) 0; }
 .page-metier .section.millimetre{ padding-bottom:var(--s4); }
@@ -756,7 +1022,6 @@ h4{ font-size:var(--t-l); }
 .page-metier .planches{ margin-top:var(--s4); }
 /* L'enseigne du metier respire moins haut ici que sur l'accueil : la page
    doit montrer ses prix sans qu'on ait a defiler pour les atteindre. */
-.page-metier .enseigne-metier img{ max-height:clamp(180px,20vw,250px); }
 .page-metier h1{ font-size:clamp(33px,4.4vw,54px); }
 /* Les titres de section passent d'un cran : sur une page qui tient en deux
    ecrans, un titre de 56 px annonce une scene qui n'arrive jamais. */
@@ -980,28 +1245,6 @@ h4{ font-size:var(--t-l); }
 
 
 /* ============================================================================
-   L'ENSEIGNE D'UNE PAGE DE MÉTIER
-   ----------------------------------------------------------------------------
-   Le dessin du métier, en grand, sur la même plaque verte que sa carte de
-   l'accueil. C'est voulu : le visiteur vient de cliquer cette carte, il
-   retrouve exactement l'objet qu'il a touché, agrandi. La carte devient une
-   porte au lieu d'un bouton.
-   ============================================================================ */
-.enseigne-metier{
-  position:relative;
-  background:linear-gradient(180deg,var(--carte-haut),var(--carte-bas));
-  padding:clamp(26px,3.6vw,46px);
-  display:flex; align-items:center; justify-content:center;
-  box-shadow:0 14px 28px -10px rgba(4,24,15,.32);
-}
-.enseigne-metier::before{                 /* le filet d'or, comme sur la carte */
-  content:""; position:absolute; inset:3%;
-  border:1px solid rgba(201,162,77,.42); pointer-events:none;
-}
-.enseigne-metier img{ width:auto; max-width:100%; max-height:clamp(210px,25vw,320px); }
-
-
-/* ============================================================================
    LA PLAQUE DU NOM — le nom en or, dessiné en SVG et mesuré après rendu
    (voir assets/site.js) : il ne peut donc jamais être rogné.
    ============================================================================ */
@@ -1041,12 +1284,28 @@ h4{ font-size:var(--t-l); }
    Nom distinct de « .appel », qui est la carte blanche des autres pages :
    deux composants differents ne doivent jamais partager une classe.
    ============================================================================ */
+/* LA BANDE D'APPEL ET LE PIED NE SONT QU'UNE SURFACE.
+   Elles se touchent, elles sont vertes toutes les deux, et rien entre elles
+   ne dit qu'on change de bloc. Leur donner chacune son dégradé referait
+   exactement le défaut qu'on corrige : le pied redeviendrait clair en haut,
+   juste sous un bas de bande sombre, et la jointure se verrait comme une
+   couture.
+
+   Le dégradé de la fin de page est donc UN SEUL, partagé en deux morceaux qui
+   se raccordent : la bande d'appel descend de v2 à v3, le pied reprend à v3 et
+   va jusqu'à v5. Le raccord tombe exactement sur v3, donc il est invisible.
+   Trois crans en tout, étalés sur ≈880 px — la pente la plus douce du site. */
 .bande-appel{
-  background:var(--vert-nuit); color:var(--sur-nuit); text-align:center;
-  padding:clamp(44px,6vw,74px) var(--marge-page);
+  background:linear-gradient(180deg,var(--v2),var(--v3));
+  color:var(--sur-nuit); text-align:center;
+  /* Resserré en bas : le bouton flottait dans 74 px de vide, suivis des 96 px
+     de tête du pied et des 40 px sous le sceau — 210 px de rien entre l'action
+     et la signature. Le vide sous le bouton n'a plus qu'à le décoller du pied,
+     pas à le séparer d'un bloc dont il ne se distingue plus. */
+  padding:clamp(44px,6vw,74px) var(--marge-page) clamp(30px,3.4vw,42px);
 }
 .bande-appel h2{ color:var(--sur-nuit); font-size:clamp(23px,3.1vw,33px); font-weight:500; margin:0 0 14px; }
-.bande-appel p{ max-width:56ch; margin:0 auto var(--s4); color:var(--sur-nuit-doux); }
+.bande-appel p{ max-width:56ch; margin:0 auto clamp(24px,3vw,34px); color:var(--sur-nuit-doux); }
 
 /* ============================================================================
    MOUVEMENT RÉDUIT — respecté partout, ce n'est pas une option
@@ -1114,15 +1373,24 @@ h4{ font-size:var(--t-l); }
    deux échelles. Rien d'autre n'est vert, donc le vert veut dire quelque
    chose.
 
-   Ni dégradé ni grain ici : ces deux effets n'existaient que pour empêcher un
-   aplat sombre de paraître mort. Un ivoire n'a pas ce défaut, c'est déjà la
-   couleur du reste de la page. Ils restent sur la plaque du nom, qui en a
-   besoin.
+   LE MUR EST DU PAPIER, LES CARTES SONT DU TISSU. Le dégradé et le grain sont
+   sur les six cartes, qui sont vertes — voir « LES SURFACES VERTES ». Le mur
+   ivoire derrière elles reçoit l'autre traitement du site, celui du papier :
+   le quadrillage du tailleur et un halo très doux. Deux matières, deux
+   traitements, et aucun des deux n'empiète sur l'autre.
    ============================================================================ */
 .tr-mur{
   /* L'or de la carte, sur son vert : le même que sur la plaque du nom. */
   --or-tr:var(--or-clair);
-  background:var(--ivoire); color:var(--graphite);
+  /* LE HALO. Une ellipse très large, centrée un peu au-dessus du milieu des
+     cartes, qui éclaircit le papier de deux points à peine. Son rôle n'est
+     pas de se voir : c'est d'empêcher les quatre coins du bloc d'être aussi
+     clairs que son centre, ce qui est le propre d'un aplat imprimé. Au-delà
+     de 55 % d'ouverture il cesse d'être une lumière et devient une tache. */
+  background:
+    radial-gradient(132% 74% at 50% 40%, rgba(255,252,244,.58), transparent 72%),
+    var(--ivoire);
+  color:var(--graphite);
   position:relative; isolation:isolate; overflow:hidden;
   padding:clamp(18px,2.4vw,32px) 0 clamp(46px,5.5vw,84px);
 }
@@ -1174,10 +1442,16 @@ h4{ font-size:var(--t-l); }
   margin-top:-0.375%;          /* la carte remonte jusqu'à la ligne 68 */
 }
 .tr-carte{
-  position:relative; grid-row:1;
+  grid-row:1;
   container-type:inline-size;
   display:flex; flex-direction:column; align-items:center; text-align:center;
-  background:linear-gradient(180deg,var(--carte-haut),var(--carte-bas));
+  /* Toute la rampe : c'est le seul objet détouré des trois surfaces vertes,
+     et c'est là que le modelé paie. Voir « LES SURFACES VERTES ». */
+  background:linear-gradient(180deg,var(--v1),var(--v5));
+  /* LE LISERÉ. Il est sous la pince, à l'endroit exact où la mâchoire mord
+     la carte : c'est le point d'accroche de l'objet, au sens propre. Franc
+     et non dégradé — un liseré qui s'estompe ne tient rien. */
+  border-top:2px solid var(--or-clair);
   padding:6.4% 7% 5.4%;
   /* Une ombre discrète, et teintée de vert de nuit plutôt que noire : sur un
      fond clair, une ombre noire appuyée fait une salissure sous chaque carte.
@@ -1283,6 +1557,58 @@ h4{ font-size:var(--t-l); }
   pointer-events:none;
 }
 
+
+/* ============================================================================
+   LA CARTE SEULE — en tête de sa propre page de métier
+   ----------------------------------------------------------------------------
+   C'est LA MÊME CARTE que sur l'accueil, pas une imitation : même dégradé,
+   même liseré, même grain, même pince, mêmes textes — tout vient de la règle
+   `.tr-carte` ci-dessus et de METIERS dans assets/site.js. On a cliqué un
+   objet sur l'accueil, on le retrouve ici, agrandi et décroché de la tringle.
+
+   Ce bloc ne contient donc QUE les quatre écarts qu'impose le changement de
+   contexte. Si une cinquième règle apparaît ici un jour, c'est que la carte
+   est en train de se scinder en deux composants — et il faudra se demander
+   pourquoi.
+   ============================================================================ */
+
+/* 1 · LA PINCE EST TOUJOURS LÀ. Sur l'accueil elle ne sort qu'en dessous de
+       1200 px, quand la tringle cède la place à l'empilement. Ici il n'y a
+       jamais de tringle, et c'est la pince qui dit que l'objet est suspendu :
+       sans elle, la carte redevient un cadre posé dans une colonne. */
+.tr-carte-seule .tr-pince{ display:block; }
+
+/* 2 · LA LARGEUR. À 1440 px la colonne de droite fait 429 px, et une carte de
+       429 px de large cesse d'être une étiquette pour devenir une affiche —
+       son rapport hauteur/largeur tomberait à 1,2 alors qu'il vaut 2,4 sur la
+       tringle. 280 px la maintient dans les proportions d'une pièce qui pend. */
+.tr-carte-seule{
+  max-width:280px;
+  margin:0 auto;
+  /* Elle ne mène nulle part : elle ne doit pas répondre au survol comme un
+     lien. L'ombre reste, c'est un objet en relief, pas un bouton. */
+  transition:none;
+}
+.tr-carte-seule:hover{ transform:none; box-shadow:0 14px 28px -10px rgba(4,24,15,.32); }
+
+/* 3 · LE CADRAGE DE L'ILLUSTRATION suit le régime large, celui de la carte
+       empilée — 66cqw et non 122. Le régime étroit est déclaré dans une
+       requête de média que cette carte-ci ne déclenche pas : sur une page de
+       métier en 1440 px, elle recevrait la boîte haute de la tringle, et son
+       dessin monterait à 366 px pour 300 px de large. */
+.tr-carte-seule .tr-vue{ height:66cqw; margin-bottom:4cqw; }
+.tr-carte-seule .tr-vue img{ height:calc(var(--vue) * 56cqw); }
+
+/* 4 · LE NOM DU MÉTIER n'est plus un titre mais un rappel — voir la raison
+       dans assets/site.js, au-dessus de `carteMetier`. Il garde exactement
+       l'aspect du `<h2>` de l'accueil : c'est le même objet, seul son rang
+       dans le plan du document change. Écrit après `.tr-carte p` pour le
+       devancer. */
+.tr-carte .tr-nom{
+  margin:0; font-weight:500; line-height:1.16;
+  font-family:var(--serif);
+  font-size:clamp(18px,13.5cqw,31px); color:var(--sur-nuit); text-wrap:balance;
+}
 
 /* ============================================================================
    LES SIX MÉTIERS SUR PETIT ÉCRAN — l'empilement
