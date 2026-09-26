@@ -1,0 +1,34 @@
+# ============================================================================
+# CE QUI EST SAUVEGARDÉ, ET CE QUI EST PUBLIÉ — deux choses différentes
+# ----------------------------------------------------------------------------
+# GitHub garde TOUT le dépôt : c'est la sauvegarde. Mais l'adresse publique
+# du site ne doit servir que le site. Ce fichier dit lesquels des dossiers
+# sauvegardés ne sont pas mis en ligne.
+#
+# Les fichiers listés plus bas restent donc consultables sur github.com, avec
+# tout leur historique. Ils ne sont simplement pas servis à l'adresse
+# publique, et personne ne peut tomber dessus.
+#
+# POUR REPUBLIER UN DOSSIER : retirez sa ligne de la liste `exclude`, et
+# enregistrez. GitHub reconstruit le site tout seul, en une à deux minutes.
+# ============================================================================
+
+exclude:
+  # Les quatre planches d'exploration : logotype, typographie, planches à la
+  # craie, aperçu. Elles ont servi à décider, aucune page du site n'y mène.
+  - test/
+
+  # Les captures qui documentent les décisions de conception. Jekyll ignore
+  # déjà les dossiers commençant par un point ; c'est écrit ici pour que la
+  # règle soit visible plutôt que devinée.
+  - .design/
+
+  # Le mode d'emploi, le guide de mise en ligne et le brief : ils s'adressent
+  # au propriétaire du site, pas à ses visiteurs.
+  - COMMENT-MODIFIER.md
+  - DEPLOIEMENT.md
+  - PROMPT.md
+
+# Le site n'emploie aucune balise Jekyll — ni `{{ }}` ni `{% %}`, vérifié sur
+# les neuf pages. C'est du HTML, du CSS et du JavaScript écrits à la main, et
+# Jekyll ne fait ici que recopier les fichiers en sautant la liste ci-dessus.
