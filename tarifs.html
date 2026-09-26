@@ -155,9 +155,12 @@
 </section>
 
 <!-- La barre est collante : elle doit se decoller a la fin des tarifs, pas
-     a la fin de la page. Un element colle jusqu au bord de son CONTENEUR ;
-     sans cette enveloppe, elle accompagnerait encore le visiteur pendant
-     « Nous trouver » en annoncant « Entretien specialise ». -->
+     a la fin de la page. Un element colle jusqu au bord de son CONTENEUR, et
+     cette enveloppe est ce conteneur : sans elle, la barre accompagnerait le
+     visiteur jusque dans le pied de page vert en annoncant encore
+     « Entretien specialise ».
+     Elle bornait aussi une section « Nous trouver » qui suivait les tarifs ;
+     celle-ci est partie, elle repetait le pied de page ligne pour ligne. -->
 <div class="zone-tarifs">
 
 <!-- ═══════════════ LA BARRE DES TARIFS ═══════════════
@@ -184,32 +187,6 @@
 </section>
 
 </div>
-
-<section class="section">
-  <div class="zone duo">
-    <div class="revele">
-      <div class="filet court"><i></i></div>
-      <p class="sur-titre">Nous trouver</p>
-      <h2>201 route <span class="accent">de Vernier</span></h2>
-      <dl class="horaires" data-horaires></dl>
-      <div class="coordonnees">
-        <a href="tel:+41223416818" data-tel><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg></a>
-        <a href="mailto:pressingdevernier@gmail.com" data-email><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg></a>
-      </div>
-    </div>
-    <div class="revele" data-delai="2">
-      <div class="plan">
-        <div class="epingle">
-          <b>Pressing de Vernier</b>
-          <span data-adresse></span>
-        </div>
-      </div>
-      <p style="margin-top:var(--s3)">
-        <a class="bouton plein" data-itineraire href="https://www.openstreetmap.org/directions" target="_blank" rel="noopener">Itin&#233;raire</a>
-      </p>
-    </div>
-  </div>
-</section>
 
 </main>
 
