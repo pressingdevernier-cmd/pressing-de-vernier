@@ -37,6 +37,11 @@ de données, pas d'abonnement.
 et tout leur historique sur github.com. Ne mettez jamais dans ce dossier un mot
 de passe, un document client ou une information privée.
 
+**L'adresse Gmail apparaît comme auteur** de nombreuses modifications dans
+l'historique public du dépôt, et en clair dans les guides `.md`. C'est un
+choix délibéré (octobre 2026) : c'est l'adresse commerciale, déjà publique.
+Le masquage de l'adresse sur le site (section 2) n'y change rien.
+
 ---
 
 ## 2. Où se trouve quoi
@@ -53,6 +58,21 @@ de passe, un document client ou une information privée.
 | Les polices de caractères | `assets/polices/` |
 | Le plan de la page Nous trouver | écrit dans `trouver.html` ; son dessin d'origine est dans `..\imprimes\flyer\` |
 | La liste de ce qui n'est **pas** publié | `_config.yml` |
+
+**Le courriel est coupé en deux** dans `data/etablissement.js` (`emailNom` et
+`emailDomaine`) et rassemblé par le script à l'affichage, pour écarter les
+robots qui ramassent les adresses. Sans JavaScript, les pages affichent
+« pressingdevernier — arobase — gmail.com ».
+
+**La sécurité des pages.** Chaque page commence par une « politique de
+contenu » (la balise `Content-Security-Policy`) : le navigateur n'y charge que
+les fichiers du site lui-même, et refuse tout script écrit dans la page. Si
+un jour vous ajoutez un service extérieur (une carte intégrée, une vidéo, un
+outil de statistiques), il sera bloqué tant que cette balise n'est pas
+adaptée sur toutes les pages — et la page Protection des données devra le
+mentionner. La protection contre l'affichage du site dans le cadre d'un
+autre site est assurée par le script (`assets/site.js`, section 0) : GitHub
+Pages ne permet pas de la poser autrement.
 
 **Ce qui est sauvegardé mais pas publié** (listé dans `_config.yml`) : les
 guides (`COMMENT-MODIFIER.md`, ce fichier, `PROMPT.md` qui est le cahier des

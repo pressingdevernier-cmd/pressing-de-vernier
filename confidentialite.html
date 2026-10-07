@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- La politique de contenu : seuls les fichiers du site peuvent etre
+     charges, aucun script ecrit dans la page ne s'execute. Les styles
+     ecrits dans les balises (style="...") restent permis : la mise en
+     page en emploie. Voir DEPLOIEMENT.md, section « Securite ». -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>Protection des donn&#233;es &#8212; Pressing de Vernier</title>
 <meta name="description" content="Protection des donn&#233;es sur le site du Pressing de Vernier&#160;: aucun cookie, aucun formulaire, aucune mesure d&#8217;audience.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -177,9 +183,10 @@
       <li>de savoir si nous avons des donn&#233;es sur vous, et lesquelles&#160;;</li>
       <li>de les faire corriger si elles sont fausses&#160;;</li>
       <li>de demander qu&#8217;elles soient effac&#233;es&#160;;</li>
-      <li>de vous opposer &#224; leur utilisation.</li>
+      <li>de vous opposer &#224; leur utilisation&#160;;</li>
+      <li>de les recevoir dans un format courant, ou de les faire transmettre &#224; quelqu&#8217;un d&#8217;autre.</li>
     </ul>
-    <p class="dit">Pour exercer ces droits, &#233;crivez-nous &#224; <a class="lien" href="mailto:pressingdevernier@gmail.com" data-email></a>, appelez le <a class="lien" href="tel:+41223416818" data-tel>022 341 68 18</a> ou passez au magasin. Le responsable est MDCA S&#224;rl, <span data-adresse>201 route de Vernier, 1214 Vernier</span>.</p>
+    <p class="dit">Pour exercer ces droits, &#233;crivez-nous &#224; <a class="lien" data-email>pressingdevernier &#8212; arobase &#8212; gmail.com</a>, appelez le <a class="lien" href="tel:+41223416818" data-tel>022 341 68 18</a> ou passez au magasin. Le responsable est MDCA S&#224;rl, <span data-adresse>201 route de Vernier, 1214 Vernier</span>.</p>
     <p class="dit">Vous pouvez aussi vous adresser au Pr&#233;pos&#233; f&#233;d&#233;ral &#224; la protection des donn&#233;es et &#224; la transparence (<a class="lien" href="https://www.edoeb.admin.ch/fr" target="_blank" rel="noopener">PFPDT</a>).</p>
     <p class="note-tarif">Derni&#232;re mise &#224; jour&#160;: octobre 2026.</p>
   </div>
@@ -242,7 +249,7 @@
         </p>
         <a class="bouton plein" href="tel:+41223416818" data-tel></a>
         <p class="pied-mail">
-          <a href="mailto:pressingdevernier@gmail.com" data-email></a>
+          <a data-email>pressingdevernier &#8212; arobase &#8212; gmail.com</a>
         </p>
       </div>
 

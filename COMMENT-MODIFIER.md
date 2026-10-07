@@ -154,12 +154,21 @@ Même fichier, `data/etablissement.js`, tout en haut :
 ```js
 telephone:      "022 341 68 18",
 telephoneLien:  "+41223416818",
-email:          "pressingdevernier@gmail.com",
+emailNom:       "pressingdevernier",
+emailDomaine:   "gmail.com",
 ```
 
 Si vous changez le numéro, changez **les deux lignes** : la première est le
 numéro affiché, la seconde celui que le téléphone compose quand on clique.
 Elle s'écrit sans espace ni zéro initial, précédée de `+41`.
+
+**Le courriel est coupé en deux** : ce qui est avant l'arobase (`emailNom`),
+puis ce qui est après (`emailDomaine`). Le site les rassemble à l'affichage,
+pour que les robots qui ramassent les adresses ne la trouvent pas. Si vous
+changez d'adresse, changez les deux morceaux, **et** le texte de secours
+« pressingdevernier — arobase — gmail.com » écrit dans les pages (il ne
+s'affiche que si le navigateur n'exécute pas le JavaScript). Pour le trouver
+dans toutes les pages d'un coup, demandez de l'aide.
 
 ---
 
@@ -270,12 +279,26 @@ Le message rouge indique le numéro de la ligne fautive.
 
 ## 7. Publier la modification
 
-Ouvrez PowerShell dans le dossier du site et tapez ces trois commandes,
-**une par une** :
+Ouvrez PowerShell dans le dossier du site et tapez ces commandes,
+**une par une**. Le détail, avec ce que vous devez voir à l'écran à chaque
+étape, est dans `DEPLOIEMENT.md`, section 3.3.
+
+D'abord, regardez ce qui a changé :
 
 ```powershell
-git add .
+git status
 ```
+
+Seuls les fichiers que vous avez modifiés doivent apparaître en rouge, après
+`modified:`. Puis ajoutez **ces fichiers-là, un par un, par leur nom** :
+
+```powershell
+git add data/tarifs.js
+```
+
+**N'utilisez jamais `git add .`** (avec un point) : cette commande embarque
+tout le dossier, y compris des dossiers de travail comme `.design/`, et les
+publierait dans le dépôt public, lisible par tout le monde.
 
 ```powershell
 git commit -m "Nouveau prix pour l'ourlet simple"
@@ -294,11 +317,11 @@ Comptez **une à deux minutes** avant que le site en ligne soit à jour.
 
 ## 8. Revenir en arrière
 
-**Vous n'avez pas encore publié** — pour tout annuler et revenir au dernier
-état publié :
+**Vous n'avez pas encore publié** — pour annuler votre modification d'un
+fichier et revenir au dernier état publié :
 
 ```powershell
-git restore .
+git restore data/tarifs.js
 ```
 
 **Vous avez déjà publié** — pour voir l'historique :
@@ -335,4 +358,5 @@ Si vous avez besoin de changer quelque chose dans ces fichiers, demandez.
 ## En cas de doute
 
 Ne publiez pas. Le site en ligne reste tel qu'il est tant que vous ne faites pas
-`git push`. Vous pouvez tout annuler avec `git restore .` et repartir de zéro.
+`git push`. Vous pouvez annuler la modification d'un fichier avec
+`git restore` suivi du nom du fichier (voir le point 8), et repartir de zéro.
