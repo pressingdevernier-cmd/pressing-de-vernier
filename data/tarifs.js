@@ -56,7 +56,7 @@ const TARIFS = [
       { fr: "Gilet",                    en: "Waistcoat",                prix: 9 },
       { fr: "Chemisier / Top",          en: "Blouse / Top",             prix: 7.50 },
       { fr: "Chemisier en soie",        en: "Silk blouse",              prix: 12, des: true },
-      { fr: "Jeans",                    en: "Jeans",                    prix: 7 },
+      { fr: "Jeans",                    en: "Jeans",                    prix: 11 },
       { fr: "Short",                    en: "Shorts",                   prix: 7.50 },
       { fr: "T-shirt",                  en: "T-shirt",                  prix: 4.50 },
       { fr: "Polo",                     en: "Polo shirt",               prix: 5.50 },
@@ -98,8 +98,8 @@ const TARIFS = [
   /* ------------------------------------------------------------------
      ENTRETIEN SPÉCIALISÉ
      Ces pièces sont prises en charge au magasin puis confiées à des
-     spécialistes. Le prix dépend toujours de la pièce : jamais de
-     montant affiché ici.
+     spécialistes. Le prix dépend de la pièce : seuls les tapis ont un
+     prix de départ, au mètre carré.
      ------------------------------------------------------------------ */
   {
     id: "entretien-specialise",
@@ -110,21 +110,7 @@ const TARIFS = [
       en: "We take the item in and give you a price once we have examined it."
     },
     lignes: [
-      /* LES TAPIS AURONT BIENTÔT UN PRIX AU MÈTRE CARRÉ. Il n'est pas encore
-         arrêté ; en attendant, ils restent sur devis comme les trois autres.
-
-         POUR LE POSER LE JOUR VENU : remplacer `devis: true` par le montant
-         et son unité, sur le modèle des rideaux de la rubrique
-         « Blanchisserie — Linge de maison », plus bas dans ce fichier :
-
-             { fr: "Tapis", en: "Rugs", prix: 00,
-               unite: { fr: "le m²", en: "per m²" } },
-
-         Ajouter `des: true` si c'est un prix minimum — il s'affichera
-         « dès 00.– ». Rien d'autre à changer : la page Cuir et la page Tarifs
-         lisent toutes deux cette ligne, et la mention « Sur devis »
-         disparaîtra d'elle-même. */
-      { fr: "Tapis",                              en: "Rugs",                          devis: true },
+      { fr: "Tapis",                              en: "Rugs",                          prix: 30, des: true, unite: { fr: "le m²", en: "per m²" } },
       { fr: "Vêtements et articles en cuir",      en: "Leather clothing and goods",    devis: true },
       { fr: "Daim",                               en: "Suede",                         devis: true },
       { fr: "Sacs — nettoyage et restauration",   en: "Bags — cleaning and restoring",  devis: true }
@@ -223,7 +209,7 @@ const TARIFS = [
       { fr: "Ourlet avec revers",           en: "Hem with turn-up",         prix: 25 },
       { fr: "Ourlet avec talonnette",       en: "Hem with heel guard",      prix: 25 },
       { fr: "Ourlet invisible",             en: "Blind hem",                prix: 22 },
-      { fr: "Ourlet original",              en: "Original hem",             prix: 22 },
+      { fr: "Ourlet original",              en: "Original hem",             prix: 25 },
       { fr: "Fermeture éclair",             en: "Zip replacement",          prix: 25 },
       { fr: "Ajuster taille ou hanches",    en: "Take in waist or hips",    prix: 25 },
       { fr: "Changer poche",                en: "Replace pocket",           prix: 20 },
@@ -243,7 +229,7 @@ const TARIFS = [
       { fr: "Ourlet jupe droite",               en: "Straight skirt hem",         prix: 22 },
       { fr: "Ourlet jupe droite avec doublure", en: "Lined straight skirt hem",   prix: 25 },
       { fr: "Fermeture éclair invisible",       en: "Invisible zip",              prix: 25 },
-      { fr: "Fermeture éclair normale",         en: "Standard zip",               prix: 22 },
+      { fr: "Fermeture éclair normale",         en: "Standard zip",               prix: 25 },
       { fr: "Ajuster taille",                   en: "Take in waist",              prix: 20 },
       { fr: "Poser élastique coulissant",       en: "Fit drawstring elastic",     prix: 15 },
       { fr: "Changer doublure",                 en: "Replace lining",             prix: 45 }
