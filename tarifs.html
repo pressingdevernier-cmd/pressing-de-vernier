@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- La politique de contenu : seuls les fichiers du site peuvent etre
+     charges, aucun script ecrit dans la page ne s'execute. Les styles
+     ecrits dans les balises (style="...") restent permis : la mise en
+     page en emploie. Voir DEPLOIEMENT.md, section « Securite ». -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>Tarifs &#8212; Pressing de Vernier</title>
 <meta name="description" content="Liste de prix compl&#232;te&#160;: nettoyage, blanchisserie, literie, linge de maison, retouches et couture. Prix TTC en francs suisses.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -245,7 +251,7 @@
         </p>
         <a class="bouton plein" href="tel:+41223416818" data-tel></a>
         <p class="pied-mail">
-          <a href="mailto:pressingdevernier@gmail.com" data-email></a>
+          <a data-email>pressingdevernier &#8212; arobase &#8212; gmail.com</a>
         </p>
       </div>
 

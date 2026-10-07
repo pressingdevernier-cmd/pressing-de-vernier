@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- La politique de contenu : seuls les fichiers du site peuvent etre
+     charges, aucun script ecrit dans la page ne s'execute. Les styles
+     ecrits dans les balises (style="...") restent permis : la mise en
+     page en emploie. Voir DEPLOIEMENT.md, section « Securite ». -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>Nous trouver &#8212; Pressing de Vernier</title>
 <meta name="description" content="201 route de Vernier, 1214 Vernier, Gen&#232;ve. Horaires d&#8217;ouverture, t&#233;l&#233;phone et itin&#233;raire. Sans rendez-vous, du lundi au samedi.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -197,7 +203,7 @@
         <dl class="horaires" data-horaires></dl>
         <div class="coordonnees">
           <a href="tel:+41223416818" data-tel><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg></a>
-          <a href="mailto:pressingdevernier@gmail.com" data-email><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg></a>
+          <a data-email><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg>pressingdevernier &#8212; arobase &#8212; gmail.com</a>
         </div>
       </div>
     </div>
@@ -261,7 +267,7 @@
         </p>
         <a class="bouton plein" href="tel:+41223416818" data-tel></a>
         <p class="pied-mail">
-          <a href="mailto:pressingdevernier@gmail.com" data-email></a>
+          <a data-email>pressingdevernier &#8212; arobase &#8212; gmail.com</a>
         </p>
       </div>
 

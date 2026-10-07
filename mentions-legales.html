@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- La politique de contenu : seuls les fichiers du site peuvent etre
+     charges, aucun script ecrit dans la page ne s'execute. Les styles
+     ecrits dans les balises (style="...") restent permis : la mise en
+     page en emploie. Voir DEPLOIEMENT.md, section « Securite ». -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>Mentions l&#233;gales &#8212; Pressing de Vernier</title>
 <meta name="description" content="Mentions l&#233;gales du Pressing de Vernier, MDCA S&#224;rl, 201 route de Vernier, 1214 Vernier.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -139,7 +145,7 @@
       <div><dt>Enseigne</dt><dd data-nom>Pressing de Vernier</dd></div>
       <div><dt>Adresse</dt><dd data-adresse-lignes>201 route de Vernier<br>1214 Vernier<br>Gen&#232;ve, Suisse</dd></div>
       <div><dt>T&#233;l&#233;phone</dt><dd><a class="lien" href="tel:+41223416818" data-tel>022 341 68 18</a></dd></div>
-      <div><dt>Courriel</dt><dd><a class="lien" href="mailto:pressingdevernier@gmail.com" data-email></a></dd></div>
+      <div><dt>Courriel</dt><dd><a class="lien" data-email>pressingdevernier &#8212; arobase &#8212; gmail.com</a></dd></div>
       <div><dt>Num&#233;ro IDE</dt><dd data-ide>CHE-426.036.272</dd></div>
       <div><dt>Registre du commerce</dt><dd>Inscrite au registre du commerce du canton de Gen&#232;ve</dd></div>
     </dl>
@@ -220,7 +226,7 @@
         </p>
         <a class="bouton plein" href="tel:+41223416818" data-tel></a>
         <p class="pied-mail">
-          <a href="mailto:pressingdevernier@gmail.com" data-email></a>
+          <a data-email>pressingdevernier &#8212; arobase &#8212; gmail.com</a>
         </p>
       </div>
 

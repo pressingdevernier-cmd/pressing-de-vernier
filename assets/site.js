@@ -24,6 +24,25 @@
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   0 · LE SITE NE S'AFFICHE PAS DANS LE CADRE D'UN AUTRE SITE
+   ----------------------------------------------------------------------------
+   Un site tiers pourrait afficher celui-ci dans un cadre invisible et faire
+   cliquer le visiteur à son insu. La parade normale est un en-tête du
+   serveur, que GitHub Pages ne permet pas de poser, et que les navigateurs
+   ignorent quand il est écrit dans la page. Reste ce script : dans un cadre,
+   la page s'efface et ne laisse qu'un lien qui l'ouvre en entier. Il ne
+   protège pas un visiteur qui a désactivé le JavaScript.
+   ═══════════════════════════════════════════════════════════════════════════ */
+if (window.top !== window.self) {
+  const lien = document.createElement('a');
+  lien.href = location.href;
+  lien.target = '_top';
+  lien.textContent = 'Ouvrir le site du Pressing de Vernier';
+  document.body.replaceChildren(lien);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
    1 · MENU SUR TÉLÉPHONE
    ═══════════════════════════════════════════════════════════════════════════ */
 const burger = document.querySelector('.burger');
@@ -238,9 +257,17 @@ document.querySelectorAll('[data-adresse-2l]').forEach(el => {
   );
 });
 
+/* LE COURRIEL N'EST ÉCRIT EN CLAIR NULLE PART. Les pages portent un repli
+   lisible — « pressingdevernier — arobase — gmail.com » — pour qui n'a pas
+   le JavaScript, et data/etablissement.js en garde les deux moitiés à part.
+   L'adresse n'est rassemblée qu'ici, à l'affichage : les aspirateurs
+   d'adresses les plus sommaires, qui lisent le fichier sans l'exécuter, ne
+   la trouvent pas. */
+const courriel = ETABLISSEMENT.emailNom + '@' + ETABLISSEMENT.emailDomaine;
+
 document.querySelectorAll('[data-email]').forEach(el => {
-  el.textContent = ETABLISSEMENT.email;
-  if (el.tagName === 'A') el.href = 'mailto:' + ETABLISSEMENT.email;
+  el.textContent = courriel;
+  if (el.tagName === 'A') el.href = 'mailto:' + courriel;
 });
 
 /* L'ITINÉRAIRE S'OUVRE DANS L'APPLICATION DE CARTES DU TÉLÉPHONE.
@@ -823,7 +850,7 @@ if (document.querySelector('[data-fiche-google]')) {
     legalName: ETABLISSEMENT.raisonSociale,
     foundingDate: String(ETABLISSEMENT.depuis),
     telephone: ETABLISSEMENT.telephoneLien,
-    email: ETABLISSEMENT.email,
+    email: courriel,
 
     address: {
       '@type': 'PostalAddress',

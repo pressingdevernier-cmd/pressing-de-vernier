@@ -32,7 +32,13 @@ const ETABLISSEMENT = {
   telephone:      "022 341 68 18",
   telephoneLien:  "+41223416818",
 
-  email:          "pressingdevernier@gmail.com",
+  /* LE COURRIEL, EN DEUX MORCEAUX : le nom avant l'arobase, puis le
+     domaine. Le site les rassemble au moment de l'affichage, pour que
+     l'adresse complète n'apparaisse jamais telle quelle dans les fichiers —
+     cela écarte les robots qui ramassent les adresses pour envoyer du
+     spam. Pour changer d'adresse, changez les deux morceaux.            */
+  emailNom:       "pressingdevernier",
+  emailDomaine:   "gmail.com",
 
   /* Position du magasin, pour le bouton « Itinéraire ». Coordonnées
      officielles du bâtiment (geo.admin.ch), les mêmes que le plan.       */
