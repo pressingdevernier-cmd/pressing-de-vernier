@@ -365,5 +365,6 @@ const TARIFS = [
 const TARIFS_MENTIONS = {
   tva:   "Prix en francs suisses, TTC, TVA 8,1 % comprise.",
   des:   "« Dès » indique un prix minimum : la matière, la complexité ou les dimensions font varier le tarif.",
-  devis: "« Sur devis » : nous examinons la pièce avec vous et vous remettons un prix avant de commencer."
+  devis: "« Sur devis » : nous examinons la pièce avec vous et vous remettons un prix avant de commencer.",
+  indicatif: "Prix donnés à titre indicatif. Le tarif définitif est fixé au magasin, après examen de la pièce."
 };

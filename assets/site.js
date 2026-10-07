@@ -440,6 +440,7 @@ document.querySelectorAll('[data-mentions]').forEach(el => {
     TARIFS_MENTIONS.tva,
     TARIFS_MENTIONS.des,
     TARIFS_MENTIONS.devis,
+    TARIFS_MENTIONS.indicatif,
     'Tarifs au ' + ETABLISSEMENT.tarifsMaj + '.'
   ].forEach(t => {
     const p = document.createElement('p');
