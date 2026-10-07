@@ -31,9 +31,10 @@ const ETABLISSEMENT = {
 
   email:          "pressingdevernier@gmail.com",
 
-  /* Position du magasin, pour le bouton « Itinéraire ».                */
-  latitude:       46.2118,
-  longitude:      6.0855,
+  /* Position du magasin, pour le bouton « Itinéraire ». Coordonnées
+     officielles du bâtiment (geo.admin.ch), les mêmes que le plan.       */
+  latitude:       46.21764,
+  longitude:      6.08854,
 
   /* Date affichée sous les tableaux de prix.                           */
   tarifsMaj:      "30 août 2026"

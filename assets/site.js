@@ -243,9 +243,24 @@ document.querySelectorAll('[data-email]').forEach(el => {
   if (el.tagName === 'A') el.href = 'mailto:' + ETABLISSEMENT.email;
 });
 
+/* L'ITINÉRAIRE S'OUVRE DANS L'APPLICATION DE CARTES DU TÉLÉPHONE.
+   Sur iPhone et iPad, un lien maps.apple.com ouvre Plans directement. Partout
+   ailleurs, le lien d'itinéraire de Google Maps : Android le confie à
+   l'application Google Maps, un ordinateur l'ouvre dans le navigateur.
+   L'iPad récent se présente comme un Mac : c'est l'écran tactile qui le
+   trahit. Sur téléphone le lien s'ouvre dans le même onglet — l'application
+   prend la main, et un nouvel onglet resterait vide derrière elle. */
+const appareilIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+  || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const appareilMobile = appareilIOS || /Android/i.test(navigator.userAgent);
+const destination = ETABLISSEMENT.latitude + ',' + ETABLISSEMENT.longitude;
+const lienItineraire = appareilIOS
+  ? 'https://maps.apple.com/?daddr=' + destination + '&q=' + encodeURIComponent(ETABLISSEMENT.nom)
+  : 'https://www.google.com/maps/dir/?api=1&destination=' + destination;
+
 document.querySelectorAll('[data-itineraire]').forEach(el => {
-  el.href = 'https://www.openstreetmap.org/directions?to='
-          + ETABLISSEMENT.latitude + '%2C' + ETABLISSEMENT.longitude;
+  el.href = lienItineraire;
+  if (appareilMobile) el.removeAttribute('target');
 });
 
 document.querySelectorAll('[data-mentions-legales]').forEach(el => {
@@ -288,6 +303,9 @@ function etatOuverture() {
 document.querySelectorAll('[data-etat-ouverture]').forEach(el => {
   const e = etatOuverture();
   el.textContent = e.texte;
+  /* Dans le bandeau, l'état est un lien vers les horaires complets : son
+     texte seul ne dit pas où il mène. */
+  if (el.tagName === 'A') el.setAttribute('aria-label', e.texte + ' — voir les horaires');
   el.classList.toggle('ferme', !e.ouvert);
 });
 
