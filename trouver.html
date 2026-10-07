@@ -58,7 +58,7 @@
       <p class="ent-faits">
         <span data-depuis>Depuis 2006 &#224; Vernier</span>
         <i></i>
-        <span class="pastille" data-etat-ouverture>&#8212;</span>
+        <a class="pastille" href="#horaires" data-etat-ouverture>&#8212;</a>
       </p>
       <a class="ent-tel" href="tel:+41223416818" data-tel>022 341 68 18</a>
     </div>
@@ -186,14 +186,19 @@
     </div>
 
     <!-- `id="horaires"` : la cible du lien porte par l'etat d'ouverture, dans
-         le bandeau fixe de chaque page. -->
-    <div class="revele" id="horaires">
-      <div class="filet court"><i></i></div>
-      <h2>Horaires</h2>
-      <dl class="horaires" data-horaires></dl>
-      <div class="coordonnees">
-        <a href="tel:+41223416818" data-tel><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg></a>
-        <a href="mailto:pressingdevernier@gmail.com" data-email><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg></a>
+         le bandeau fixe de chaque page. Elle est posee sur une enveloppe et
+         non sur le bloc `.revele` : celui-ci est encore decale par son
+         animation d'apparition quand le navigateur calcule le saut, et le
+         titre finissait sous le bandeau une fois l'animation jouee. -->
+    <div id="horaires">
+      <div class="revele">
+        <div class="filet court"><i></i></div>
+        <h2>Horaires</h2>
+        <dl class="horaires" data-horaires></dl>
+        <div class="coordonnees">
+          <a href="tel:+41223416818" data-tel><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg></a>
+          <a href="mailto:pressingdevernier@gmail.com" data-email><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg></a>
+        </div>
       </div>
     </div>
   </div>

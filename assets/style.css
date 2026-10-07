@@ -891,6 +891,16 @@ h4{ font-size:var(--t-l); }
   animation:battement 2.4s infinite;
 }
 .pastille.ferme::before{ background:#B0564A; animation:none; box-shadow:none; }
+/* Dans le bandeau, l'état mène aux horaires complets de la page Nous
+   trouver. Un pointillé discret le dit ; il devient un trait d'or au
+   survol. Les 13 px de marge rendus par une marge négative donnent au doigt
+   ses 44 px sans faire grandir la bande. */
+a.pastille{
+  color:inherit; text-decoration:underline dotted rgba(35,40,37,.45);
+  text-underline-offset:4px; padding-block:13px; margin-block:-13px;
+  transition:color var(--transition), text-decoration-color var(--transition);
+}
+a.pastille:hover{ color:var(--vert); text-decoration-style:solid; text-decoration-color:var(--or); }
 @keyframes battement{
   70%{ box-shadow:0 0 0 9px rgba(30,138,82,0); }
   100%{ box-shadow:0 0 0 0 rgba(30,138,82,0); }
