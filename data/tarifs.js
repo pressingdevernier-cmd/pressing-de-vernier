@@ -194,11 +194,11 @@ const TARIFS = [
     fr: "Retouches — Chemises",
     en: "Alterations — Shirts",
     lignes: [
-      { fr: "Ajuster manches",   en: "Take in sleeves",   prix: 25 },
-      { fr: "Ajuster longueur",  en: "Adjust length",     prix: 22 },
+      { fr: "Ajuster manches — chemise",   en: "Take in sleeves",   prix: 25 },
+      { fr: "Ajuster longueur — chemise",  en: "Adjust length",     prix: 22 },
       { fr: "Ajuster la taille — chemise", en: "Take in waist",     prix: 15 },
       { fr: "Retourner col",     en: "Turn collar",       prix: 15 },
-      { fr: "Raccourcir",        en: "Shorten",           prix: 20 }
+      { fr: "Raccourcir — chemise",        en: "Shorten",           prix: 20 }
     ]
   },
 
@@ -214,7 +214,7 @@ const TARIFS = [
       { fr: "Ourlet avec talonnette",       en: "Hem with heel guard",      prix: 25 },
       { fr: "Ourlet invisible",             en: "Blind hem",                prix: 22 },
       { fr: "Ourlet original",              en: "Original hem",             prix: 25 },
-      { fr: "Fermeture éclair",             en: "Zip replacement",          prix: 25 },
+      { fr: "Fermeture éclair — pantalon",             en: "Zip replacement",          prix: 25 },
       { fr: "Ajuster la taille ou les hanches — pantalon", en: "Take in waist or hips", prix: 25 },
       { fr: "Changer poche",                en: "Replace pocket",           prix: 20 },
       { fr: "Doublure genoux",              en: "Knee lining",              prix: 40 },
@@ -232,7 +232,7 @@ const TARIFS = [
     lignes: [
       { fr: "Ourlet jupe droite",               en: "Straight skirt hem",         prix: 22 },
       { fr: "Ourlet jupe droite avec doublure", en: "Lined straight skirt hem",   prix: 25 },
-      { fr: "Fermeture éclair invisible",       en: "Invisible zip",              prix: 25 },
+      { fr: "Fermeture éclair invisible — jupe",       en: "Invisible zip",              prix: 25 },
       { fr: "Fermeture éclair normale",         en: "Standard zip",               prix: 25 },
       { fr: "Ajuster la taille — jupe",         en: "Take in waist",              prix: 20 },
       { fr: "Poser élastique coulissant",       en: "Fit drawstring elastic",     prix: 15 },
@@ -257,14 +257,14 @@ const TARIFS = [
     fr: "Retouches — Manteaux",
     en: "Alterations — Coats",
     lignes: [
-      { fr: "Fermeture éclair",                 en: "Zip replacement",          prix: 55, des: true },
-      { fr: "Ajuster longueur",                 en: "Adjust length",            prix: 40 },
-      { fr: "Ajuster manches",                  en: "Adjust sleeves",           prix: 40 },
+      { fr: "Fermeture éclair — manteau",                 en: "Zip replacement",          prix: 55, des: true },
+      { fr: "Ajuster longueur — manteau",                 en: "Adjust length",            prix: 40 },
+      { fr: "Ajuster manches — manteau",                  en: "Adjust sleeves",           prix: 40 },
       { fr: "Doublure de poche",                en: "Pocket lining",            prix: 20 },
       { fr: "Doublure de manches",              en: "Sleeve lining",            prix: 55 },
       { fr: "Doublure complète sans manches",   en: "Full lining, no sleeves",  prix: 110 },
       { fr: "Doublure complète avec manches",   en: "Full lining with sleeves", prix: 170, des: true },
-      { fr: "Réparer fond de poche",            en: "Repair pocket bag",        prix: 15 }
+      { fr: "Réparer fond de poche — manteau",            en: "Repair pocket bag",        prix: 15 }
     ]
   },
 
@@ -274,13 +274,13 @@ const TARIFS = [
     fr: "Retouches — Veste / Blouson / Veston",
     en: "Alterations — Jackets",
     lignes: [
-      { fr: "Fermeture éclair",                                  en: "Zip replacement",                     prix: 50 },
-      { fr: "Ajuster longueur",                                  en: "Adjust length",                       prix: 40 },
-      { fr: "Ajuster manches",                                   en: "Adjust sleeves",                      prix: 40, des: true },
+      { fr: "Fermeture éclair — veste",                                  en: "Zip replacement",                     prix: 50 },
+      { fr: "Ajuster longueur — veste",                                  en: "Adjust length",                       prix: 40 },
+      { fr: "Ajuster manches — veste",                                   en: "Adjust sleeves",                      prix: 40, des: true },
       { fr: "Doublure manches",                                  en: "Sleeve lining",                       prix: 50 },
       { fr: "Doublure complète sans manches (avec fourniture)",  en: "Full lining, no sleeves (materials included)",   prix: 110 },
       { fr: "Doublure complète avec manches (avec fournitures)", en: "Full lining with sleeves (materials included)",  prix: 170 },
-      { fr: "Réparer fond de poche",                             en: "Repair pocket bag",                   prix: 15 },
+      { fr: "Réparer fond de poche — veste",                             en: "Repair pocket bag",                   prix: 15 },
       { fr: "Recoudre un coin de poche",                         en: "Restitch pocket corner",              prix: 15 }
     ]
   },
@@ -292,7 +292,7 @@ const TARIFS = [
     en: "Alterations — Plain dress",
     lignes: [
       { fr: "Ourlet robe droite",         en: "Straight dress hem",   prix: 22 },
-      { fr: "Fermeture éclair invisible", en: "Invisible zip",        prix: 30 },
+      { fr: "Fermeture éclair invisible — robe simple", en: "Invisible zip",        prix: 30 },
       { fr: "Ajuster la taille — robe simple", en: "Take in waist",  prix: 30 },
       { fr: "Poser épaulettes",           en: "Fit shoulder pads",    prix: 25 },
       { fr: "Doublure sans manches",      en: "Lining, no sleeves",   prix: 50 },
@@ -308,7 +308,7 @@ const TARIFS = [
     lignes: [
       { fr: "Ourlet simple sans doublure", en: "Plain hem, unlined",  prix: 40 },
       { fr: "Ourlet simple avec doublure", en: "Plain hem, lined",    prix: 60 },
-      { fr: "Fermeture éclair invisible",  en: "Invisible zip",       prix: 30 },
+      { fr: "Fermeture éclair invisible — robe de soirée",  en: "Invisible zip",       prix: 30 },
       { fr: "Ajuster la taille — robe de soirée", en: "Take in waist", prix: 30 },
       { fr: "Poser bonnets",               en: "Fit bra cups",        prix: 20 }
     ]
@@ -327,7 +327,7 @@ const TARIFS = [
       en: ["Single curtains", "Lined curtains"]
     },
     lignes: [
-      { fr: "Raccourcir",                  en: "Shorten",              prix: 18, des: true, prix2: 34, des2: true },
+      { fr: "Raccourcir — rideaux",                  en: "Shorten",              prix: 18, des: true, prix2: 34, des2: true },
       { fr: "Poser un crochet ou un galet", en: "Fit a hook or glider", prix: 3,             prix2: 3 }
     ]
   },

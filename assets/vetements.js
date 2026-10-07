@@ -40,11 +40,11 @@ const VETEMENTS = {
     gaucheX: -6, droiteX: 348,
     alt: "Chemise dessinée à plat : la longueur, les manches et le col sont marqués en pointillé",
     points: [
-      { x:64,  y:196, cote:'gauche', ligne:'Ajuster manches',  court:'Ajuster manches' },
+      { x:64,  y:196, cote:'gauche', ligne:'Ajuster manches — chemise',  court:'Ajuster manches' },
       { x:120, y:268, cote:'gauche', ligne:'Ajuster la taille — chemise',   court:'Ajuster taille' },
-      { x:170, y:330, cote:'gauche', ligne:'Ajuster longueur', court:'Ajuster longueur' },
+      { x:170, y:330, cote:'gauche', ligne:'Ajuster longueur — chemise', court:'Ajuster longueur' },
       { x:170, y:66,  cote:'droite', ligne:'Retourner col',    court:'Retourner col' },
-      { x:250, y:186, cote:'droite', ligne:'Raccourcir',       court:'Raccourcir' }
+      { x:250, y:186, cote:'droite', ligne:'Raccourcir — chemise',       court:'Raccourcir' }
     ],
     trace: {
       pieces: [
@@ -94,7 +94,7 @@ const VETEMENTS = {
     alt: "Jupe droite dessinée à plat : l'ourlet et la ceinture sont marqués en pointillé",
     points: [
       { x:118, y:112, cote:'gauche', ligne:'Ajuster la taille — jupe',             court:'Ajuster taille' },
-      { x:120, y:206, cote:'gauche', ligne:'Fermeture éclair invisible', court:'Éclair invisible' },
+      { x:120, y:206, cote:'gauche', ligne:'Fermeture éclair invisible — jupe', court:'Éclair invisible' },
       { x:152, y:348, cote:'gauche', ligne:'Ourlet jupe droite',         court:'Ourlet' },
       { x:216, y:262, cote:'droite', ligne:'Changer doublure',           court:'Doublure' }
     ],
@@ -135,7 +135,7 @@ const VETEMENTS = {
     alt: "Robe dessinée à plat : la ligne d'ourlet et la couture de taille sont marquées en pointillé",
     points: [
       { x:122, y:84,  cote:'gauche', ligne:'Poser épaulettes',           court:'Épaulettes' },
-      { x:126, y:184, cote:'gauche', ligne:'Fermeture éclair invisible', court:'Éclair invisible' },
+      { x:126, y:184, cote:'gauche', ligne:'Fermeture éclair invisible — robe simple', court:'Éclair invisible' },
       { x:150, y:390, cote:'gauche', ligne:'Ourlet robe droite',         court:'Ourlet' },
       { x:200, y:220, cote:'droite', ligne:'Ajuster la taille — robe simple',             court:'Ajuster taille' },
       { x:206, y:304, cote:'droite', ligne:'Doublure sans manches',      court:'Doublure' }
@@ -192,9 +192,9 @@ const VETEMENTS = {
     gaucheX: -4, droiteX: 350,
     alt: "Manteau à fermeture éclair dessiné à plat : l'ourlet et les poignets sont marqués en pointillé",
     points: [
-      { x:171, y:150, cote:'gauche', ligne:'Fermeture éclair',                 court:'Fermeture éclair' },
-      { x:70,  y:218, cote:'gauche', ligne:'Ajuster manches',                  court:'Ajuster manches' },
-      { x:160, y:392, cote:'gauche', ligne:'Ajuster longueur',                 court:'Ajuster longueur' },
+      { x:171, y:150, cote:'gauche', ligne:'Fermeture éclair — manteau',                 court:'Fermeture éclair' },
+      { x:70,  y:218, cote:'gauche', ligne:'Ajuster manches — manteau',                  court:'Ajuster manches' },
+      { x:160, y:392, cote:'gauche', ligne:'Ajuster longueur — manteau',                 court:'Ajuster longueur' },
       { x:272, y:184, cote:'droite', ligne:'Doublure de manches',              court:'Doublure manches' },
       { x:218, y:304, cote:'droite', ligne:'Doublure complète avec manches',   court:'Doublure complète' }
     ],
