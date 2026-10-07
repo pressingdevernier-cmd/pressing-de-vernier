@@ -313,6 +313,14 @@ function formatPrix(n) {
    viennent directement sous le <h1> de la page — un <h3> y sauterait un
    niveau, ce qu'un lecteur d'ecran signale comme un trou dans le plan. Sur
    la page Couture elles sont imbriquees sous un <h2>, et <h3> est juste. */
+/* « le kg », « le m² » : posé dans le montant, un cran plus petit. */
+function uniteDePrix(unite) {
+  const u = document.createElement('span');
+  u.className = 'unite';
+  u.textContent = unite.fr;
+  return u;
+}
+
 function tableauSection(sec, niveau, maximum) {
   const doubles = Boolean(sec.colonnes);
   /* UN EXTRAIT, PAS LA SECTION ENTIÈRE. Une page de métier répond à
@@ -353,7 +361,10 @@ function tableauSection(sec, niveau, maximum) {
     thead.append(tr); table.append(thead);
   }
 
-  const cellule = (montant, minimum, devis) => {
+  /* L'UNITÉ EST COLLÉE AU MONTANT, pas au libellé. « Linge au kilo » puis
+     « 6.– » se lisait comme le prix du service ; « 6.– le kg » ne laisse
+     aucun doute. */
+  const cellule = (montant, minimum, devis, unite) => {
     const td = document.createElement('td');
     if (devis) {
       const d = document.createElement('em');
@@ -369,6 +380,7 @@ function tableauSection(sec, niveau, maximum) {
     }
     const b = document.createElement('b');
     b.textContent = formatPrix(montant);
+    if (unite) b.append(' ', uniteDePrix(unite));
     td.append(b);
     return td;
   };
@@ -386,16 +398,10 @@ function tableauSection(sec, niveau, maximum) {
       p.textContent = ligne.precision.fr;
       th.append(p);
     }
-    if (ligne.unite) {
-      const u = document.createElement('span');
-      u.className = 'unite';
-      u.textContent = ligne.unite.fr;
-      th.append(' ', u);
-    }
     tr.append(th);
 
-    tr.append(cellule(ligne.prix, ligne.des, ligne.devis));
-    if (doubles) tr.append(cellule(ligne.prix2, ligne.des2, ligne.devis));
+    tr.append(cellule(ligne.prix, ligne.des, ligne.devis, ligne.unite));
+    if (doubles) tr.append(cellule(ligne.prix2, ligne.des2, ligne.devis, ligne.unite));
 
     tbody.append(tr);
   }
@@ -1051,6 +1057,7 @@ document.querySelectorAll('[data-prix-choisis] [data-ligne]').forEach(li => {
       montant.append(des, ' ');
     }
     montant.append(formatPrix(ligne.prix));
+    if (ligne.unite) montant.append(' ', uniteDePrix(ligne.unite));
   }
 
   li.append(nom, montant);
