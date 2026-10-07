@@ -192,7 +192,7 @@ const TARIFS = [
     lignes: [
       { fr: "Ajuster manches",   en: "Take in sleeves",   prix: 25 },
       { fr: "Ajuster longueur",  en: "Adjust length",     prix: 22 },
-      { fr: "Ajuster taille",    en: "Take in waist",     prix: 15 },
+      { fr: "Ajuster la taille — chemise", en: "Take in waist",     prix: 15 },
       { fr: "Retourner col",     en: "Turn collar",       prix: 15 },
       { fr: "Raccourcir",        en: "Shorten",           prix: 20 }
     ]
@@ -211,7 +211,7 @@ const TARIFS = [
       { fr: "Ourlet invisible",             en: "Blind hem",                prix: 22 },
       { fr: "Ourlet original",              en: "Original hem",             prix: 25 },
       { fr: "Fermeture éclair",             en: "Zip replacement",          prix: 25 },
-      { fr: "Ajuster taille ou hanches",    en: "Take in waist or hips",    prix: 25 },
+      { fr: "Ajuster la taille ou les hanches — pantalon", en: "Take in waist or hips", prix: 25 },
       { fr: "Changer poche",                en: "Replace pocket",           prix: 20 },
       { fr: "Doublure genoux",              en: "Knee lining",              prix: 40 },
       { fr: "Changer élastique",            en: "Replace elastic",          prix: 20 },
@@ -230,7 +230,7 @@ const TARIFS = [
       { fr: "Ourlet jupe droite avec doublure", en: "Lined straight skirt hem",   prix: 25 },
       { fr: "Fermeture éclair invisible",       en: "Invisible zip",              prix: 25 },
       { fr: "Fermeture éclair normale",         en: "Standard zip",               prix: 25 },
-      { fr: "Ajuster taille",                   en: "Take in waist",              prix: 20 },
+      { fr: "Ajuster la taille — jupe",         en: "Take in waist",              prix: 20 },
       { fr: "Poser élastique coulissant",       en: "Fit drawstring elastic",     prix: 15 },
       { fr: "Changer doublure",                 en: "Replace lining",             prix: 45 }
     ]
@@ -289,7 +289,7 @@ const TARIFS = [
     lignes: [
       { fr: "Ourlet robe droite",         en: "Straight dress hem",   prix: 22 },
       { fr: "Fermeture éclair invisible", en: "Invisible zip",        prix: 30 },
-      { fr: "Ajuster taille",             en: "Take in waist",        prix: 30 },
+      { fr: "Ajuster la taille — robe simple", en: "Take in waist",  prix: 30 },
       { fr: "Poser épaulettes",           en: "Fit shoulder pads",    prix: 25 },
       { fr: "Doublure sans manches",      en: "Lining, no sleeves",   prix: 50 },
       { fr: "Doublure avec manches",      en: "Lining with sleeves",  prix: 75 }
@@ -305,7 +305,7 @@ const TARIFS = [
       { fr: "Ourlet simple sans doublure", en: "Plain hem, unlined",  prix: 40 },
       { fr: "Ourlet simple avec doublure", en: "Plain hem, lined",    prix: 60 },
       { fr: "Fermeture éclair invisible",  en: "Invisible zip",       prix: 30 },
-      { fr: "Ajuster taille",              en: "Take in waist",       prix: 30 },
+      { fr: "Ajuster la taille — robe de soirée", en: "Take in waist", prix: 30 },
       { fr: "Poser bonnets",               en: "Fit bra cups",        prix: 20 }
     ]
   },
