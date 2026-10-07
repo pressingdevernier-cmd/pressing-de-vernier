@@ -16,6 +16,9 @@ const ETABLISSEMENT = {
 
   nom:            "Pressing de Vernier",
   raisonSociale:  "MDCA Sàrl",
+  /* Le numéro d'identification des entreprises, affiché dans le pied de
+     page et sur la page Mentions légales.                               */
+  ide:            "CHE-426.036.272",
   depuis:         2006,
 
   rue:            "201 route de Vernier",

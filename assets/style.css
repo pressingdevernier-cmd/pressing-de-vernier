@@ -671,6 +671,9 @@ h4{ font-size:var(--t-l); }
 /* Les horaires se terminent déjà par un filet : 64 px de plus avant celui des
    mentions faisaient deux séparations coup sur coup. */
 .pied-bande .mentions{ margin-top:var(--s3); }
+/* Les trois groupes de la ligne s'alignent sur leur texte : les liens des
+   pages légales portent une marge de cible qui les décalerait sinon. */
+.pied .mentions{ align-items:baseline; }
 
 /* ============================================================================
    PETITS ÉCRANS
@@ -1098,6 +1101,29 @@ a.pastille:hover{ color:var(--vert); text-decoration-style:solid; text-decoratio
    ============================================================================ */
 .pied a{ display:inline-flex; align-items:center; min-height:44px; }
 .pied .mentions a{ min-height:0; }
+/* Les deux pages légales, en petit sur la ligne des mentions. Soulignées :
+   au milieu d'une ligne de texte, rien d'autre ne dirait qu'elles se
+   cliquent. Six pixels de marge portent la cible à 24 px de haut. */
+.pied .mentions-liens a{
+  padding-block:6px; text-decoration:underline; text-underline-offset:3px;
+  text-decoration-color:rgba(246,243,236,.35); transition:color var(--transition);
+}
+.pied .mentions-liens a:hover{ color:var(--or-clair); }
+
+/* LA FICHE DE L'ENTREPRISE — page Mentions légales. Une rubrique par
+   ligne, l'intitulé à gauche, la valeur à droite, comme les horaires. */
+.fiche{ margin:var(--s3) 0 0; max-width:62ch; }
+.fiche > div{
+  display:flex; justify-content:space-between; gap:var(--s3);
+  padding:13px 0; border-bottom:1px solid var(--papier); font-size:15px;
+}
+.fiche > div:last-child{ border-bottom:0; }
+.fiche dt{ color:var(--acier-texte); flex:none; }
+.fiche dd{ margin:0; text-align:right; }
+@media (max-width:620px){
+  .fiche > div{ flex-direction:column; gap:3px; }
+  .fiche dd{ text-align:left; }
+}
 .coordonnees a{ min-height:44px; }
 /* Le telephone du bandeau : c est le lien le plus clique sur mobile */
 .bandeau-infos a{ display:inline-flex; align-items:center; min-height:44px; }

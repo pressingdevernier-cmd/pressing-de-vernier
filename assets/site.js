@@ -264,8 +264,14 @@ document.querySelectorAll('[data-itineraire]').forEach(el => {
 });
 
 document.querySelectorAll('[data-mentions-legales]').forEach(el => {
-  el.textContent = ETABLISSEMENT.raisonSociale + ' · ' + ETABLISSEMENT.nom + ' · ' + adresseCourte;
+  el.textContent = ETABLISSEMENT.raisonSociale + ' · ' + ETABLISSEMENT.nom + ' · ' + adresseCourte
+                 + ' · IDE ' + ETABLISSEMENT.ide;
 });
+
+/* La page Mentions légales : raison sociale, enseigne et numéro IDE. */
+document.querySelectorAll('[data-raison-sociale]').forEach(el => { el.textContent = ETABLISSEMENT.raisonSociale; });
+document.querySelectorAll('[data-nom]').forEach(el => { el.textContent = ETABLISSEMENT.nom; });
+document.querySelectorAll('[data-ide]').forEach(el => { el.textContent = ETABLISSEMENT.ide; });
 
 document.querySelectorAll('[data-depuis]').forEach(el => {
   el.textContent = 'Depuis ' + ETABLISSEMENT.depuis + ' à ' + ETABLISSEMENT.ville;
