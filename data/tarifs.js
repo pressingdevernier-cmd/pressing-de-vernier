@@ -108,8 +108,8 @@ const TARIFS = [
     fr: "Entretien spécialisé",
     en: "Specialist care",
     note: {
-      fr: "Nous prenons la pièce en charge et vous remettons un prix après examen.",
-      en: "We take the item in and give you a price once we have examined it."
+      fr: "Les tapis ont un prix de départ au mètre carré. Pour le cuir, le daim et les sacs, nous prenons la pièce en charge et vous remettons un prix après examen.",
+      en: "Rugs have a starting price per square metre. For leather, suede and bags, we take the item in and give you a price once we have examined it."
     },
     lignes: [
       { fr: "Tapis",                              en: "Rugs",                          prix: 30, des: true, unite: { fr: "le m²", en: "per m²" } },

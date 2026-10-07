@@ -169,18 +169,21 @@
 </section>
 
 <!-- ═══════════════ LES PRIX ═══════════════
-     AUCUN TABLEAU ICI, et c'est voulu : les quatre lignes de la rubrique
-     « Entretien specialise » de data/tarifs.js sont les quatre matieres
-     ecrites juste au-dessus, et elles sont toutes sur devis. Les afficher
-     aurait redit les memes quatre mots avec « SUR DEVIS » en face de chacun.
-     Le bouton mene a la liste complete, ou elles figurent. -->
+     PAS DE TABLEAU ICI : les quatre lignes de la rubrique « Entretien
+     specialise » de data/tarifs.js sont les quatre matieres ecrites juste
+     au-dessus, et trois sont sur devis. Seul le tapis a un prix, cite par
+     son libelle et lu dans data/tarifs.js (section 11 de assets/site.js).
+     Le bouton mene a la liste complete. -->
 <section class="section serree">
 <div class="zone">
   <div class="revele" style="max-width:640px">
     <div class="filet court"><i></i></div>
-    <h2>Sur <span class="accent">devis.</span></h2>
-    <p class="dit">Apportez la pi&#232;ce&#160;: nous la regardons ensemble et vous donnons une estimation.</p>
+    <h2>Les <span class="accent">prix.</span></h2>
+    <p class="dit">Les tapis sont compt&#233;s au m&#232;tre carr&#233;. Pour le cuir, le daim et les sacs, apportez la pi&#232;ce&#160;: nous la regardons ensemble et vous donnons une estimation.</p>
   </div>
+  <ul class="prix-choisis revele" data-prix-choisis>
+    <li data-section="entretien-specialise" data-ligne="Tapis"></li>
+  </ul>
   <p style="margin-top:var(--s4)"><a class="bouton plein" href="tarifs.html">Toute la liste de prix</a></p>
 </div>
 </section>
