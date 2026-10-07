@@ -380,6 +380,12 @@ function tableauSection(sec, niveau, maximum) {
     const th = document.createElement('th');
     th.scope = 'row';
     th.textContent = ligne.fr;
+    if (ligne.precision) {
+      const p = document.createElement('span');
+      p.className = 'precision';
+      p.textContent = ligne.precision.fr;
+      th.append(p);
+    }
     if (ligne.unite) {
       const u = document.createElement('span');
       u.className = 'unite';
@@ -1026,6 +1032,12 @@ document.querySelectorAll('[data-prix-choisis] [data-ligne]').forEach(li => {
 
   const nom = document.createElement('span');
   nom.textContent = ligne.fr;
+  if (ligne.precision) {
+    const p = document.createElement('small');
+    p.className = 'precision';
+    p.textContent = ligne.precision.fr;
+    nom.append(p);
+  }
 
   const montant = document.createElement('b');
   if (ligne.devis) {

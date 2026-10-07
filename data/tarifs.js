@@ -18,6 +18,8 @@
        unite à ajouter pour préciser une unité → { unite: { fr: "le m²", en: "per m²" } }
        devis à ajouter (devis: true) À LA PLACE du prix, quand le montant
              dépend de la pièce → affiche « Sur devis ». Pas de « prix: » alors.
+       precision  une phrase affichée en petit sous le libellé, pour
+             expliquer un prix → { precision: { fr: "…", en: "…" } }
 
    Un groupe peut aussi porter une « note » : une phrase affichée sous son
    titre, pour expliquer une particularité au client.
@@ -129,7 +131,9 @@ const TARIFS = [
     lignes: [
       { fr: "Lavage, séchage et pliage",              en: "Washing, drying and folding",            prix: 6,  unite: { fr: "le kg", en: "per kg" } },
       { fr: "Lavage, séchage, repassage et pliage",   en: "Washing, drying, ironing and folding",   prix: 12, unite: { fr: "le kg", en: "per kg" } },
-      { fr: "Repassage seul — linge apporté déjà lavé",    en: "Ironing only — laundry brought in already washed", devis: true }
+      { fr: "Repassage seul — linge apporté déjà lavé",    en: "Ironing only — laundry brought in already washed", devis: true,
+        precision: { fr: "Le prix dépend de la pièce : une chemise et un t-shirt ne demandent pas le même travail.",
+                     en: "The price depends on the item: a shirt and a T-shirt do not take the same work." } }
     ]
   },
 

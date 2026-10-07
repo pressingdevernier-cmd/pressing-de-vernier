@@ -998,6 +998,10 @@ h4{ font-size:var(--t-l); }
 .tarif-table b{ font-family:var(--serif); font-size:var(--t-l); font-weight:600; color:var(--vert); font-variant-numeric:tabular-nums; }
 .tarif-table em{ font-style:normal; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--acier-texte); }
 .tarif-table .unite{ font-size:12px; color:var(--acier-texte); }
+/* La phrase qui explique un prix, sous le libellé. */
+.tarif-table .precision,.prix-choisis .precision{
+  display:block; margin-top:3px; font-size:13px; line-height:1.45; color:var(--acier-texte);
+}
 .tarif-table.deux-colonnes td{ min-width:120px; }
 .mentions-tarifs{ margin-top:var(--s4); padding-top:var(--s3); border-top:1px solid var(--papier); }
 .mentions-tarifs p{ font-size:13px; color:var(--acier-texte); margin:0 0 5px; }
