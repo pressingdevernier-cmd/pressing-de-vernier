@@ -267,6 +267,8 @@ Si l'adresse changeait un jour, ou si vous ajoutez une page, ces endroits sont
   WhatsApp, Facebook et les messageries quand on partage un lien) ;
 - `sitemap.xml` : la liste des pages, pour Google ;
 - `robots.txt` : il indique à Google où trouver `sitemap.xml`.
+- `assets/partage.png` : l'image (1200 × 630) qui accompagne un lien partagé.
+  Elle porte le nom et l'adresse en dur : à refaire si l'adresse change.
 
 Les données pour Google (horaires, adresse, téléphone) sont fabriquées par
 `assets/site.js` et prennent l'adresse toutes seules.
