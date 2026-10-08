@@ -5,6 +5,18 @@ Prenez votre temps, faites une modification à la fois, et vérifiez avant de pu
 
 ---
 
+## L'adresse du site
+
+Le site est en ligne sur **https://pressingdevernier.ch**. Le domaine et sa
+zone DNS sont chez Infomaniak : **n'y touchez pas** pour modifier le site, ce
+n'est jamais là que ça se passe. Tout ce qui concerne la mise en ligne, le
+domaine et la zone DNS est décrit dans `DEPLOIEMENT.md`, section 4.
+
+Ne supprimez jamais le fichier `CNAME` du dossier : c'est lui qui relie le
+site à son adresse.
+
+---
+
 ## Avant tout : la règle de sécurité
 
 Vous ne pouvez rien casser de définitif. Chaque modification publiée est enregistrée,

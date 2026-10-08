@@ -12,7 +12,8 @@ prix), voir l'autre guide : **`COMMENT-MODIFIER.md`**, dans le même dossier.
 
 | Quoi | Où |
 |---|---|
-| Le site, tel que les clients le voient | https://pressingdevernier-cmd.github.io/pressing-de-vernier/ |
+| Le site, tel que les clients le voient | **https://pressingdevernier.ch** |
+| Le domaine et sa zone DNS | Infomaniak (section 4) |
 | La copie de travail, sur cet ordinateur | `C:\Users\carre\OneDrive\Desktop\Pressing\APPLICATIONS\site-pressing` |
 | La sauvegarde en ligne (le « dépôt ») | https://github.com/pressingdevernier-cmd/pressing-de-vernier |
 | Le compte GitHub | `pressingdevernier-cmd` |
@@ -30,8 +31,8 @@ de données, pas d'abonnement.
   toujours revenir en arrière.
 - **Une branche** : une version parallèle du site. Aujourd'hui, la version
   publiée s'appelle `pages-metier-et-tarifs`. La branche `main`, qui est
-  normalement la version publiée, est restée en arrière : c'est le point à
-  régler le jour de la mise en ligne officielle (section 4).
+  normalement la version publiée, est restée en arrière : c'est le dernier
+  point à régler (section 5).
 
 **Attention : le dépôt est public.** N'importe qui peut lire tous les fichiers
 et tout leur historique sur github.com. Ne mettez jamais dans ce dossier un mot
@@ -58,6 +59,8 @@ Le masquage de l'adresse sur le site (section 2) n'y change rien.
 | Les polices de caractères | `assets/polices/` |
 | Le plan de la page Nous trouver | écrit dans `trouver.html` ; son dessin d'origine est dans `..\imprimes\flyer\` |
 | La liste de ce qui n'est **pas** publié | `_config.yml` |
+| L'adresse sur laquelle GitHub publie | `CNAME` (une ligne : `pressingdevernier.ch`) |
+| La liste des pages pour Google | `sitemap.xml` et `robots.txt` |
 
 **Le courriel est coupé en deux** dans `data/etablissement.js` (`emailNom` et
 `emailDomaine`) et rassemblé par le script à l'affichage, pour écarter les
@@ -188,21 +191,95 @@ Vérifiez (3.2), puis publiez (3.3).
 
 ---
 
-## 4. Basculer vers la mise en ligne officielle
+## 4. Le nom de domaine
 
-Aujourd'hui, le site est publié depuis la branche de travail
-`pages-metier-et-tarifs`, sur une adresse en `github.io`. La mise en ligne
-officielle, c'est trois choses : remettre la publication sur la branche
-`main`, brancher le nom de domaine, et vérifier.
+Depuis le **8 octobre 2026**, le site répond sur **https://pressingdevernier.ch**.
+Tout est en place ; cette section dit comment c'est réglé, pour le jour où
+quelque chose cloche.
 
-**Avant de commencer** : relisez les deux pages légales, et faites-les relire
-par quelqu'un de compétent si un doute subsiste.
+### 4.1 Qui fait quoi
 
-### 4.1 Remettre la publication sur `main`
+| Quoi | Où | Qui s'en occupe |
+|---|---|---|
+| Le domaine `pressingdevernier.ch` (achat, renouvellement chaque année) | Infomaniak, compte du pressing | vous : **ne le laissez jamais expirer** |
+| La zone DNS (l'annuaire qui dit où se trouve le site) | Infomaniak → Domaines → pressingdevernier.ch → Zone DNS | personne : elle ne bouge plus |
+| La protection DNSSEC | Infomaniak → Domaines → pressingdevernier.ch → DNSSEC | Infomaniak, automatiquement |
+| Le site, le certificat HTTPS | GitHub, dépôt `pressing-de-vernier` → Settings → Pages | GitHub, automatiquement (certificat renouvelé tout seul) |
+| Le fichier `CNAME` du dépôt | à la racine du dossier `site-pressing` | personne : **ne le supprimez jamais** |
 
-La branche `main` contient une version ancienne du site. Toute la suite est
-sur `pages-metier-et-tarifs`, qui part de `main` : on peut donc avancer `main`
-jusqu'au même point sans rien perdre ni rien fusionner à la main.
+Le fichier `CNAME` contient une seule ligne, `pressingdevernier.ch`. C'est lui
+qui dit à GitHub sur quelle adresse publier. Supprimé, le site retombe sur
+l'ancienne adresse en `github.io`.
+
+### 4.2 La zone DNS : ne pas y toucher sans raison
+
+**La zone DNS se trouve chez Infomaniak** : Manager → **Domaines** →
+**pressingdevernier.ch** → **Zone DNS**. Une erreur dans cette zone rend le
+site introuvable pour tout le monde, parfois pendant des heures. Ne la
+modifiez que pour une raison précise (par exemple créer une adresse de
+courriel en `@pressingdevernier.ch`), et notez avant ce qu'il y avait.
+
+Voici ce qu'elle doit contenir (vérifié le 8 octobre 2026). Les lignes NS et
+SOA, créées par Infomaniak, n'apparaissent pas ici.
+
+| Type | Source | Valeur | Rôle |
+|---|---|---|---|
+| A | *(vide)* | 185.199.108.153 | le site, adresse 1 |
+| A | *(vide)* | 185.199.109.153 | le site, adresse 2 |
+| A | *(vide)* | 185.199.110.153 | le site, adresse 3 |
+| A | *(vide)* | 185.199.111.153 | le site, adresse 4 |
+| AAAA | *(vide)* | 2606:50c0:8000::153 | le site, adresse moderne 1 |
+| AAAA | *(vide)* | 2606:50c0:8001::153 | le site, adresse moderne 2 |
+| AAAA | *(vide)* | 2606:50c0:8002::153 | le site, adresse moderne 3 |
+| AAAA | *(vide)* | 2606:50c0:8003::153 | le site, adresse moderne 4 |
+| CNAME | www | pressingdevernier-cmd.github.io | `www.pressingdevernier.ch` |
+| TXT | _github-pages-challenge-pressingdevernier-cmd | *(code donné par GitHub)* | prouve à GitHub que le domaine est à vous |
+| TXT | *(vide)* | v=spf1 -all | dit qu'aucun courriel ne part de `@pressingdevernier.ch` |
+
+- **Ne supprimez pas le TXT `_github-pages-challenge…`** : sans lui, GitHub
+  ne considère plus le domaine comme protégé, et quelqu'un d'autre pourrait
+  tenter de l'utiliser.
+- **Le TXT `v=spf1 -all`** empêche des fraudeurs d'envoyer de faux courriels
+  au nom de `@pressingdevernier.ch`. Le jour où vous créez une adresse de
+  courriel sur ce domaine, il faudra le remplacer — demandez de l'aide.
+- **DNSSEC** signe la zone pour qu'on ne puisse pas la falsifier. Le 8 octobre
+  2026, il était activé mais cassé (le site aurait été introuvable pour la
+  plupart des visiteurs) ; Infomaniak l'a réparé. S'il faut un jour le
+  désactiver, faites-le **dans Infomaniak**, jamais en supprimant des lignes
+  à la main.
+
+### 4.3 Les adresses qui mènent au site
+
+Toutes aboutissent à **https://pressingdevernier.ch/**, avec le cadenas :
+
+- `http://pressingdevernier.ch` → redirigée vers `https://` ;
+- `www.pressingdevernier.ch` → redirigée vers `pressingdevernier.ch` ;
+- l'ancienne adresse `pressingdevernier-cmd.github.io/pressing-de-vernier/`
+  → redirigée vers la nouvelle, page par page.
+
+### 4.4 Ce qui porte l'adresse dans le site
+
+Si l'adresse changeait un jour, ou si vous ajoutez une page, ces endroits sont
+à mettre à jour :
+
+- dans chaque page `.html`, en tête : la ligne `<link rel="canonical" …>`
+  (l'adresse de référence pour Google) et les lignes `og:…` (ce qu'affichent
+  WhatsApp, Facebook et les messageries quand on partage un lien) ;
+- `sitemap.xml` : la liste des pages, pour Google ;
+- `robots.txt` : il indique à Google où trouver `sitemap.xml`.
+
+Les données pour Google (horaires, adresse, téléphone) sont fabriquées par
+`assets/site.js` et prennent l'adresse toutes seules.
+
+---
+
+## 5. Reste à faire : remettre la publication sur `main`
+
+Le site est encore publié depuis la branche de travail `pages-metier-et-tarifs`.
+Ce n'est pas un problème pour les visiteurs, mais la branche `main`, qui est
+normalement la version publiée, est restée en arrière. Toute la suite est sur
+`pages-metier-et-tarifs`, qui part de `main` : on peut avancer `main` jusqu'au
+même point sans rien perdre.
 
 Dans PowerShell, dans le dossier du site :
 
@@ -215,8 +292,7 @@ Dans PowerShell, dans le dossier du site :
    git merge --ff-only pages-metier-et-tarifs
    ```
    **Vous devez voir** `Fast-forward`. Si vous voyez `fatal: Not possible to
-   fast-forward`, arrêtez-vous : quelqu'un a modifié `main` entre-temps, et il
-   faut de l'aide.
+   fast-forward`, arrêtez-vous : il faut de l'aide.
 
 3. ```powershell
    git push origin main
@@ -225,67 +301,15 @@ Dans PowerShell, dans le dossier du site :
 
 4. Sur github.com, dans le dépôt :
    - **Settings → Pages** : sous **Branch**, choisissez `main`, dossier
-     `/ (root)`, puis **Save**.
+     `/ (root)`, puis **Save**. Vérifiez que **Custom domain** affiche
+     toujours `pressingdevernier.ch` et que **Enforce HTTPS** reste coché.
    - **Settings → General** : sous **Default branch**, choisissez `main`.
 
-5. Attendez deux minutes et vérifiez que le site s'affiche toujours.
+5. Attendez deux minutes et vérifiez que https://pressingdevernier.ch
+   s'affiche toujours.
 
 **À partir de là, on travaille sur `main`.** Dans la section 3, `git status`
 doit afficher `On branch main`, et `git push` se termine par `main -> main`.
-
-### 4.2 Brancher le nom de domaine
-
-1. **Acheter le domaine** (par exemple `pressingdevernier.ch`, si disponible)
-   chez un bureau d'enregistrement suisse — **Infomaniak** ou **Hostpoint**.
-   Environ quinze francs par an. Prenez **seulement le domaine** : ni
-   hébergement, ni « pack site web ».
-
-2. **Faire vérifier le domaine par GitHub, avant tout le reste.** Sur
-   github.com : photo de profil → **Settings → Pages → Add a domain**. GitHub
-   donne un code à recopier dans la zone DNS (voir l'étape 4). Cette
-   vérification empêche quelqu'un d'autre d'utiliser votre domaine.
-
-3. **Déclarer le domaine au site** : dans le dépôt, **Settings → Pages →
-   Custom domain**, tapez le domaine, **Save**. GitHub ajoute alors un fichier
-   `CNAME` au dépôt. **Ne le supprimez jamais.**
-
-4. **Configurer la zone DNS** chez le bureau d'enregistrement (menu « Zone
-   DNS » ou « Enregistrements DNS »). C'est l'annuaire qui dit aux navigateurs
-   où trouver le site. Créez :
-
-   | Type | Nom | Valeur |
-   |---|---|---|
-   | A | @ | 185.199.108.153 |
-   | A | @ | 185.199.109.153 |
-   | A | @ | 185.199.110.153 |
-   | A | @ | 185.199.111.153 |
-   | AAAA | @ | 2606:50c0:8000::153 |
-   | AAAA | @ | 2606:50c0:8001::153 |
-   | AAAA | @ | 2606:50c0:8002::153 |
-   | AAAA | @ | 2606:50c0:8003::153 |
-   | CNAME | www | pressingdevernier-cmd.github.io |
-
-   Ce sont les adresses officielles de GitHub Pages (vérifiées en octobre
-   2026 sur docs.github.com). La prise en compte prend de quelques minutes à
-   24 heures.
-
-5. **Activer HTTPS** : dans **Settings → Pages**, cochez **Enforce HTTPS**
-   dès que la case n'est plus grisée (jusqu'à une heure). Sans elle, les
-   navigateurs affichent « Site non sécurisé ».
-
-6. **Récupérer le fichier `CNAME`** sur cet ordinateur :
-
-   ```powershell
-   git pull
-   ```
-
-### 4.3 Vérifier
-
-- L'adresse avec et sans `www` ouvre le site, avec le cadenas.
-- Les onze pages, la recherche des tarifs, le bouton Itinéraire, le lien
-  téléphone sur un portable.
-- L'ancienne adresse en `github.io` renvoie vers la nouvelle (GitHub le fait
-  tout seul).
 
 ---
 
@@ -293,12 +317,12 @@ doit afficher `On branch main`, et `git push` se termine par `main -> main`.
 
 | Ce que vous voyez | Ce qui se passe | Que faire |
 |---|---|---|
-| `git push` refusé (`rejected`) | le dépôt en ligne a reçu une modification d'ailleurs | `git pull`, puis à nouveau `git push` |
+| `git push` refusé (`rejected`) | le dépôt en ligne a reçu une modification d'ailleurs (GitHub en fait parfois une lui-même, par exemple sur le fichier `CNAME`) | `git pull`, puis à nouveau `git push` |
 | La modification n'apparaît pas en ligne | le navigateur montre l'ancienne version | attendre deux minutes, puis **Ctrl+F5** |
 | La page des tarifs est vide | faute de frappe dans `data/tarifs.js` | **F12** dans le navigateur, onglet **Console** : le message rouge donne le numéro de ligne |
 | `git status` montre des fichiers inconnus | des fichiers de travail traînent dans le dossier | ne les ajoutez pas ; n'envoyez que vos fichiers modifiés |
 | `not a git repository` | PowerShell n'est pas dans le bon dossier | rouvrez-le depuis le dossier `site-pressing` (3.3, point 1) |
-| « Site non sécurisé » | HTTPS pas encore activé | 4.2, point 5 |
+| « Site non sécurisé » ou site introuvable | certificat ou zone DNS en défaut | comparer la zone DNS avec le tableau de la section 4.2 ; dans GitHub, Settings → Pages doit afficher `pressingdevernier.ch` et **Enforce HTTPS** coché |
 
 ---
 
@@ -307,8 +331,9 @@ doit afficher `On branch main`, et `git push` se termine par `main -> main`.
 1. **L'accès au compte GitHub `pressingdevernier-cmd`** (adresse, mot de passe,
    et codes de secours de la double authentification). Sans lui, plus aucune
    publication n'est possible. Notez-les ailleurs que sur cet ordinateur.
-2. **L'accès au bureau d'enregistrement** du domaine, le jour où il existe.
-   Un domaine non renouvelé est perdu, et le site avec.
+2. **L'accès au compte Infomaniak** qui détient le domaine. Vérifiez que le
+   renouvellement automatique est actif : un domaine non renouvelé est perdu,
+   et le site avec.
 3. **Le dossier `site-pressing`** : il est aussi sur GitHub, donc en double.
 
 ---
